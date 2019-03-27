@@ -114,8 +114,6 @@ public class ElRecList implements WindowListener, ActionListener,TextListener, I
 		dlgEliminado.addWindowListener(this);
 		dlgEliminado.setVisible(false);
 
-
-
 		ventanaElRecList.addWindowListener(this);
 		ventanaElRecList.setVisible(true);
 	}
