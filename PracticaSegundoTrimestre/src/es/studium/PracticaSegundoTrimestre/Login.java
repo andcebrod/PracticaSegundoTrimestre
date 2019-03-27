@@ -194,6 +194,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 					try
 					{
 						Class.forName(driver);
+						@SuppressWarnings("deprecation")
 						String sentencia = "SELECT * FROM usuarios where correoUsuario ='"+txtCorreo.getText()+"' AND claveUsuario = MD5('"+txtPass.getText()+"');";
 						connection = DriverManager.getConnection(url, login,password);
 						statement =connection.createStatement();
@@ -253,12 +254,6 @@ public class Login implements WindowListener, ActionListener, TextListener {
 					
 					
 				}
-				
-				
-				
-				
-				
-				
 					/* 
 				
 				Calendar horaFecha = Calendar.getInstance();

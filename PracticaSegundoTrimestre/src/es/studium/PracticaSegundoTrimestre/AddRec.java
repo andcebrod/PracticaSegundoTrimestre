@@ -8,16 +8,30 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class AddRec implements WindowListener, ActionListener, TextListener{
 
+	String driver = "com.mysql.jdbc.Driver";
+	String url ="jdbc:mysql://localhost:3306/TallerJava?autoReconnect=true&useSSL=false";
+	String login = "root";
+	String password = "Studium2018;";
+	Connection connection = null;
+	Statement statement = null;
+	ResultSet rs = null;
+	
+	
 	JFrame ventanaAddRec = new JFrame ("Añadir Recambio");
 	JLabel lblDescripcionRec = new JLabel ("Descripción:");
 	JLabel lblUnidadesRec = new JLabel ("Unidades:");
@@ -30,9 +44,7 @@ public class AddRec implements WindowListener, ActionListener, TextListener{
 
 	JButton btnCrear = new JButton("Crear Recambio");
 	JButton btnLimpiar = new JButton("Limpiar");
-	
-	JDialog dlgExitoAddRec = new JDialog(ventanaAddRec, "Recambio creado");
-	JLabel lblExito = new JLabel("Recambio creado con éxito");
+
 	
 	JPanel pnlPanel = new JPanel();
 	JPanel pnlPanel2 = new JPanel();
@@ -69,19 +81,6 @@ public class AddRec implements WindowListener, ActionListener, TextListener{
 		ventanaAddRec.add(pnlPanel4);
 		ventanaAddRec.addWindowListener(this);
 		ventanaAddRec.setVisible(true);
-		
-		dlgExitoAddRec.setLocationRelativeTo(null);
-		dlgExitoAddRec.setSize(190,90);
-		dlgExitoAddRec.add(lblExito);
-		dlgExitoAddRec.addWindowListener(this);
-		dlgExitoAddRec.setVisible(false);
-		dlgExitoAddRec.setLayout(new FlowLayout());
-	}
-	
-	
-
-	public static void main(String[] args) {
-		new AddRec();
 	}
 
 	@Override
@@ -92,7 +91,47 @@ public class AddRec implements WindowListener, ActionListener, TextListener{
 	{
 		
 		if (btnCrear.equals(ae.getSource())) {
-			dlgExitoAddRec.setVisible(true);
+			
+			txtDescripcionRec.selectAll();
+			String Descripcion = txtDescripcionRec.getText();
+			txtUnidadesRec.selectAll();
+			String Unidades = txtUnidadesRec.getText();
+			txtPrecioRec.selectAll();
+			String Precio = txtPrecioRec.getText();
+			
+			try
+			{
+				Class.forName(driver);
+				String sentencia = "INSERT INTO recambios VALUES (null,'"+Descripcion+"', "+Unidades+", "+Precio+");";
+				connection = DriverManager.getConnection(url, login,password);
+				statement =connection.createStatement();
+				statement.executeUpdate(sentencia);
+				JOptionPane.showMessageDialog(null,"Recambio creado","Recambio Creado con éxito", JOptionPane.INFORMATION_MESSAGE);
+			}
+			catch (ClassNotFoundException cnfe)
+			{
+				JOptionPane.showMessageDialog(null,"Error",cnfe.getMessage(), JOptionPane.ERROR_MESSAGE);
+			}
+			catch (SQLException sqle)
+			{
+				JOptionPane.showMessageDialog(null,"Error",sqle.getMessage(), JOptionPane.ERROR_MESSAGE);
+			}
+			finally
+			{
+				try
+				{
+					if(connection!=null)
+					{
+						connection.close();
+					}
+				}
+				catch (SQLException e)
+				{
+					JOptionPane.showMessageDialog(null,"Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			
+			
 		} else if (btnLimpiar.equals(ae.getSource())) {
 			txtDescripcionRec.selectAll();
 			txtDescripcionRec.setText("");
@@ -118,9 +157,6 @@ public class AddRec implements WindowListener, ActionListener, TextListener{
 			ventanaAddRec.setVisible(false);
 		}else {
 			//System.exit(0);
-		}
-		if(dlgExitoAddRec.isActive()) {
-			dlgExitoAddRec.setVisible(false);
 		}
 		
 	}

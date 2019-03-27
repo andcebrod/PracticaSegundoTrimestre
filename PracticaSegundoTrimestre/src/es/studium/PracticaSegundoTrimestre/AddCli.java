@@ -103,8 +103,6 @@ public class AddCli  implements WindowListener, ActionListener, TextListener
 			{
 				Class.forName(driver);
 				String sentencia = "INSERT INTO clientes VALUES (null,'"+Nombre+"', '"+Direccion+"', '"+Telefono+"');";
-				
-				System.out.println(sentencia);
 				connection = DriverManager.getConnection(url, login,password);
 				statement =connection.createStatement();
 				statement.executeUpdate(sentencia);
