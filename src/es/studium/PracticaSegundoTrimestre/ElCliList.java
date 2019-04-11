@@ -143,7 +143,6 @@ public class ElCliList implements WindowListener, ActionListener, TextListener, 
 		cerrar = 1;
 		dlgElCli.setVisible(true);
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
