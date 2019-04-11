@@ -132,10 +132,6 @@ public class ElCliList implements WindowListener, ActionListener, TextListener, 
 		dlgEliminado.setVisible(false);
 
 	}
-	public static void main(String[] args) {
-
-		new ElCliList();
-	}
 	@Override
 	public void textValueChanged(TextEvent arg0) {}
 

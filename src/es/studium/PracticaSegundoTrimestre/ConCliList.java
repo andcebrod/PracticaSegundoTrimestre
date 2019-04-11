@@ -1,5 +1,6 @@
 package es.studium.PracticaSegundoTrimestre;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,63 +8,87 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
-public class ConCliList implements WindowListener, ActionListener, TextListener{
-	JFrame ventanaConCliList = new JFrame ("Buscar cliente");
-	JLabel lblBuscarCli = new JLabel ("Buscar apellidos de cliente:");
-	JTextField txtBuscarCli = new JTextField(10);
+public class ConCliList extends JFrame implements WindowListener, ActionListener, TextListener
+{
 	
-	String clientes[] = { "Cristian", "Julian", "Manuel","Pedro","Joaquin", "Julian", "Julian", "Julian", "Julian",};
-	JList<String> ListaCli = new JList<String>(clientes);
-	JScrollPane scrollLista= new JScrollPane();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	DefaultTableModel modelo = new DefaultTableModel();
 	
-	JButton btnBuscar = new JButton("Buscar");
-	JButton btnSeleccionar = new JButton("Seleccionar");
+	JTable tablaClientes= new JTable(modelo);
 	
-	JPanel pnl1 = new JPanel();
+	JButton btnAceptar = new JButton("Aceptar");
+	
 	JPanel pnl2 = new JPanel();
-	JPanel pnl3 = new JPanel();
+	ResultSet rs;
 	
 
 	public ConCliList() {
-		ventanaConCliList.setLayout(new GridLayout(3,1));
-		ventanaConCliList.setLocationRelativeTo(null);
-		ventanaConCliList.setSize(400,300);
+		this.setLayout(new BorderLayout());
+		this.setLocationRelativeTo(null);
+		this.setSize(600,200);
+		this.setTitle("Consulta de Clientes");
 		
-		pnl1.add(lblBuscarCli);
-		pnl1.add(txtBuscarCli);
-		pnl1.add(btnBuscar);
-		pnl2.add(ListaCli);
-		pnl3.add(btnSeleccionar);
+		this.add(new JScrollPane(tablaClientes),BorderLayout.CENTER);
+		pnl2.add(btnAceptar);
+		this.add(pnl2, BorderLayout.SOUTH);
+		btnAceptar.addActionListener(this);
 		
-		ventanaConCliList.add(pnl1);
-		ventanaConCliList.add(pnl2);
-		ventanaConCliList.add(pnl3);
+		modelo.addColumn("Nº Cliente");
+		modelo.addColumn("Nombre");
+		modelo.addColumn("Dirección");
+		modelo.addColumn("Teléfono");
 		
-		btnSeleccionar.addActionListener(this);
+		rs = ejecutarSelect("SELECT * FROM clientes", conectar("TallerJava","root","Studium2018;"));
+		try {
+
+			while (rs.next())
+			{
+			   Object [] fila = new Object[4];
+
+			   for (int i=0;i<4;i++)
+			      fila[i] = rs.getObject(i+1);
+			   modelo.addRow(fila); 
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		desconectar(conectar("practicamvc","root" ,"Studium2018;"));
+		tablaClientes.setEnabled(false);
 		
-		ventanaConCliList.addWindowListener(this);
-		ventanaConCliList.setVisible(true);
+		
+		this.addWindowListener(this);
+		this.setVisible(true);
 	}
-	public static void main(String[] args) {
-		
-	}
+
 	@Override
 	public void textValueChanged(TextEvent arg0) {}
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
 		
-		if(btnSeleccionar.equals(ae.getSource())) {
-			new ConCli();
+		if(btnAceptar.equals(ae.getSource())) {
+			this.setVisible(false);
 		}
 	}
 	@Override
@@ -73,15 +98,9 @@ public class ConCliList implements WindowListener, ActionListener, TextListener{
 	@Override
 	public void windowClosing(WindowEvent arg0) 
 	{
-		if(ventanaConCliList.isActive()) {
-			ventanaConCliList.setVisible(false);
-		}else {
-			//System.exit(0);
-		}
-		
+		this.setVisible(false);
 	}
 		
-	
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {
 		
@@ -100,7 +119,64 @@ public class ConCliList implements WindowListener, ActionListener, TextListener{
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		
-		
+	}
+	
+	public Connection conectar(String baseDatos, String usuario, String clave)
+	{
+		String driver = "com.mysql.jdbc.Driver";
+		String url ="jdbc:mysql://localhost:3306/"+baseDatos+"?autoReconnect=true&useSSL=false";
+		String login = usuario;
+		String password = clave;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		try
+		{
+			Class.forName(driver);
+			connection = DriverManager.getConnection(url, login,password);
+		}
+		catch (ClassNotFoundException cnfe)
+		{
+			JOptionPane.showMessageDialog(null,cnfe.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		catch (SQLException sqle)
+		{
+			JOptionPane.showMessageDialog(null,sqle.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return connection;
+	}
+	public void desconectar(Connection c) 
+	{
+		try
+		{
+			if(c!=null)
+			{
+				c.close();
+			}
+		}
+		catch (SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public ResultSet ejecutarSelect(String sentencia, Connection c) 
+	{
+
+		try
+		{
+			Statement statement = c.createStatement();
+			ResultSet rs= statement.executeQuery(sentencia);
+			return rs;
+		}
+		catch(SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
 	}
 
 }
+
+
