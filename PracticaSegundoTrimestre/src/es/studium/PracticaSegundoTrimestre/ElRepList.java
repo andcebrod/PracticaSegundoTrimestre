@@ -1,88 +1,80 @@
 package es.studium.PracticaSegundoTrimestre;
 
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.List;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.*;
 
-public class ElRepList implements WindowListener, ActionListener, TextListener{
-	JFrame ventanaElRepList = new JFrame ("Buscar reparación para eliminar");
-	JLabel lblBuscarRep = new JLabel ("Buscar avería :");
-	JTextField txtBuscarRep = new JTextField(10);
-	List ListaRep = new List(10, false);
-	JButton btnBuscar = new JButton("Buscar");
-	JButton btnSeleccionar = new JButton("Seleccionar");
-	
-	JDialog dlgElRep = new JDialog(ventanaElRepList, "Eliminar la reparación");
-	JLabel lblEliminar = new JLabel("¿Está seguro de eliminar la reparación?");
-	JButton btnEliminar = new JButton ("Eliminar");
-	JButton btnCancelar = new JButton ("Cancelar");
-	JDialog dlgEliminado = new JDialog(dlgElRep, "Reparación Eliminada");
-	JLabel lblEliminado = new JLabel("Reparación Eliminada");
-	
+public class ElRepList extends JFrame implements WindowListener, ActionListener
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	Choice ListaRep = new Choice();
+
+	JButton btnBorrar = new JButton("Eliminar Reparación");
+	int idReparacionBorrar;
+
+	Label mReparacion = new Label("");
 	JPanel pnl1 = new JPanel();
 	JPanel pnl2 = new JPanel();
-	JPanel pnl3 = new JPanel();
-	
+
+	String s="";
+	int idRepBorrar;
+	ResultSet con;
+
 	public ElRepList() 
 	{
-		ventanaElRepList.setLayout(new GridLayout(3,1));
-		ventanaElRepList.setLocationRelativeTo(null);
-		ventanaElRepList.setSize(400,300);
-		pnl1.setLayout(new FlowLayout());
-		pnl2.setLayout(new FlowLayout());
-		pnl3.setLayout(new FlowLayout());
-		
-		pnl1.add(lblBuscarRep);
-		pnl1.add(txtBuscarRep);
-		pnl1.add(btnBuscar);
-		pnl2.add(ListaRep);
-		pnl3.add(btnSeleccionar);
-		btnSeleccionar.addActionListener(this);
-		
-		ventanaElRepList.add(pnl1);
-		ventanaElRepList.add(pnl2);
-		ventanaElRepList.add(pnl3);
+		this.setLayout(new GridLayout(2,1));
+		this.setLocationRelativeTo(null);
+		this.setSize(400,300);
+		ListaRep.add("Seleccionar reparación a eliminar");
+		con = ejecutarSelect("SELECT * FROM reparaciones", conectar("TallerJava", "root", "Studium2018;"));
+		try {
+			while(con.next())
+			{
+				String reparaciones=Integer.toString(con.getInt("idReparacion"));
+				reparaciones = reparaciones+".-"+con.getString("Averia")+", Fecha Entrada: "+con.getString("FechaEntrada")+", Fecha Salida: "+con.getString("FechaSalida");
+				ListaRep.add(reparaciones);
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		desconectar(conectar("TallerJava","root" ,"Studium2018;"));
 
-		dlgElRep.setLocationRelativeTo(null);
-		dlgElRep.setLayout(new FlowLayout());
-		dlgElRep.setSize(250,120);
-		dlgElRep.add(lblEliminar);
-		dlgElRep.add(btnEliminar);
-		btnEliminar.addActionListener(this);
-		dlgElRep.add(btnCancelar);
-		dlgElRep.addWindowListener(this);
-		dlgElRep.setVisible(false);
-		
-		dlgEliminado.setLocationRelativeTo(null);
-		dlgEliminado.setLayout(new FlowLayout());
-		dlgEliminado.setSize(250,120);
-		dlgEliminado.add(lblEliminado);
-		dlgEliminado.addWindowListener(this);
-		dlgEliminado.setVisible(false);
-		
-		
-		ventanaElRepList.addWindowListener(this);
-		ventanaElRepList.setVisible(true);
+		pnl1.add(ListaRep);
+		pnl2.add(btnBorrar);
+
+		this.add(pnl1);
+		this.add(pnl2);
+		this.addWindowListener(this);
+		btnBorrar.addActionListener(this);
+		this.setVisible(true);
 	}
-	@Override
-	public void textValueChanged(TextEvent arg0) {}
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
-		if(btnSeleccionar.equals(ae.getSource())) 
-		{
-			dlgElRep.setVisible(true);
-		} else if(btnEliminar.equals(ae.getSource())) 
-		{
-			dlgEliminado.setVisible(true);
-		
+		// TODO Auto-generated method stub
+		if(btnBorrar.equals(ae.getSource())) {
+			int seleccion = JOptionPane.showOptionDialog( null,"¿Desea eliminar reparación?","Eliminar reparación",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "Eliminar", "Cancelar"},"Cancelar");
+			if (seleccion == 0){
+				try {
+					String[] array= ListaRep.getSelectedItem().toString().split(".-");
+					idRepBorrar = Integer.parseInt(array[0]);
+				} catch (NumberFormatException Nf) {
+					JOptionPane.showMessageDialog(null,"Introduzca reparación válida","Error de reparación", JOptionPane.ERROR_MESSAGE);
+				}
+				ejecutarIDA("DELETE FROM reparaciones where idReparacion ="+idRepBorrar+";", conectar("TallerJava", "root", "Studium2018;"));
+				JOptionPane.showMessageDialog(null,"La reparación "+idRepBorrar+" ha sido eliminada","Reparación eliminada", JOptionPane.INFORMATION_MESSAGE);
+			} else if(seleccion == 1) {
+
+			}
 		}
 	}
 	@Override
@@ -92,18 +84,7 @@ public class ElRepList implements WindowListener, ActionListener, TextListener{
 	@Override
 	public void windowClosing(WindowEvent arg0) 
 	{
-		if(ventanaElRepList.isActive()) {
-			ventanaElRepList.setVisible(false);
-		}else {
-			//System.exit(0);
-		} if(dlgElRep.isActive()) {
-			dlgElRep.setVisible(false);
-		}
-		if(dlgEliminado.isActive()) {
-			dlgEliminado.setVisible(false);
-			dlgElRep.setVisible(false);
-		}
-		
+		this.setVisible(false);
 	}
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {}
@@ -114,6 +95,73 @@ public class ElRepList implements WindowListener, ActionListener, TextListener{
 	@Override
 	public void windowOpened(WindowEvent arg0) {}
 
+	public Connection conectar(String baseDatos, String usuario, String clave)
+	{
+		String driver = "com.mysql.jdbc.Driver";
+		String url ="jdbc:mysql://localhost:3306/"+baseDatos+"?autoReconnect=true&useSSL=false";
+		String login = usuario;
+		String password = clave;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
 
-	
+		try
+		{
+			Class.forName(driver);
+			connection = DriverManager.getConnection(url, login,password);
+		}
+		catch (ClassNotFoundException cnfe)
+		{
+			JOptionPane.showMessageDialog(null,cnfe.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		catch (SQLException sqle)
+		{
+			JOptionPane.showMessageDialog(null,sqle.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return connection;
+	}
+	public void desconectar(Connection c) 
+	{
+		try
+		{
+			if(c!=null)
+			{
+				c.close();
+			}
+		}
+		catch (SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	public ResultSet ejecutarSelect(String sentencia, Connection c) 
+	{
+
+		try
+		{
+			Statement statement = c.createStatement();
+			ResultSet rs= statement.executeQuery(sentencia);
+			return rs;
+		}
+		catch(SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
+	}
+	public void ejecutarIDA(String sentencia, Connection c) 
+	{
+
+		try
+		{
+			Statement statement = c.createStatement();
+			statement.executeUpdate(sentencia);
+		}
+		catch(SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+	}
 }

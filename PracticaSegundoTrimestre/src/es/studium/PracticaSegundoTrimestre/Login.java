@@ -30,7 +30,6 @@ public class Login implements WindowListener, ActionListener, TextListener {
 	Statement statement = null;
 	ResultSet rs = null;
 	
-	
 	JFrame ventanaLogin = new JFrame ("Iniciar Sesión");
 	
 	JLabel lblIniciar = new JLabel("Iniciar Sesión");

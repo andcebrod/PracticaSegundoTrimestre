@@ -1,34 +1,20 @@
 package es.studium.PracticaSegundoTrimestre;
 
-import java.awt.Choice;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Label;
-import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
-public class ElCliList implements WindowListener, ActionListener{
+public class ElCliList extends JFrame implements WindowListener, ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	JFrame ventanaElCliList = new JFrame ("Eliminar cliente");
 	Choice ListaCli = new Choice();
 
 	JButton btnBorrar = new JButton("Eliminar Cliente");
@@ -39,14 +25,13 @@ public class ElCliList implements WindowListener, ActionListener{
 	JPanel pnl2 = new JPanel();
 
 	String s="";
-	int idEmpleadoBorrar;
-	int cerrar = 0;
+	int idCliBorrar;
 	ResultSet con;
 
 	public ElCliList() {
-		ventanaElCliList.setLayout(new GridLayout(2,1));
-		ventanaElCliList.setLocationRelativeTo(null);
-		ventanaElCliList.setSize(400,300);
+		this.setLayout(new GridLayout(2,1));
+		this.setLocationRelativeTo(null);
+		this.setSize(400,300);
 		ListaCli.add("Seleccionar cliente a eliminar");
 		con = ejecutarSelect("SELECT * FROM clientes", conectar("TallerJava", "root", "Studium2018;"));
 		try {
@@ -64,14 +49,83 @@ public class ElCliList implements WindowListener, ActionListener{
 		pnl1.add(ListaCli);
 		pnl2.add(btnBorrar);
 		
-		ventanaElCliList.add(pnl1);
-		ventanaElCliList.add(pnl2);
-		ventanaElCliList.addWindowListener(this);
+		this.add(pnl1);
+		this.add(pnl2);
+		this.addWindowListener(this);
 		btnBorrar.addActionListener(this);
-		ventanaElCliList.setVisible(true);
+		this.setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		// TODO Auto-generated method stub
+		if(btnBorrar.equals(ae.getSource())) {
+			int seleccion = JOptionPane.showOptionDialog( null,"¿Desea eliminar cliente?","Eliminar cliente",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "Eliminar", "Cancelar"},"Cancelar");
+			if (seleccion == 0){
+				try {
+					String[] array= ListaCli.getSelectedItem().toString().split(".-");
+					idCliBorrar = Integer.parseInt(array[0]);
+				} catch (NumberFormatException Nf) {
+					JOptionPane.showMessageDialog(null,"Introduzca cliente válido","Error de cliente", JOptionPane.ERROR_MESSAGE);
+				}
+				ejecutarIDA("DELETE FROM clientes where idCliente ="+idCliBorrar+";", conectar("TallerJava", "root", "Studium2018;"));
+				JOptionPane.showMessageDialog(null,"El cliente "+idCliBorrar+" ha sido eliminado","Cliente eliminado", JOptionPane.INFORMATION_MESSAGE);
+			} else if(seleccion == 1) {
+
+			}
+		}
 	}
 
 
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		this.setVisible(false);
+	}
+
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+	
+	
 	public Connection conectar(String baseDatos, String usuario, String clave)
 	{
 		String driver = "com.mysql.jdbc.Driver";
@@ -139,77 +193,6 @@ public class ElCliList implements WindowListener, ActionListener{
 		{
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-
-	}
-
-
-
-
-	@Override
-	public void actionPerformed(ActionEvent ae) {
-		// TODO Auto-generated method stub
-		if(btnBorrar.equals(ae.getSource())) {
-			int seleccion = JOptionPane.showOptionDialog( null,"¿Desea eliminar demandante?","Eliminar demandante",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "Eliminar", "Cancelar"},"Cancelar");
-			if (seleccion == 0){
-				try {
-					String[] array= ListaCli.getSelectedItem().toString().split(".-");
-					idEmpleadoBorrar = Integer.parseInt(array[0]);
-				} catch (NumberFormatException Nf) {
-					JOptionPane.showMessageDialog(null,"Introduzca demandante válido","Error de demandante", JOptionPane.ERROR_MESSAGE);
-				}
-				ejecutarIDA("DELETE FROM clientes where idCliente ="+idEmpleadoBorrar+";", conectar("practicamvc", "root", "Studium2018;"));
-			} else if(seleccion == 1) {
-
-			}
-		}
-	}
-
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		ventanaElCliList.setVisible(false);
-	}
-
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 }
