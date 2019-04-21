@@ -27,22 +27,17 @@ import javax.swing.table.DefaultTableModel;
 
 public class ConCliList extends JFrame implements WindowListener, ActionListener, TextListener
 {
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	DefaultTableModel modelo = new DefaultTableModel();
-	
 	JTable tablaClientes= new JTable(modelo);
-	
 	JButton btnAceptar = new JButton("Aceptar");
-	
 	JPanel pnl2 = new JPanel();
 	ResultSet rs;
 	
-
 	public ConCliList() {
 		this.setLayout(new BorderLayout());
 		this.setLocationRelativeTo(null);
@@ -120,7 +115,6 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 	public void windowOpened(WindowEvent arg0) {
 		
 	}
-	
 	public Connection conectar(String baseDatos, String usuario, String clave)
 	{
 		String driver = "com.mysql.jdbc.Driver";
@@ -159,10 +153,8 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
 	public ResultSet ejecutarSelect(String sentencia, Connection c) 
 	{
-
 		try
 		{
 			Statement statement = c.createStatement();
@@ -174,7 +166,6 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
-
 	}
 
 }

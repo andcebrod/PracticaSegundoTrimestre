@@ -1,6 +1,7 @@
 package es.studium.PracticaSegundoTrimestre;
 
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.List;
 import java.awt.event.ActionEvent;
@@ -9,41 +10,65 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
-public class ConFacList implements WindowListener, ActionListener, TextListener{
+public class ConFacList extends JFrame implements WindowListener, ActionListener, TextListener{
 	
-	JFrame ventanaConFacList = new JFrame ("Buscar factura");
-	JLabel lblBuscarFac = new JLabel ("Buscar id de factura:");
-	JTextField txtBuscarFac = new JTextField(10);
-	List ListaFac = new List(10, false);
-	JButton btnBuscar = new JButton("Buscar");
-	JButton btnSeleccionar = new JButton("Seleccionar");
-
-	JPanel pnl1 = new JPanel();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	DefaultTableModel modelo = new DefaultTableModel();
+	JTable tablaFacturas= new JTable(modelo);
+	JButton btnAceptar = new JButton("Aceptar");
 	JPanel pnl2 = new JPanel();
-	JPanel pnl3 = new JPanel();
+	ResultSet rs;
+	
 	
 	public ConFacList() 
 	{
-		ventanaConFacList.setLayout(new GridLayout(3,1));
-		ventanaConFacList.setLocationRelativeTo(null);
-		ventanaConFacList.setSize(400,300);
+		this.setLayout(new BorderLayout());
+		this.setLocationRelativeTo(null);
+		this.setSize(600,200);
+		this.setTitle("Consulta de Facturas");
 		
-		pnl1.add(lblBuscarFac);
-		pnl1.add(txtBuscarFac);
-		pnl1.add(btnBuscar);
-		pnl2.add(ListaFac);
-		pnl3.add(btnSeleccionar);
+		this.add(new JScrollPane(tablaFacturas),BorderLayout.CENTER);
+		pnl2.add(btnAceptar);
+		this.add(pnl2, BorderLayout.SOUTH);
+		btnAceptar.addActionListener(this);
 		
-		ventanaConFacList.add(pnl1);
-		ventanaConFacList.add(pnl2);
-		ventanaConFacList.add(pnl3);
+		modelo.addColumn("Nº Factura");
+		modelo.addColumn("Fecha Factura");
+		modelo.addColumn("Nº Cliente");
+		modelo.addColumn("Nº Reparación");
 		
-		btnSeleccionar.addActionListener(this);
+		rs = ejecutarSelect("SELECT * FROM facturas", conectar("TallerJava","root","Studium2018;"));
+		try {
+
+			while (rs.next())
+			{
+			   Object [] fila = new Object[4];
+
+			   for (int i=0;i<4;i++)
+			      fila[i] = rs.getObject(i+1);
+			   modelo.addRow(fila); 
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		desconectar(conectar("practicamvc","root" ,"Studium2018;"));
+		tablaFacturas.setEnabled(false);
 		
-		ventanaConFacList.addWindowListener(this);
-		ventanaConFacList.setVisible(true);
+		
+		this.addWindowListener(this);
+		this.setVisible(true);
 	}
 
 	@Override
@@ -54,10 +79,10 @@ public class ConFacList implements WindowListener, ActionListener, TextListener{
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		if(btnSeleccionar.equals(ae.getSource())) {
-			new ConFac();
-		}
 		
+		if(btnAceptar.equals(ae.getSource())) {
+			this.setVisible(false);
+		}
 	}
 
 	@Override
@@ -74,11 +99,7 @@ public class ConFacList implements WindowListener, ActionListener, TextListener{
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		if(ventanaConFacList.isActive()) {
-			ventanaConFacList.setVisible(false);
-		}else {
-			//System.exit(0);
-		}
+		this.setVisible(false);
 		
 		
 	}
@@ -106,7 +127,58 @@ public class ConFacList implements WindowListener, ActionListener, TextListener{
 		// TODO Auto-generated method stub
 		
 	}
-	
+	public Connection conectar(String baseDatos, String usuario, String clave)
+	{
+		String driver = "com.mysql.jdbc.Driver";
+		String url ="jdbc:mysql://localhost:3306/"+baseDatos+"?autoReconnect=true&useSSL=false";
+		String login = usuario;
+		String password = clave;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
+		try
+		{
+			Class.forName(driver);
+			connection = DriverManager.getConnection(url, login,password);
+		}
+		catch (ClassNotFoundException cnfe)
+		{
+			JOptionPane.showMessageDialog(null,cnfe.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		catch (SQLException sqle)
+		{
+			JOptionPane.showMessageDialog(null,sqle.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return connection;
+	}
+	public void desconectar(Connection c) 
+	{
+		try
+		{
+			if(c!=null)
+			{
+				c.close();
+			}
+		}
+		catch (SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	public ResultSet ejecutarSelect(String sentencia, Connection c) 
+	{
+		try
+		{
+			Statement statement = c.createStatement();
+			ResultSet rs= statement.executeQuery(sentencia);
+			return rs;
+		}
+		catch(SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+	}
 }
 
 
