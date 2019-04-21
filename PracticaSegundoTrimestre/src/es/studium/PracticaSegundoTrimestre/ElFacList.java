@@ -20,20 +20,19 @@ public class ElFacList extends JFrame implements WindowListener, ActionListener{
 	JButton btnBorrar = new JButton("Eliminar Factura");
 	int idFacturaBorrar;
 
-	Label mFactura = new Label("");
 	JPanel pnl1 = new JPanel();
 	JPanel pnl2 = new JPanel();
 
-	String s="";
 	int idFacBorrar;
 	ResultSet con;
 	
 	
 	public ElFacList () 
 	{
+		this.setTitle("Eliminar facturas");
 		this.setLayout(new GridLayout(2,1));
 		this.setLocationRelativeTo(null);
-		this.setSize(400,300);
+		this.setSize(400,200);
 		ListaFac.add("Seleccionar factura a eliminar");
 		con = ejecutarSelect("SELECT * FROM facturas", conectar("TallerJava", "root", "Studium2018;"));
 		try {

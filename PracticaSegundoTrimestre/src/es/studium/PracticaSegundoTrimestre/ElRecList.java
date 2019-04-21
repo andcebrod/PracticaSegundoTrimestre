@@ -20,19 +20,18 @@ public class ElRecList extends JFrame implements WindowListener, ActionListener{
 	JButton btnBorrar = new JButton("Eliminar recambio");
 	int idRecambioBorrar;
 
-	Label mRecambio = new Label("");
 	JPanel pnl1 = new JPanel();
 	JPanel pnl2 = new JPanel();
 
-	String s="";
 	int idRecBorrar;
 	ResultSet con;
 
 	public ElRecList() 
 	{
+		this.setTitle("Eliminar recambios");
 		this.setLayout(new GridLayout(2,1));
 		this.setLocationRelativeTo(null);
-		this.setSize(400,300);
+		this.setSize(400,200);
 		ListaRec.add("Seleccionar recambio a eliminar");
 		con = ejecutarSelect("SELECT * FROM recambios", conectar("TallerJava", "root", "Studium2018;"));
 		try {

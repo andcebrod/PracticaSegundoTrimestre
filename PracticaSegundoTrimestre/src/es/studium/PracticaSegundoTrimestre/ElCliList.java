@@ -20,18 +20,17 @@ public class ElCliList extends JFrame implements WindowListener, ActionListener{
 	JButton btnBorrar = new JButton("Eliminar Cliente");
 	int idClienteBorrar;
 
-	Label mCliente = new Label("");
 	JPanel pnl1 = new JPanel();
 	JPanel pnl2 = new JPanel();
 
-	String s="";
 	int idCliBorrar;
 	ResultSet con;
 
 	public ElCliList() {
+		this.setTitle("Eliminar clientes");
 		this.setLayout(new GridLayout(2,1));
 		this.setLocationRelativeTo(null);
-		this.setSize(400,300);
+		this.setSize(400,200);
 		ListaCli.add("Seleccionar cliente a eliminar");
 		con = ejecutarSelect("SELECT * FROM clientes", conectar("TallerJava", "root", "Studium2018;"));
 		try {

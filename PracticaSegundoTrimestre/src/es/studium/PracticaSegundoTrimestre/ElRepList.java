@@ -21,19 +21,18 @@ public class ElRepList extends JFrame implements WindowListener, ActionListener
 	JButton btnBorrar = new JButton("Eliminar Reparación");
 	int idReparacionBorrar;
 
-	Label mReparacion = new Label("");
 	JPanel pnl1 = new JPanel();
 	JPanel pnl2 = new JPanel();
 
-	String s="";
 	int idRepBorrar;
 	ResultSet con;
 
 	public ElRepList() 
 	{
+		this.setTitle("Eliminar reparaciones");
 		this.setLayout(new GridLayout(2,1));
 		this.setLocationRelativeTo(null);
-		this.setSize(400,300);
+		this.setSize(500,200);
 		ListaRep.add("Seleccionar reparación a eliminar");
 		con = ejecutarSelect("SELECT * FROM reparaciones", conectar("TallerJava", "root", "Studium2018;"));
 		try {

@@ -1,5 +1,6 @@
 package es.studium.PracticaSegundoTrimestre;
 
+import java.awt.Choice;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,60 +8,72 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class ModRecList implements WindowListener, ActionListener, TextListener{
-	
-	JFrame ventanaModRecList = new JFrame ("Buscar recambio para modificar");
-	JLabel lblBuscarRec = new JLabel ("Buscar descripción de recambio:");
-	JTextField txtBuscarRec = new JTextField(10);
-	
-	String recambios[] = {"Bujía", "Rueda", "Retrovisor","Paragolpes","Pastilla de Freno"};
-	JList<String> ListaRec = new JList<String>(recambios);
-	
-	JButton btnBuscar = new JButton("Buscar");
+public class ModRecList extends JFrame implements WindowListener, ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	JLabel lblRecambios = new JLabel("Selecciona recambio");
+	Choice recambios = new Choice();
 	JButton btnSeleccionar = new JButton("Seleccionar");
-	
+
 	JPanel pnl1 = new JPanel();
 	JPanel pnl2 = new JPanel();
 	JPanel pnl3 = new JPanel();
-	
 
 	public ModRecList() {
-		ventanaModRecList.setLayout(new GridLayout(3,1));
-		ventanaModRecList.setLocationRelativeTo(null);
-		ventanaModRecList.setSize(400,300);
-		
-		pnl1.add(lblBuscarRec);
-		pnl1.add(txtBuscarRec);
-		pnl1.add(btnBuscar);
-		pnl2.add(ListaRec);
+		this.setTitle("Buscar recambio para modificar");
+		this.setLayout(new GridLayout(3,1));
+		this.setLocationRelativeTo(null);
+		this.setSize(400,300);
+
+		ResultSet selectRecambios = ejecutarSelect("SELECT * FROM recambios",conectar("TallerJava","root","Studium2018;"));
+		try {
+			while(selectRecambios.next())
+			{
+				String rec=Integer.toString(selectRecambios.getInt("idRecambio"));
+				rec = rec + "-"+ selectRecambios.getString("descripcionRecambio");
+				recambios.add(rec);
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		desconectar(conectar("TallerJava","root","Studium2018;"));
+
+		pnl1.add(lblRecambios);
+		pnl2.add(recambios);
 		pnl3.add(btnSeleccionar);
+		this.add(pnl1);
+		this.add(pnl2);
+		this.add(pnl3);
 		btnSeleccionar.addActionListener(this);
-		
-		ventanaModRecList.add(pnl1);
-		ventanaModRecList.add(pnl2);
-		ventanaModRecList.add(pnl3);
-		
-		ventanaModRecList.addWindowListener(this);
-		ventanaModRecList.setVisible(true);
+		this.addWindowListener(this);
+		this.setVisible(true);
 	}
-	public static void main(String[] args) {}
-	@Override
-	public void textValueChanged(TextEvent arg0) {}
-	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
-		
 		if(btnSeleccionar.equals(ae.getSource())) {
-			new ModRec();
+
+			String[] array= recambios.getSelectedItem().toString().split("-");
+			int idRecambio = Integer.parseInt(array[0]);
+			new ModRec(idRecambio);
+			this.setVisible(false);
 		}
+
 	}
 	@Override
 	public void windowActivated(WindowEvent arg0) {}
@@ -69,14 +82,9 @@ public class ModRecList implements WindowListener, ActionListener, TextListener{
 	@Override
 	public void windowClosing(WindowEvent arg0) 
 	{
-		if(ventanaModRecList.isActive()) {
-			ventanaModRecList.setVisible(false);
-		}else {
-			//System.exit(0);
-		}
-		
+		this.setVisible(false);
 	}
-		
+
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {}
 	@Override
@@ -86,5 +94,62 @@ public class ModRecList implements WindowListener, ActionListener, TextListener{
 	@Override
 	public void windowOpened(WindowEvent arg0) {}
 
+	public Connection conectar(String baseDatos, String usuario, String clave)
+	{
+		String driver = "com.mysql.jdbc.Driver";
+		String url ="jdbc:mysql://localhost:3306/"+baseDatos+"?autoReconnect=true&useSSL=false";
+		String login = usuario;
+		String password = clave;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
+
+		try
+		{
+			Class.forName(driver);
+			connection = DriverManager.getConnection(url, login,password);
+		}
+		catch (ClassNotFoundException cnfe)
+		{
+			JOptionPane.showMessageDialog(null,cnfe.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		catch (SQLException sqle)
+		{
+			JOptionPane.showMessageDialog(null,sqle.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return connection;
+	}
+
+	public void desconectar(Connection c) 
+	{
+		try
+		{
+			if(c!=null)
+			{
+				c.close();
+			}
+		}
+		catch (SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public ResultSet ejecutarSelect(String sentencia, Connection c) 
+	{
+
+		try
+		{
+			Statement statement = c.createStatement();
+			ResultSet rs= statement.executeQuery(sentencia);
+			return rs;
+		}
+		catch(SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
+	}
 
 }

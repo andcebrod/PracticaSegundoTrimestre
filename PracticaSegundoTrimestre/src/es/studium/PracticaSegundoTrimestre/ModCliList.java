@@ -80,11 +80,7 @@ public class ModCliList implements WindowListener, ActionListener, TextListener{
 	@Override
 	public void windowClosing(WindowEvent arg0) 
 	{
-		if(ventanaModCliList.isActive()) {
-			ventanaModCliList.setVisible(false);
-		}else {
-			//System.exit(0);
-		}
+		ventanaModCliList.setVisible(false);
 	}
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {}

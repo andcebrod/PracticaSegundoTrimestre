@@ -32,7 +32,7 @@ public class ModCli implements WindowListener, ActionListener, TextListener{
 	JTextField txtDireccionCli = new JTextField(15);
 	JTextField txtTelefonoCli = new JTextField(15);
 
-	JButton btnCrear = new JButton("Modificar Cliente");
+	JButton btnModificar = new JButton("Modificar Cliente");
 	JButton btnLimpiar = new JButton("Limpiar");
 
 	JPanel pnlPanel = new JPanel();
@@ -79,8 +79,8 @@ public class ModCli implements WindowListener, ActionListener, TextListener{
 		pnlPanel3.add(txtTelefonoCli);
 		ventanaModCli.add(pnlPanel3);
 
-		pnlPanel4.add(btnCrear);
-		btnCrear.addActionListener(this);
+		pnlPanel4.add(btnModificar);
+		btnModificar.addActionListener(this);
 		pnlPanel4.add(btnLimpiar);
 		btnLimpiar.addActionListener(this);
 		ventanaModCli.add(pnlPanel4);
@@ -99,7 +99,7 @@ public class ModCli implements WindowListener, ActionListener, TextListener{
 	public void actionPerformed(ActionEvent ae) 
 	{
 
-		if (btnCrear.equals(ae.getSource())) {
+		if (btnModificar.equals(ae.getSource())) {
 
 			if(txtNombreCli.getText().equals("")) {
 				JOptionPane.showMessageDialog(null,"Error, Nombre de Cliente Vacío","Nombre vacío", JOptionPane.ERROR_MESSAGE);
