@@ -44,7 +44,7 @@ public class ModCli implements WindowListener, ActionListener, TextListener{
 	public ModCli(int id) 
 	{
 		idCli = id;
-		ResultSet rs = ejecutarSelect("SELECT * FROM clientes",conectar("TallerJava","root","Studium2018;"));
+		ResultSet rs = ejecutarSelect("SELECT * FROM clientes where idCliente ="+id+";",conectar("TallerJava","root","Studium2018;"));
 		try {
 			rs.next();
 			txtNombreCli.selectAll();
@@ -54,7 +54,7 @@ public class ModCli implements WindowListener, ActionListener, TextListener{
 			txtTelefonoCli.selectAll();
 			txtTelefonoCli.setText(Integer.toString(rs.getInt("telefonoCliente")));
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
 		}
 		desconectar(conectar("TallerJava","root","Studium2018;"));
 

@@ -43,7 +43,7 @@ public class ModRec implements  WindowListener, ActionListener{
 	int idRec = 0;
 	public ModRec(int id) {
 		idRec = id;
-		ResultSet rs = ejecutarSelect("SELECT * FROM recambios",conectar("TallerJava","root","Studium2018;"));
+		ResultSet rs = ejecutarSelect("SELECT * FROM recambios where idRecambio="+id+";",conectar("TallerJava","root","Studium2018;"));
 		try {
 			rs.next();
 			txtDescripcionRec.selectAll();

@@ -34,13 +34,13 @@ public class ModCliList implements WindowListener, ActionListener, TextListener{
 		ventanaModCliList.setLocationRelativeTo(null);
 		ventanaModCliList.setSize(400,300);
 
-		
+
 		ResultSet selectClientes = ejecutarSelect("SELECT * FROM clientes",conectar("TallerJava","root","Studium2018;"));
 		try {
 			while(selectClientes.next())
 			{
 				String cli=Integer.toString(selectClientes.getInt("idCliente"));
-				cli = cli + "-"+ selectClientes.getString("nombreCliente");
+				cli = cli + ".-"+" "+selectClientes.getString("nombreCliente");
 				clientes.add(cli);
 			}
 		} catch (SQLException e) {
@@ -58,17 +58,15 @@ public class ModCliList implements WindowListener, ActionListener, TextListener{
 		ventanaModCliList.addWindowListener(this);
 		ventanaModCliList.setVisible(true);
 	}
-	public static void main(String[] args) {new ModCliList();
-	}
 	@Override
 	public void textValueChanged(TextEvent arg0) {}
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
 		if(btnSeleccionar.equals(ae.getSource())) {
-			
-			String[] array= clientes.getSelectedItem().toString().split("-");
-			int idCliente = Integer.parseInt(array[0]);
+
+			String[] arrayClientes = clientes.getSelectedItem().toString().split(".-");
+			int idCliente = Integer.parseInt(arrayClientes[0]);
 			new ModCli(idCliente);
 			ventanaModCliList.setVisible(false);
 		}
