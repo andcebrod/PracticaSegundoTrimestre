@@ -19,6 +19,10 @@ import javax.swing.*;
 
 public class AddRep extends JFrame implements WindowListener, ActionListener{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JLabel lblAveriaRep = new JLabel ("Avería:");
 	JLabel lblFechaEntradaRep = new JLabel ("Fecha de Entrada:");
 	JLabel lblFechaSalidaRep = new JLabel ("Fecha de Salida:");
