@@ -1,5 +1,6 @@
 package es.studium.PracticaSegundoTrimestre;
 
+import java.awt.Choice;
 import java.awt.GridLayout;
 import java.awt.List;
 import java.awt.event.ActionEvent;
@@ -8,57 +9,71 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.*;
 
-public class ModFacList implements WindowListener, ActionListener, TextListener {
-	
-	JFrame ventanaModFacList = new JFrame ("Buscar factura para modificar");
-	JLabel lblBuscarCli = new JLabel ("Buscar id de Factura:");
-	JTextField txtBuscarCli = new JTextField(3);
-	List ListaFac = new List(10, false);
-	JButton btnBuscar = new JButton("Buscar");
+public class ModFacList extends JFrame implements WindowListener, ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	JLabel lblFacturas = new JLabel("Selecciona factura");
+	Choice facturas = new Choice();
 	JButton btnSeleccionar = new JButton("Seleccionar");
-	
+
 	JPanel pnl1 = new JPanel();
 	JPanel pnl2 = new JPanel();
 	JPanel pnl3 = new JPanel();
+
 	
 	
 	public ModFacList ()
 	{
-		ventanaModFacList.setLayout(new GridLayout(3,1));
-		ventanaModFacList.setLocationRelativeTo(null);
-		ventanaModFacList.setSize(400,300);
-		
-		pnl1.add(lblBuscarCli);
-		pnl1.add(txtBuscarCli);
-		pnl1.add(btnBuscar);
-		pnl2.add(ListaFac);
-		pnl3.add(btnSeleccionar);
-		
-		ventanaModFacList.add(pnl1);
-		ventanaModFacList.add(pnl2);
-		ventanaModFacList.add(pnl3);
-		
-		btnSeleccionar.addActionListener(this);
-		
-		ventanaModFacList.addWindowListener(this);
-		ventanaModFacList.setVisible(true);
-	}
+		this.setTitle("Buscar factura para modificar");
+		this.setLayout(new GridLayout(3,1));
+		this.setLocationRelativeTo(null);
+		this.setSize(400,300);
 
-	@Override
-	public void textValueChanged(TextEvent te) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent ae) {
-		if(btnSeleccionar.equals(ae.getSource())) {
-			new ModFac();
+		ResultSet selectFacturas = ejecutarSelect("SELECT * FROM facturas",conectar("TallerJava","root","Studium2018;"));
+		try {
+			while(selectFacturas.next())
+			{
+				String fac=Integer.toString(selectFacturas.getInt("idFactura"));
+				fac = fac + "-"+ selectFacturas.getString("fechaFactura")+", Cliente: "+Integer.toString(selectFacturas.getInt("idClienteFK"))+", Reparación:"+Integer.toString(selectFacturas.getInt("idReparacionFK"));
+				facturas.add(fac);
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		
+		desconectar(conectar("TallerJava","root","Studium2018;"));
+
+		pnl1.add(lblFacturas);
+		pnl2.add(facturas);
+		pnl3.add(btnSeleccionar);
+		this.add(pnl1);
+		this.add(pnl2);
+		this.add(pnl3);
+		btnSeleccionar.addActionListener(this);
+		this.addWindowListener(this);
+		this.setVisible(true);
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent ae) 
+	{
+		if(btnSeleccionar.equals(ae.getSource())) {
+
+			String[] array= facturas.getSelectedItem().toString().split("-");
+			int idFactura = Integer.parseInt(array[0]);
+			new ModFac(idFactura);
+			this.setVisible(false);
+		}
 	}
 
 	@Override
@@ -74,13 +89,9 @@ public class ModFacList implements WindowListener, ActionListener, TextListener 
 	}
 
 	@Override
-	public void windowClosing(WindowEvent e) {
-		if(ventanaModFacList.isActive()) {
-			ventanaModFacList.setVisible(false);
-		}else {
-			//System.exit(0);
-		}
-		
+	public void windowClosing(WindowEvent e) 
+	{
+		this.setVisible(false);
 	}
 
 	@Override
@@ -106,5 +117,65 @@ public class ModFacList implements WindowListener, ActionListener, TextListener 
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	public Connection conectar(String baseDatos, String usuario, String clave)
+	{
+		String driver = "com.mysql.jdbc.Driver";
+		String url ="jdbc:mysql://localhost:3306/"+baseDatos+"?autoReconnect=true&useSSL=false";
+		String login = usuario;
+		String password = clave;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
+
+		try
+		{
+			Class.forName(driver);
+			connection = DriverManager.getConnection(url, login,password);
+		}
+		catch (ClassNotFoundException cnfe)
+		{
+			JOptionPane.showMessageDialog(null,cnfe.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		catch (SQLException sqle)
+		{
+			JOptionPane.showMessageDialog(null,sqle.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return connection;
+	}
+
+	public void desconectar(Connection c) 
+	{
+		try
+		{
+			if(c!=null)
+			{
+				c.close();
+			}
+		}
+		catch (SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public ResultSet ejecutarSelect(String sentencia, Connection c) 
+	{
+
+		try
+		{
+			Statement statement = c.createStatement();
+			ResultSet rs= statement.executeQuery(sentencia);
+			return rs;
+		}
+		catch(SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
+	}
+
 
 }

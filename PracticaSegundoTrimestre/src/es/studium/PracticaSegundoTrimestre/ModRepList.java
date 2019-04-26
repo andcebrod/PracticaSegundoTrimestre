@@ -45,7 +45,7 @@ public class ModRepList extends JFrame implements WindowListener, ActionListener
 			while(selectReparaciones.next())
 			{
 				String rep=Integer.toString(selectReparaciones.getInt("idReparacion"));
-				rep = rep + "-"+ selectReparaciones.getString("Averia");
+				rep = rep + ".-"+ selectReparaciones.getString("Averia");
 				reparaciones.add(rep);
 			}
 		} catch (SQLException e) {
@@ -68,7 +68,7 @@ public class ModRepList extends JFrame implements WindowListener, ActionListener
 	{
 		if(btnSeleccionar.equals(ae.getSource())) {
 
-			String[] array= reparaciones.getSelectedItem().toString().split("-");
+			String[] array= reparaciones.getSelectedItem().toString().split(".-");
 			int idReparacion = Integer.parseInt(array[0]);
 			new ModRep(idReparacion);
 			this.setVisible(false);

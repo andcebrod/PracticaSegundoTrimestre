@@ -59,7 +59,7 @@ public class ModRec implements  WindowListener, ActionListener{
 		
 		
 		
-		ventanaModRec.setLayout(new GridLayout(4,2));
+		ventanaModRec.setLayout(new GridLayout(4,1));
 		ventanaModRec.setLocationRelativeTo(null);
 		ventanaModRec.setSize(400,300);
 		
@@ -104,6 +104,7 @@ public class ModRec implements  WindowListener, ActionListener{
 				JOptionPane.showMessageDialog(null,"Error, Nombre de recambio vacío","Nombre vacío", JOptionPane.ERROR_MESSAGE);
 
 			} else {
+				
 				ejecutarIDA("UPDATE recambios SET descripcionRecambio = '"+txtDescripcionRec.getText()+"', unidadesRecambio = '"+txtUnidadesRec.getText()+"', precioRecambio ="+txtPrecioRec.getText()+" WHERE idRecambio ="+idRec+";",conectar("TallerJava","root","Studium2018;"));
 				desconectar(conectar("TallerJava","root","Studium2018;"));
 			}
@@ -208,7 +209,7 @@ public class ModRec implements  WindowListener, ActionListener{
 		{
 			Statement statement = c.createStatement();
 			statement.executeUpdate(sentencia);
-			JOptionPane.showMessageDialog(null,"Cliente modificado","Cliente modificado con éxito", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Recambio modificado","Recambio modificado con éxito", JOptionPane.INFORMATION_MESSAGE);
 
 		}
 		catch(SQLException e)

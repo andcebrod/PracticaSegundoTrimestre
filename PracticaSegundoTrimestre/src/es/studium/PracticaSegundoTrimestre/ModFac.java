@@ -1,5 +1,6 @@
 package es.studium.PracticaSegundoTrimestre;
 
+import java.awt.Choice;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -8,87 +9,134 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.*;
 
-public class ModFac implements WindowListener, ActionListener, TextListener{
+public class ModFac extends JFrame implements WindowListener, ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
-	JFrame ventanaModFac = new JFrame ("Modificar Factura:");
-	JLabel lblFecha = new JLabel ("Fecha Factura :");
-	JLabel lblClientes = new JLabel ("Cliente:");
-	JLabel lblReparaciones = new JLabel ("Reparación:");
-	
-	JComboBox ListaClientes = new JComboBox();
-	JComboBox ListaReparaciones = new JComboBox();
+	JLabel lblFactura = new JLabel ("Factura a modificar");
+	JLabel lblFecha = new JLabel ("Fecha Factura:");
 	JTextField txtFecha = new JTextField(10);
 	
-
-	JButton btnModificar = new JButton("Modificar Factura");
-	JButton btnLimpiar = new JButton("Limpiar");
+	JLabel lblCliente = new JLabel ("Cliente:");
+	JLabel lblReparacion = new JLabel ("Reparación:");
 	
-	JDialog dlgExitoModFac = new JDialog(ventanaModFac, "Factura modificada");
-	JLabel lblExito = new JLabel("Factura modificada con éxito");
+	Choice clientes = new Choice();
+	Choice reparaciones = new Choice();
 	
-	JPanel pnlPanel = new JPanel();
+	JButton btnModificar = new JButton ("Modificar");
+	JButton btnLimpiar = new JButton ("Limpiar");
+	
+	JPanel pnlPanel1 = new JPanel();
 	JPanel pnlPanel2 = new JPanel();
 	JPanel pnlPanel3 = new JPanel();
 	JPanel pnlPanel4 = new JPanel();
 	JPanel pnlPanel5 = new JPanel();
+	JPanel pnlPanel6 = new JPanel();
+	JPanel pnlPanel7 = new JPanel();
+
+	int idFac = 0;
 	
-	public ModFac() 
+	public ModFac(int id) 
 	{
-		ventanaModFac.setLayout(new GridLayout(5,2));
-		ventanaModFac.setLocationRelativeTo(null);
-		ventanaModFac.setSize(400,300);
+		idFac = id;
+		this.setLayout(new GridLayout(7,1));
+		this.setLocationRelativeTo(null);
+		this.setSize(500,300);
+		ResultSet selectClientes = ejecutarSelect("SELECT * FROM clientes",conectar("TallerJava","root","Studium2018;"));
+		try {
+			while(selectClientes.next())
+			{
+				String cli=Integer.toString(selectClientes.getInt("idCliente"));
+				cli = cli + ".-"+" "+selectClientes.getString("nombreCliente");
+				clientes.add(cli);
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		desconectar(conectar("TallerJava","root","Studium2018;"));
 		
-		pnlPanel.setLayout(new FlowLayout());
-		pnlPanel2.setLayout(new FlowLayout());
-		pnlPanel3.setLayout(new FlowLayout());
-		pnlPanel4.setLayout(new FlowLayout());
+		ResultSet selectReparaciones = ejecutarSelect("SELECT * FROM reparaciones",conectar("TallerJava","root","Studium2018;"));
+		try {
+			while(selectReparaciones.next())
+			{
+				String rep=Integer.toString(selectReparaciones.getInt("idReparacion"));
+				rep = rep + ".-"+ selectReparaciones.getString("Averia");
+				reparaciones.add(rep);
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		desconectar(conectar("TallerJava","root","Studium2018;"));
 		
-
-		pnlPanel.add(lblFecha);
-		pnlPanel.add(txtFecha);
-		ventanaModFac.add(pnlPanel);
+		ResultSet consultaFactura = ejecutarSelect("SELECT * FROM facturas where idFactura="+id+";",conectar("TallerJava","root","Studium2018;"));
+		try {
+			consultaFactura.next();
+			txtFecha.selectAll();
+			txtFecha.setText(consultaFactura.getString("fechaFactura"));
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		desconectar(conectar("TallerJava","root","Studium2018;"));
 		
-		pnlPanel2.add(lblClientes);
-		pnlPanel2.add(ListaClientes);
-		ventanaModFac.add(pnlPanel2);
+		pnlPanel1.add(lblFactura);
+		pnlPanel2.add(lblFecha);
+		pnlPanel2.add(txtFecha);
+		pnlPanel3.add(lblCliente);
+		pnlPanel4.add(clientes);
+		pnlPanel5.add(lblReparacion);
+		pnlPanel6.add(reparaciones);
+		pnlPanel7.add(btnModificar);
+		pnlPanel7.add(btnLimpiar);
 		
-		pnlPanel3.add(lblReparaciones);
-		pnlPanel3.add(ListaReparaciones);
-		ventanaModFac.add(pnlPanel3);
+		this.add(pnlPanel1);
+		this.add(pnlPanel2);
+		this.add(pnlPanel3);
+		this.add(pnlPanel4);
+		this.add(pnlPanel5);
+		this.add(pnlPanel6);
+		this.add(pnlPanel7);
 		
-		pnlPanel4.add(btnModificar);
+		this.addWindowListener(this);
 		btnModificar.addActionListener(this);
-		pnlPanel4.add(btnLimpiar);
 		btnLimpiar.addActionListener(this);
-		ventanaModFac.add(pnlPanel4);
-		
-		ventanaModFac.addWindowListener(this);
-		ventanaModFac.setVisible(true);
-		
-		dlgExitoModFac.setLocationRelativeTo(null);
-		dlgExitoModFac.setSize(190,90);
-		dlgExitoModFac.add(lblExito);
-		dlgExitoModFac.addWindowListener(this);
-		dlgExitoModFac.setVisible(false);
-		dlgExitoModFac.setLayout(new FlowLayout());
-	}
-
-	@Override
-	public void textValueChanged(TextEvent e) {
-		// TODO Auto-generated method stub
-		
+		this.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		if (btnModificar.equals(ae.getSource())) {
-			dlgExitoModFac.setVisible(true);
-		} else if (btnLimpiar.equals(ae.getSource())) {
+		if (btnModificar.equals(ae.getSource())) 
+		{
+			if(txtFecha.getText().equals("")) {
+				JOptionPane.showMessageDialog(null,"Error, Fecha vacía","Fecha vacía", JOptionPane.ERROR_MESSAGE);
+
+			} else {
+				String[] arrayReparaciones= reparaciones.getSelectedItem().toString().split(".-");
+				int idReparacion = Integer.parseInt(arrayReparaciones[0]);
+				
+				String[] arrayClientes = clientes.getSelectedItem().toString().split(".-");
+				int idCliente = Integer.parseInt(arrayClientes[0]);
+				
+				ejecutarIDA("UPDATE facturas SET fechaFactura = '"+txtFecha.getText()+"', idClienteFK="+idCliente+", idReparacionFK="+idReparacion+" WHERE idFactura ="+idFac+";",conectar("TallerJava","root","Studium2018;"));
+				desconectar(conectar("TallerJava","root","Studium2018;"));
+			}
+		} 
+		else if (btnLimpiar.equals(ae.getSource())) 
+		{
 			txtFecha.selectAll();
 			txtFecha.setText("");
 		}
+		
 	}
 
 	@Override
@@ -104,16 +152,9 @@ public class ModFac implements WindowListener, ActionListener, TextListener{
 	}
 
 	@Override
-	public void windowClosing(WindowEvent e) {
-		if(ventanaModFac.isActive()) {
-			ventanaModFac.setVisible(false);
-		}else {
-			//System.exit(0);
-		}
-		if(dlgExitoModFac.isActive()) {
-			dlgExitoModFac.setVisible(false);
-		}
-		
+	public void windowClosing(WindowEvent e) 
+	{
+		this.setVisible(false);
 	}
 
 	@Override
@@ -138,6 +179,80 @@ public class ModFac implements WindowListener, ActionListener, TextListener{
 	public void windowOpened(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Connection conectar(String baseDatos, String usuario, String clave)
+	{
+		String driver = "com.mysql.jdbc.Driver";
+		String url ="jdbc:mysql://localhost:3306/"+baseDatos+"?autoReconnect=true&useSSL=false";
+		String login = usuario;
+		String password = clave;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
+
+		try
+		{
+			Class.forName(driver);
+			connection = DriverManager.getConnection(url, login,password);
+		}
+		catch (ClassNotFoundException cnfe)
+		{
+			JOptionPane.showMessageDialog(null,cnfe.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		catch (SQLException sqle)
+		{
+			JOptionPane.showMessageDialog(null,sqle.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return connection;
+	}
+
+	public void desconectar(Connection c) 
+	{
+		try
+		{
+			if(c!=null)
+			{
+				c.close();
+			}
+		}
+		catch (SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public ResultSet ejecutarSelect(String sentencia, Connection c) 
+	{
+
+		try
+		{
+			Statement statement = c.createStatement();
+			ResultSet rs= statement.executeQuery(sentencia);
+			return rs;
+		}
+		catch(SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
+	}
+
+	public void ejecutarIDA(String sentencia, Connection c) 
+	{
+		try
+		{
+			Statement statement = c.createStatement();
+			statement.executeUpdate(sentencia);
+			JOptionPane.showMessageDialog(null,"Factura modificada","Factura modificada con éxito", JOptionPane.INFORMATION_MESSAGE);
+
+		}
+		catch(SQLException e)
+		{
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+		}
+
 	}
 
 }
