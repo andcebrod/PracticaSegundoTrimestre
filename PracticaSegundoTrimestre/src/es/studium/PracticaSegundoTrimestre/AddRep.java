@@ -96,11 +96,11 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 		if (btnCrear.equals(ae.getSource())) 
 		{
 			if(chkSiRep.isSelected()) {
-				ejecutarIDA("INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"' '1');", conectar("TallerJava","root","Studium2018;"));
+				ejecutarIDA("INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '1');", conectar("TallerJava","root","Studium2018;"));
 				desconectar(conectar("TallerJava","root","Studium2018;"));
 				
 			} else if(chkNoRep.isSelected()) {
-				ejecutarIDA("INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"' '0');", conectar("TallerJava","root","Studium2018;"));
+				ejecutarIDA("INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '0');", conectar("TallerJava","root","Studium2018;"));
 				desconectar(conectar("TallerJava","root","Studium2018;"));
 			}
 
@@ -157,11 +157,11 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 		}
 		catch (ClassNotFoundException cnfe)
 		{
-			JOptionPane.showMessageDialog(null,cnfe.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,cnfe.getMessage(),"Error 1", JOptionPane.ERROR_MESSAGE);
 		}
 		catch (SQLException sqle)
 		{
-			JOptionPane.showMessageDialog(null,sqle.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,sqle.getMessage(),"Error 2", JOptionPane.ERROR_MESSAGE);
 		}
 		return connection;
 	}
@@ -177,7 +177,7 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 		}
 		catch (SQLException e)
 		{
-			JOptionPane.showMessageDialog(null,"Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error 3", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -192,7 +192,7 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 		}
 		catch(SQLException e)
 		{
-			JOptionPane.showMessageDialog(null,"Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Error 4", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}

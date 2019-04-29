@@ -69,6 +69,7 @@ public class ElCliList extends JFrame implements WindowListener, ActionListener{
 				}
 				ejecutarIDA("DELETE FROM clientes where idCliente ="+idCliBorrar+";", conectar("TallerJava", "root", "Studium2018;"));
 				JOptionPane.showMessageDialog(null,"El cliente "+idCliBorrar+" ha sido eliminado","Cliente eliminado", JOptionPane.INFORMATION_MESSAGE);
+				this.setVisible(false);
 			} else if(seleccion == 1) {
 
 			}

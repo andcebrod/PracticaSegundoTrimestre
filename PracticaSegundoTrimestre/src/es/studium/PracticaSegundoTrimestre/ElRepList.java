@@ -71,6 +71,7 @@ public class ElRepList extends JFrame implements WindowListener, ActionListener
 				}
 				ejecutarIDA("DELETE FROM reparaciones where idReparacion ="+idRepBorrar+";", conectar("TallerJava", "root", "Studium2018;"));
 				JOptionPane.showMessageDialog(null,"La reparación "+idRepBorrar+" ha sido eliminada","Reparación eliminada", JOptionPane.INFORMATION_MESSAGE);
+				this.setVisible(false);
 			} else if(seleccion == 1) {
 
 			}

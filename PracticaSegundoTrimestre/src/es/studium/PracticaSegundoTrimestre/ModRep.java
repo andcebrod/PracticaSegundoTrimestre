@@ -61,7 +61,7 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 				txtFechaEntradaRep.selectAll();
 				txtFechaEntradaRep.setText(rs.getString("fechaEntrada"));
 				txtFechaSalidaRep.selectAll();
-				txtFechaSalidaRep.setText(Integer.toString(rs.getInt("fechaSalida")));
+				txtFechaSalidaRep.setText(rs.getString("fechaSalida"));
 				chkSiRep.setSelected(true);
 				chkNoRep.setSelected(false);
 			} else if(rs.getInt("reparado")==0) {
@@ -71,7 +71,7 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 				txtFechaEntradaRep.selectAll();
 				txtFechaEntradaRep.setText(rs.getString("fechaEntrada"));
 				txtFechaSalidaRep.selectAll();
-				txtFechaSalidaRep.setText(Integer.toString(rs.getInt("fechaSalida")));
+				txtFechaSalidaRep.setText(rs.getString("fechaSalida"));
 				chkSiRep.setSelected(false);
 				chkNoRep.setSelected(true);
 			}

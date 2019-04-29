@@ -71,6 +71,7 @@ public class ElFacList extends JFrame implements WindowListener, ActionListener{
 				}
 				ejecutarIDA("DELETE FROM facturas where idFactura ="+idFacBorrar+";", conectar("TallerJava", "root", "Studium2018;"));
 				JOptionPane.showMessageDialog(null,"La factura "+idFacBorrar+" ha sido eliminada","Factura eliminada", JOptionPane.INFORMATION_MESSAGE);
+				this.setVisible(false);
 			} else if(seleccion == 1) {
 
 			}

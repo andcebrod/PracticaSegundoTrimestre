@@ -30,7 +30,7 @@ public class ConRepList extends JFrame implements WindowListener, ActionListener
 	JButton btnAceptar = new JButton("Aceptar");
 	JPanel pnl2 = new JPanel();
 	ResultSet rs;
-
+	int reparado;
 
 	public ConRepList() 
 	{
@@ -57,9 +57,24 @@ public class ConRepList extends JFrame implements WindowListener, ActionListener
 			{
 				Object [] fila = new Object[5];
 
-				for (int i=0;i<5;i++)
-					fila[i] = rs.getObject(i+1);
-				modelo.addRow(fila); 
+				for (int i=0;i<5;i++) 
+				
+					if(i==4) 
+					{
+						reparado = Integer.parseInt(rs.getString("reparado"));
+						if(reparado==1) {
+							 fila[i] = "Reparado";
+						} else {
+							fila[i] = "No reparado";
+						}
+					} 
+					else 
+					{
+						fila[i] = rs.getObject(i+1);
+						
+					}
+					modelo.addRow(fila); 
+				
 			}
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);

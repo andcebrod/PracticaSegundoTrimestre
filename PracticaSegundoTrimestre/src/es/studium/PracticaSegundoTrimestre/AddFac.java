@@ -111,8 +111,7 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 			int idCliente = Integer.parseInt(arrayClientes[0]);
 			String[] arrayReparaciones= reparaciones.getSelectedItem().toString().split(".-");
 			int idReparacion = Integer.parseInt(arrayReparaciones[0]);
-
-			ejecutarIDA("INSERT INTO facturas VALUES (null, FechaFactura='"+txtFecha.getText()+"', idClienteFK='"+idCliente+"', idReparacionFK='"+idReparacion+"');",conectar("TallerJava","root","Studium2018;"));
+			ejecutarIDA("INSERT INTO facturas VALUES (null,'"+txtFecha.getText()+"',"+idCliente+","+idReparacion+");",conectar("TallerJava","root","Studium2018;"));
 			desconectar(conectar("TallerJava","root","Studium2018;"));
 		}
 		else if (btnLimpiar.equals(ae.getSource())) 

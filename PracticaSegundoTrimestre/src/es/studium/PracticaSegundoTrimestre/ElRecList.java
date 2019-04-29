@@ -71,6 +71,7 @@ public class ElRecList extends JFrame implements WindowListener, ActionListener{
 				}
 				ejecutarIDA("DELETE FROM recambios where idRecambio ="+idRecBorrar+";", conectar("TallerJava", "root", "Studium2018;"));
 				JOptionPane.showMessageDialog(null,"El recambio "+idRecBorrar+" ha sido eliminado","Recambio eliminado", JOptionPane.INFORMATION_MESSAGE);
+				this.setVisible(false);
 			} else if(seleccion == 1) {
 
 			}
