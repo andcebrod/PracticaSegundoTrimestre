@@ -119,9 +119,6 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		ventana.addWindowListener(this);
 		ventana.setVisible(true);
 	}
-	public static void main(String[] args) {
-
-	}
 	@Override
 	public void textValueChanged(TextEvent arg0) {}
 	@Override
