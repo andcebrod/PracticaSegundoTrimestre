@@ -9,11 +9,16 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 
 import javax.swing.*;
 
@@ -23,6 +28,9 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	String user;
+	
 	JLabel lblAveriaRep = new JLabel ("Avería:");
 	JLabel lblFechaEntradaRep = new JLabel ("Fecha de Entrada:");
 	JLabel lblFechaSalidaRep = new JLabel ("Fecha de Salida:");
@@ -45,8 +53,9 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 	JPanel pnlPanel4 = new JPanel();
 	JPanel pnlPanel5 = new JPanel();
 
-	public AddRep() 
+	public AddRep(String usuario) 
 	{
+		user = usuario;
 		this.setTitle("Añadir Reparación");
 		this.setLayout(new GridLayout(5,2));
 		this.setLocationRelativeTo(null);
@@ -86,9 +95,6 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 		this.addWindowListener(this);
 		this.setVisible(true);		
 	}
-	public static void main(String[] args) {
-		new AddRep();
-	}
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
@@ -96,12 +102,50 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 		if (btnCrear.equals(ae.getSource())) 
 		{
 			if(chkSiRep.isSelected()) {
-				ejecutarIDA("INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '1');", conectar("TallerJava","root","Studium2018;"));
+				String sentencia1 = "INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '1');";
+				ejecutarIDA(sentencia1, conectar("TallerJava","root","Studium2018;"));
 				desconectar(conectar("TallerJava","root","Studium2018;"));
+				Calendar horaFecha = Calendar.getInstance();
+				int hora,minutos,dia,mes,anyo;
+				hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+				minutos = horaFecha.get(Calendar.MINUTE);
+				dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+				mes = horaFecha.get(Calendar.MONTH)+1;
+				anyo = horaFecha.get(Calendar.YEAR);
+				try {
+					FileWriter fw = new FileWriter("movimientos.log", true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					PrintWriter outPut = new PrintWriter(bw);
+					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia1+"]");
+					outPut.close();
+					bw.close();
+					fw.close();
+				} catch(IOException ioe) {
+					System.out.print("Error");
+				}
 				
 			} else if(chkNoRep.isSelected()) {
-				ejecutarIDA("INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '0');", conectar("TallerJava","root","Studium2018;"));
+				String sentencia2 = "INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '0');";
+				ejecutarIDA(sentencia2, conectar("TallerJava","root","Studium2018;"));
 				desconectar(conectar("TallerJava","root","Studium2018;"));
+				Calendar horaFecha = Calendar.getInstance();
+				int hora,minutos,dia,mes,anyo;
+				hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+				minutos = horaFecha.get(Calendar.MINUTE);
+				dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+				mes = horaFecha.get(Calendar.MONTH)+1;
+				anyo = horaFecha.get(Calendar.YEAR);
+				try {
+					FileWriter fw = new FileWriter("movimientos.log", true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					PrintWriter outPut = new PrintWriter(bw);
+					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia2+"]");
+					outPut.close();
+					bw.close();
+					fw.close();
+				} catch(IOException ioe) {
+					System.out.print("Error");
+				}
 			}
 
 		} else if (btnLimpiar.equals(ae.getSource())) {

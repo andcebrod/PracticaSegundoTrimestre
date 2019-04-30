@@ -8,11 +8,16 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,6 +36,7 @@ public class AddRec implements WindowListener, ActionListener, TextListener{
 	Statement statement = null;
 	ResultSet rs = null;
 	
+	String user;
 	
 	JFrame ventanaAddRec = new JFrame ("Añadir Recambio");
 	JLabel lblDescripcionRec = new JLabel ("Descripción:");
@@ -51,7 +57,9 @@ public class AddRec implements WindowListener, ActionListener, TextListener{
 	JPanel pnlPanel3 = new JPanel();
 	JPanel pnlPanel4 = new JPanel();
 
-	public AddRec() {
+	
+	public AddRec(String usuario) {
+		user = usuario;
 		ventanaAddRec.setLayout(new GridLayout(4,2));
 		ventanaAddRec.setLocationRelativeTo(null);
 		ventanaAddRec.setSize(400,300);
@@ -107,6 +115,24 @@ public class AddRec implements WindowListener, ActionListener, TextListener{
 				statement =connection.createStatement();
 				statement.executeUpdate(sentencia);
 				JOptionPane.showMessageDialog(null,"Recambio creado","Recambio Creado con éxito", JOptionPane.INFORMATION_MESSAGE);
+				Calendar horaFecha = Calendar.getInstance();
+				int hora,minutos,dia,mes,anyo;
+				hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+				minutos = horaFecha.get(Calendar.MINUTE);
+				dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+				mes = horaFecha.get(Calendar.MONTH)+1;
+				anyo = horaFecha.get(Calendar.YEAR);
+				try {
+					FileWriter fw = new FileWriter("movimientos.log", true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					PrintWriter outPut = new PrintWriter(bw);
+					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia+"]");
+					outPut.close();
+					bw.close();
+					fw.close();
+				} catch(IOException ioe) {
+					System.out.print("Error");
+				}
 			}
 			catch (ClassNotFoundException cnfe)
 			{

@@ -8,11 +8,16 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,6 +37,7 @@ public class AddCli  implements WindowListener, ActionListener, TextListener
 	Statement statement = null;
 	ResultSet rs = null;
 	
+	String user;
 	
 	JFrame ventanaAddCli = new JFrame ("Añadir Cliente");
 	JLabel lblNombreCli = new JLabel ("Nombre:");
@@ -50,7 +56,9 @@ public class AddCli  implements WindowListener, ActionListener, TextListener
 	JPanel pnlPanel4 = new JPanel();
 	JPanel pnlPanel5 = new JPanel();
 	
-	public AddCli() {
+	public AddCli(String usuario) {
+		user = usuario;
+		
 		ventanaAddCli.setLayout(new GridLayout(4,1));
 		ventanaAddCli.setLocationRelativeTo(null);
 		ventanaAddCli.setSize(400,300);
@@ -107,6 +115,24 @@ public class AddCli  implements WindowListener, ActionListener, TextListener
 				statement =connection.createStatement();
 				statement.executeUpdate(sentencia);
 				JOptionPane.showMessageDialog(null,"Cliente creado","Cliente Creado", JOptionPane.INFORMATION_MESSAGE);
+				Calendar horaFecha = Calendar.getInstance();
+				int hora,minutos,dia,mes,anyo;
+				hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+				minutos = horaFecha.get(Calendar.MINUTE);
+				dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+				mes = horaFecha.get(Calendar.MONTH)+1;
+				anyo = horaFecha.get(Calendar.YEAR);
+				try {
+					FileWriter fw = new FileWriter("movimientos.log", true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					PrintWriter outPut = new PrintWriter(bw);
+					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia+"]");
+					outPut.close();
+					bw.close();
+					fw.close();
+				} catch(IOException ioe) {
+					System.out.print("Error");
+				}
 			}
 			catch (ClassNotFoundException cnfe)
 			{

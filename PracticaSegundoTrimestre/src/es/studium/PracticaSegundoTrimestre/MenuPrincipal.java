@@ -17,6 +17,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 public class MenuPrincipal implements WindowListener, ActionListener, TextListener{
+	
+	String user;
+	
 	JFrame ventana = new JFrame ("Taller de Recambios");
 	List Lista = new List();
 	JPanel pnlLista = new JPanel();
@@ -30,7 +33,7 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 	JMenu menuOtros = new JMenu("Opciones");
 	JMenuItem mniOtrosAyuda = new JMenuItem("Ayuda");
 	JMenuItem mniOtrosSalir = new JMenuItem("Cerrar Sesión");
-
+	
 	final static String Clientes = "Clientes";
 	final static String Recambios = "Recambios";
 	final static String Reparaciones = "Reparaciones";
@@ -59,8 +62,9 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 
 
 
-	public MenuPrincipal() {
-
+	public MenuPrincipal(String usuario) {
+		
+		String user = usuario;
 		ventana.setLocationRelativeTo(null);
 		ventana.setSize(830,300);
 		ventana.setLayout(new BorderLayout());
@@ -168,7 +172,7 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 
 		//BOTONES DE CLIENTES
 		if(btnAddCli.equals(ae.getSource())) {
-			new AddCli();
+			new AddCli(user);
 		}
 		else if(btnModCli.equals(ae.getSource())) {
 			new ModCliList();
@@ -181,7 +185,7 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 		}
 		//BOTONES DE RECAMBIOS
 		if(btnAddRec.equals(ae.getSource())) {
-			new AddRec();
+			new AddRec(user);
 		}  else if(btnModRec.equals(ae.getSource())) {
 			new ModRecList();
 		}
@@ -193,7 +197,7 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 		}
 		//BOTONES DE REPARACIONES
 		if(btnAddRep.equals(ae.getSource())) {
-			new AddRep();
+			new AddRep(user);
 		} else if(btnModRep.equals(ae.getSource())) {
 			new ModRepList();
 		} else if(btnElRep.equals(ae.getSource())) {
@@ -203,7 +207,7 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 		}
 		//BOTONES DE REPARACIONES
 		if(btnAddFac.equals(ae.getSource())) {
-			new AddFac();
+			new AddFac(user);
 		} else if(btnModFac.equals(ae.getSource())) {
 			new ModFacList();
 		} else if(btnElFac.equals(ae.getSource())) {

@@ -157,7 +157,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 							System.out.print("Error");
 						}
 						ventanaLogin.setVisible(false);
-						new MenuPrincipal();
+						new MenuPrincipal(txtCorreo.getText());
 
 					} else {
 						JOptionPane.showMessageDialog(null, "Usuario o contraseña erroneos","Error al iniciar sesión", JOptionPane.ERROR_MESSAGE);
