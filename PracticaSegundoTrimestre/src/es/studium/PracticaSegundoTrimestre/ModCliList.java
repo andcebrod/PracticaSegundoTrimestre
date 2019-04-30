@@ -27,13 +27,14 @@ public class ModCliList implements WindowListener, ActionListener, TextListener{
 	JPanel pnl2 = new JPanel();
 	JPanel pnl3 = new JPanel();
 
+	String user = "";
 
-
-	public ModCliList() {
+	public ModCliList(String usuario) {
 		ventanaModCliList.setLayout(new GridLayout(3,1));
 		ventanaModCliList.setLocationRelativeTo(null);
 		ventanaModCliList.setSize(400,300);
-
+		
+		user = usuario;
 
 		ResultSet selectClientes = ejecutarSelect("SELECT * FROM clientes",conectar("TallerJava","root","Studium2018;"));
 		try {
@@ -67,7 +68,7 @@ public class ModCliList implements WindowListener, ActionListener, TextListener{
 
 			String[] arrayClientes = clientes.getSelectedItem().toString().split(".-");
 			int idCliente = Integer.parseInt(arrayClientes[0]);
-			new ModCli(idCliente);
+			new ModCli(idCliente, user);
 			ventanaModCliList.setVisible(false);
 		}
 	}

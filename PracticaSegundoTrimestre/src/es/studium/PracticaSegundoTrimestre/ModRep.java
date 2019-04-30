@@ -7,11 +7,16 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 
 import javax.swing.*;
 
@@ -46,9 +51,11 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 	JPanel pnlPanel5 = new JPanel();
 
 	int idRep = 0;
+	String user = "";
 
-	public ModRep(int id) 
+	public ModRep(int id, String usuario) 
 	{
+		user = usuario;
 		idRep = id;
 
 		ResultSet rs = ejecutarSelect("SELECT * FROM reparaciones where idReparacion="+id+";",conectar("TallerJava","root","Studium2018;"));
@@ -134,13 +141,50 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 				if(chkSiRep.isSelected()) 
 				{
 					System.out.println(txtFechaEntradaRep.getText());
-					ejecutarIDA("UPDATE reparaciones SET Averia ='"+txtAveriaRep.getText()+"', fechaEntrada='"+txtFechaEntradaRep.getText()+"', fechaSalida='"+txtFechaSalidaRep.getText()+"', Reparado = 1 WHERE idReparacion ="+idRep+";",conectar("TallerJava","root","Studium2018;"));
+					String sentencia1 = "UPDATE reparaciones SET Averia ='"+txtAveriaRep.getText()+"', fechaEntrada='"+txtFechaEntradaRep.getText()+"', fechaSalida='"+txtFechaSalidaRep.getText()+"', Reparado = 1 WHERE idReparacion ="+idRep+";";
+					ejecutarIDA(sentencia1,conectar("TallerJava","root","Studium2018;"));
 					desconectar(conectar("TallerJava","root","Studium2018;"));
+					Calendar horaFecha = Calendar.getInstance();
+					int hora,minutos,dia,mes,anyo;
+					hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+					minutos = horaFecha.get(Calendar.MINUTE);
+					dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+					mes = horaFecha.get(Calendar.MONTH)+1;
+					anyo = horaFecha.get(Calendar.YEAR);
+					try {
+						FileWriter fw = new FileWriter("movimientos.log", true);
+						BufferedWriter bw = new BufferedWriter(fw);
+						PrintWriter outPut = new PrintWriter(bw);
+						outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia1+"]");
+						outPut.close();
+						bw.close();
+						fw.close();
+					} catch(IOException ioe) {
+						System.out.print("Error");
+					}
 				} else 
 				{
-					System.out.println(txtFechaEntradaRep.getText());
-					ejecutarIDA("UPDATE reparaciones SET Averia ='"+txtAveriaRep.getText()+"', fechaEntrada='"+txtFechaEntradaRep.getText()+"', fechaSalida='"+txtFechaSalidaRep.getText()+"', Reparado = 0 WHERE idReparacion ="+idRep+";",conectar("TallerJava","root","Studium2018;"));
+					String sentencia2 = "UPDATE reparaciones SET Averia ='"+txtAveriaRep.getText()+"', fechaEntrada='"+txtFechaEntradaRep.getText()+"', fechaSalida='"+txtFechaSalidaRep.getText()+"', Reparado = 0 WHERE idReparacion ="+idRep+";";
+					ejecutarIDA(sentencia2,conectar("TallerJava","root","Studium2018;"));
 					desconectar(conectar("TallerJava","root","Studium2018;"));
+					Calendar horaFecha = Calendar.getInstance();
+					int hora,minutos,dia,mes,anyo;
+					hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+					minutos = horaFecha.get(Calendar.MINUTE);
+					dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+					mes = horaFecha.get(Calendar.MONTH)+1;
+					anyo = horaFecha.get(Calendar.YEAR);
+					try {
+						FileWriter fw = new FileWriter("movimientos.log", true);
+						BufferedWriter bw = new BufferedWriter(fw);
+						PrintWriter outPut = new PrintWriter(bw);
+						outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia2+"]");
+						outPut.close();
+						bw.close();
+						fw.close();
+					} catch(IOException ioe) {
+						System.out.print("Error");
+					}
 				}
 			}
 

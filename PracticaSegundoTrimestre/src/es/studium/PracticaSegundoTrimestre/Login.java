@@ -158,6 +158,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 							System.out.print("Error");
 						}
 						ventanaLogin.setVisible(false);
+						
 						new MenuPrincipal(usuario);
 
 					} else {

@@ -33,8 +33,10 @@ public class ModRepList extends JFrame implements WindowListener, ActionListener
 	JPanel pnl1 = new JPanel();
 	JPanel pnl2 = new JPanel();
 	JPanel pnl3 = new JPanel();
-	
-	public ModRepList() {
+	String user = "";
+	public ModRepList(String usuario) 
+	{
+		user = usuario;
 		this.setTitle("Buscar reparación para modificar");
 		this.setLayout(new GridLayout(3,1));
 		this.setLocationRelativeTo(null);
@@ -70,7 +72,7 @@ public class ModRepList extends JFrame implements WindowListener, ActionListener
 
 			String[] array= reparaciones.getSelectedItem().toString().split(".-");
 			int idReparacion = Integer.parseInt(array[0]);
-			new ModRep(idReparacion);
+			new ModRep(idReparacion, user);
 			this.setVisible(false);
 		}
 	}

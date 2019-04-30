@@ -9,6 +9,11 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Calendar;
 
 import javax.swing.*;
 
@@ -153,35 +158,107 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 			new AddCli(user);
 		}
 		else if(btnModCli.equals(ae.getSource())) {
-			new ModCliList();
+			new ModCliList(user);
 		}
 		else if (btnConCli.equals(ae.getSource())) {
 			new ConCliList();
+			Calendar horaFecha = Calendar.getInstance();
+			int hora,minutos,dia,mes,anyo;
+			hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+			minutos = horaFecha.get(Calendar.MINUTE);
+			dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+			mes = horaFecha.get(Calendar.MONTH)+1;
+			anyo = horaFecha.get(Calendar.YEAR);
+			try {
+				FileWriter fw = new FileWriter("movimientos.log", true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				PrintWriter outPut = new PrintWriter(bw);
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM CLIENTES"+"]");
+				outPut.close();
+				bw.close();
+				fw.close();
+			} catch(IOException ioe) {
+				System.out.print("Error");
+			}
 		}
 		//BOTONES DE RECAMBIOS
 		if(btnAddRec.equals(ae.getSource())) {
 			new AddRec(user);
 		}  else if(btnModRec.equals(ae.getSource())) {
-			new ModRecList();
+			new ModRecList(user);
 		}
 		else if (btnConRec.equals(ae.getSource())) {
 			new ConRecList();
+			Calendar horaFecha = Calendar.getInstance();
+			int hora,minutos,dia,mes,anyo;
+			hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+			minutos = horaFecha.get(Calendar.MINUTE);
+			dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+			mes = horaFecha.get(Calendar.MONTH)+1;
+			anyo = horaFecha.get(Calendar.YEAR);
+			try {
+				FileWriter fw = new FileWriter("movimientos.log", true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				PrintWriter outPut = new PrintWriter(bw);
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM RECAMBIOS"+"]");
+				outPut.close();
+				bw.close();
+				fw.close();
+			} catch(IOException ioe) {
+				System.out.print("Error");
+			}
 		}
 		//BOTONES DE REPARACIONES
 		if(btnAddRep.equals(ae.getSource())) {
 			new AddRep(user);
 		} else if(btnModRep.equals(ae.getSource())) {
-			new ModRepList();
+			new ModRepList(user);
 		} else if (btnConRep.equals(ae.getSource())) {
 			new ConRepList();
+			Calendar horaFecha = Calendar.getInstance();
+			int hora,minutos,dia,mes,anyo;
+			hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+			minutos = horaFecha.get(Calendar.MINUTE);
+			dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+			mes = horaFecha.get(Calendar.MONTH)+1;
+			anyo = horaFecha.get(Calendar.YEAR);
+			try {
+				FileWriter fw = new FileWriter("movimientos.log", true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				PrintWriter outPut = new PrintWriter(bw);
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM REPARACIONES"+"]");
+				outPut.close();
+				bw.close();
+				fw.close();
+			} catch(IOException ioe) {
+				System.out.print("Error");
+			}
 		}
 		//BOTONES DE REPARACIONES
 		if(btnAddFac.equals(ae.getSource())) {
 			new AddFac(user);
 		} else if(btnModFac.equals(ae.getSource())) {
-			new ModFacList();
+			new ModFacList(user);
 		}else if (btnConFac.equals(ae.getSource())) {
 			new ConFacList();
+			Calendar horaFecha = Calendar.getInstance();
+			int hora,minutos,dia,mes,anyo;
+			hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+			minutos = horaFecha.get(Calendar.MINUTE);
+			dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+			mes = horaFecha.get(Calendar.MONTH)+1;
+			anyo = horaFecha.get(Calendar.YEAR);
+			try {
+				FileWriter fw = new FileWriter("movimientos.log", true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				PrintWriter outPut = new PrintWriter(bw);
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM FACTURAS"+"]");
+				outPut.close();
+				bw.close();
+				fw.close();
+			} catch(IOException ioe) {
+				System.out.print("Error");
+			}
 		}
 		if(mniOtrosSalir.equals(ae.getSource())) {
 			ventana.setVisible(false);

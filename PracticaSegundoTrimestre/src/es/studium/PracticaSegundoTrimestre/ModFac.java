@@ -9,11 +9,16 @@ import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 
 import javax.swing.*;
 
@@ -45,9 +50,10 @@ public class ModFac extends JFrame implements WindowListener, ActionListener{
 	JPanel pnlPanel7 = new JPanel();
 
 	int idFac = 0;
-	
-	public ModFac(int id) 
+	String user = "";
+	public ModFac(int id, String usuario) 
 	{
+		user = usuario;
 		idFac = id;
 		this.setLayout(new GridLayout(7,1));
 		this.setLocationRelativeTo(null);
@@ -126,9 +132,28 @@ public class ModFac extends JFrame implements WindowListener, ActionListener{
 				
 				String[] arrayClientes = clientes.getSelectedItem().toString().split(".-");
 				int idCliente = Integer.parseInt(arrayClientes[0]);
-				
-				ejecutarIDA("UPDATE facturas SET fechaFactura = '"+txtFecha.getText()+"', idClienteFK="+idCliente+", idReparacionFK="+idReparacion+" WHERE idFactura ="+idFac+";",conectar("TallerJava","root","Studium2018;"));
+				String sentencia = "UPDATE facturas SET fechaFactura = '"+txtFecha.getText()+"', idClienteFK="+idCliente+", idReparacionFK="+idReparacion+" WHERE idFactura ="+idFac+";";
+				ejecutarIDA(sentencia,conectar("TallerJava","root","Studium2018;"));
 				desconectar(conectar("TallerJava","root","Studium2018;"));
+				Calendar horaFecha = Calendar.getInstance();
+				int hora,minutos,dia,mes,anyo;
+				hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+				minutos = horaFecha.get(Calendar.MINUTE);
+				dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+				mes = horaFecha.get(Calendar.MONTH)+1;
+				anyo = horaFecha.get(Calendar.YEAR);
+				try {
+					FileWriter fw = new FileWriter("movimientos.log", true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					PrintWriter outPut = new PrintWriter(bw);
+					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia+"]");
+					outPut.close();
+					bw.close();
+					fw.close();
+				} catch(IOException ioe) {
+					System.out.print("Error");
+				}
+			
 			}
 		} 
 		else if (btnLimpiar.equals(ae.getSource())) 

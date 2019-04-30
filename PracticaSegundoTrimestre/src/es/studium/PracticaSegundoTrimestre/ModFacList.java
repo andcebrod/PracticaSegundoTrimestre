@@ -30,10 +30,11 @@ public class ModFacList extends JFrame implements WindowListener, ActionListener
 	JPanel pnl2 = new JPanel();
 	JPanel pnl3 = new JPanel();
 
+	String user = "";
 	
-	
-	public ModFacList ()
+	public ModFacList (String usuario)
 	{
+		user = usuario;
 		this.setTitle("Buscar factura para modificar");
 		this.setLayout(new GridLayout(3,1));
 		this.setLocationRelativeTo(null);
@@ -71,7 +72,7 @@ public class ModFacList extends JFrame implements WindowListener, ActionListener
 
 			String[] array= facturas.getSelectedItem().toString().split("-");
 			int idFactura = Integer.parseInt(array[0]);
-			new ModFac(idFactura);
+			new ModFac(idFactura, user);
 			this.setVisible(false);
 		}
 	}

@@ -34,8 +34,12 @@ public class ModRecList extends JFrame implements WindowListener, ActionListener
 	JPanel pnl1 = new JPanel();
 	JPanel pnl2 = new JPanel();
 	JPanel pnl3 = new JPanel();
+	
+	String user = "";
 
-	public ModRecList() {
+	public ModRecList(String usuario) 
+	{
+		user = usuario;
 		this.setTitle("Buscar recambio para modificar");
 		this.setLayout(new GridLayout(3,1));
 		this.setLocationRelativeTo(null);
@@ -70,7 +74,7 @@ public class ModRecList extends JFrame implements WindowListener, ActionListener
 
 			String[] array= recambios.getSelectedItem().toString().split("-");
 			int idRecambio = Integer.parseInt(array[0]);
-			new ModRec(idRecambio);
+			new ModRec(idRecambio, user);
 			this.setVisible(false);
 		}
 
