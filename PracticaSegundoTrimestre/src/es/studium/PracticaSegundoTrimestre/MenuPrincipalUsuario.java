@@ -1,14 +1,8 @@
 package es.studium.PracticaSegundoTrimestre;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.CardLayout;
-import java.awt.Frame;
 import java.awt.List;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.TextEvent;
@@ -16,20 +10,23 @@ import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class MenuPrincipalUsuario implements WindowListener, ActionListener, TextListener{
-	Frame ventana = new Frame ("Taller de Recambios");
-	List Lista = new List(4, false);
-	Panel pnlLista = new Panel();
-	Panel pnlCard = new Panel();
-	Panel pnlClientes = new Panel();
-	Panel pnlRecambios = new Panel();
-	Panel pnlReparaciones = new Panel();
-	Panel pnlFacturas = new Panel();
+import javax.swing.*;
 
-	MenuBar barraMenu = new MenuBar();
-	Menu menuOtros = new Menu("Opciones");
-	MenuItem mniOtrosAyuda = new MenuItem("Ayuda");
-	MenuItem mniOtrosSalir = new MenuItem("Cerrar Sesión");
+public class MenuPrincipalUsuario implements WindowListener, ActionListener, TextListener{
+	String user;
+	JFrame ventana = new JFrame ("Taller de Recambios");
+	List Lista = new List(4, false);
+	JPanel pnlLista = new JPanel();
+	JPanel pnlCard = new JPanel();
+	JPanel pnlClientes = new JPanel();
+	JPanel pnlRecambios = new JPanel();
+	JPanel pnlReparaciones = new JPanel();
+	JPanel pnlFacturas = new JPanel();
+
+	JMenuBar barraMenu = new JMenuBar();
+	JMenu menuOtros = new JMenu("Opciones");
+	JMenuItem mniOtrosAyuda = new JMenuItem("Ayuda");
+	JMenuItem mniOtrosSalir = new JMenuItem("Cerrar Sesión");
 
 	final static String Clientes = "Clientes";
 	final static String Recambios = "Recambios";
@@ -37,29 +34,29 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 	final static String Facturas = "Facturas";
 
 
-	Button btnAddCli = new Button("Añadir Clientes");
-	Button btnModCli = new Button("Modificar Clientes");
-	Button btnConCli = new Button("Consultar Clientes");
+	JButton btnAddCli = new JButton("Añadir Clientes");
+	JButton btnModCli = new JButton("Modificar Clientes");
+	JButton btnConCli = new JButton("Consultar Clientes");
 
-	Button btnAddRec = new Button("Añadir Recambios");
-	Button btnModRec = new Button("Modificar Recambios");
-	Button btnConRec = new Button("Consultar Recambios");
+	JButton btnAddRec = new JButton("Añadir Recambios");
+	JButton btnModRec = new JButton("Modificar Recambios");
+	JButton btnConRec = new JButton("Consultar Recambios");
 
-	Button btnAddRep = new Button("Añadir Reparaciones");
-	Button btnModRep = new Button("Modificar Reparaciones");
-	Button btnConRep = new Button("Consultar Reparaciones");
+	JButton btnAddRep = new JButton("Añadir Reparaciones");
+	JButton btnModRep = new JButton("Modificar Reparaciones");
+	JButton btnConRep = new JButton("Consultar Reparaciones");
 
-	Button btnAddFac = new Button("Añadir Facturas");
-	Button btnModFac = new Button("Modifcar Facturas");
-	Button btnConFac = new Button("Consultar Facturas");
+	JButton btnAddFac = new JButton("Añadir Facturas");
+	JButton btnModFac = new JButton("Modifcar Facturas");
+	JButton btnConFac = new JButton("Consultar Facturas");
 
-	public MenuPrincipalUsuario() {
-
+	public MenuPrincipalUsuario(String usuario) {
+		user = usuario;
 		ventana.setLocationRelativeTo(null);
 		ventana.setSize(800,300);
 		ventana.setLayout(new BorderLayout());
 
-		ventana.setMenuBar(barraMenu);
+		ventana.setJMenuBar(barraMenu);
 		menuOtros.add(mniOtrosAyuda);
 		mniOtrosAyuda.addActionListener(this);
 		// Añadimos un separador
@@ -153,7 +150,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		} 
 		//BOTONES DE CLIENTES
 		if(btnAddCli.equals(ae.getSource())) {
-			new AddCli();
+			new AddCli(user);
 		}
 		else if(btnModCli.equals(ae.getSource())) {
 			new ModCliList();
@@ -163,7 +160,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		}
 		//BOTONES DE RECAMBIOS
 		if(btnAddRec.equals(ae.getSource())) {
-			new AddRec();
+			new AddRec(user);
 		}  else if(btnModRec.equals(ae.getSource())) {
 			new ModRecList();
 		}
@@ -172,7 +169,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		}
 		//BOTONES DE REPARACIONES
 		if(btnAddRep.equals(ae.getSource())) {
-			new AddRep();
+			new AddRep(user);
 		} else if(btnModRep.equals(ae.getSource())) {
 			new ModRepList();
 		} else if (btnConRep.equals(ae.getSource())) {
@@ -180,7 +177,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		}
 		//BOTONES DE REPARACIONES
 		if(btnAddFac.equals(ae.getSource())) {
-			new AddFac();
+			new AddFac(user);
 		} else if(btnModFac.equals(ae.getSource())) {
 			new ModFacList();
 		}else if (btnConFac.equals(ae.getSource())) {

@@ -16,9 +16,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-public class MenuPrincipal implements WindowListener, ActionListener, TextListener{
+public class MenuPrincipal implements WindowListener, ActionListener{
 	
-	String user;
+	String user = new String("");
 	
 	JFrame ventana = new JFrame ("Taller de Recambios");
 	List Lista = new List();
@@ -63,8 +63,7 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 
 
 	public MenuPrincipal(String usuario) {
-		
-		String user = usuario;
+		user = usuario;
 		ventana.setLocationRelativeTo(null);
 		ventana.setSize(830,300);
 		ventana.setLayout(new BorderLayout());
@@ -135,11 +134,6 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 		ventana.addWindowListener(this);
 		ventana.setVisible(true);
 	}
-	public static void main(String[] args) {
-
-	}
-	@Override
-	public void textValueChanged(TextEvent arg0) {}
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
@@ -178,7 +172,7 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 			new ModCliList();
 		}
 		else if(btnElCli.equals(ae.getSource())) {
-			new ElCliList();
+			new ElCliList(user);
 		}
 		else if (btnConCli.equals(ae.getSource())) {
 			new ConCliList();
@@ -190,7 +184,7 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 			new ModRecList();
 		}
 		else if(btnElRec.equals(ae.getSource())) {
-			new ElRecList();
+			new ElRecList(user);
 		}
 		else if (btnConRec.equals(ae.getSource())) {
 			new ConRecList();
@@ -201,7 +195,7 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 		} else if(btnModRep.equals(ae.getSource())) {
 			new ModRepList();
 		} else if(btnElRep.equals(ae.getSource())) {
-			new ElRepList();
+			new ElRepList(user);
 		}else if (btnConRep.equals(ae.getSource())) {
 			new ConRepList();
 		}
@@ -211,7 +205,7 @@ public class MenuPrincipal implements WindowListener, ActionListener, TextListen
 		} else if(btnModFac.equals(ae.getSource())) {
 			new ModFacList();
 		} else if(btnElFac.equals(ae.getSource())) {
-			new ElFacList();
+			new ElFacList(user);
 		}else if (btnConFac.equals(ae.getSource())) {
 			new ConFacList();
 		}

@@ -125,6 +125,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 	public void actionPerformed(ActionEvent ae) 
 	{
 		if(btnIniciar.equals(ae.getSource())) {
+			String usuario = txtCorreo.getText();
 
 			if(txtCorreo.getText().equals("a")) 
 			{
@@ -149,7 +150,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 							FileWriter fw = new FileWriter("movimientos.log", true);
 							BufferedWriter bw = new BufferedWriter(fw);
 							PrintWriter outPut = new PrintWriter(bw);
-							outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"[administrador@studium.es]");
+							outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+usuario+"]");
 							outPut.close();
 							bw.close();
 							fw.close();
@@ -157,7 +158,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 							System.out.print("Error");
 						}
 						ventanaLogin.setVisible(false);
-						new MenuPrincipal(txtCorreo.getText());
+						new MenuPrincipal(usuario);
 
 					} else {
 						JOptionPane.showMessageDialog(null, "Usuario o contraseña erroneos","Error al iniciar sesión", JOptionPane.ERROR_MESSAGE);
@@ -212,7 +213,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 							FileWriter fw = new FileWriter("movimientos.log", true);
 							BufferedWriter bw = new BufferedWriter(fw);
 							PrintWriter outPut = new PrintWriter(bw);
-							outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+txtCorreo.getText()+"]");
+							outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+usuario+"]");
 							outPut.close();
 							bw.close();
 							fw.close();
@@ -220,7 +221,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 							System.out.print("Error");
 						}
 						ventanaLogin.setVisible(false);
-						new MenuPrincipalUsuario();
+						new MenuPrincipalUsuario(usuario);
 
 					} else {
 						JOptionPane.showMessageDialog(null, "Usuario o contraseña erroneos","Error al iniciar sesión", JOptionPane.ERROR_MESSAGE);

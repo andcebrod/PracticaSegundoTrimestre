@@ -37,7 +37,7 @@ public class AddCli  implements WindowListener, ActionListener, TextListener
 	Statement statement = null;
 	ResultSet rs = null;
 	
-	String user;
+	String user="";
 	
 	JFrame ventanaAddCli = new JFrame ("Añadir Cliente");
 	JLabel lblNombreCli = new JLabel ("Nombre:");
@@ -58,7 +58,6 @@ public class AddCli  implements WindowListener, ActionListener, TextListener
 	
 	public AddCli(String usuario) {
 		user = usuario;
-		
 		ventanaAddCli.setLayout(new GridLayout(4,1));
 		ventanaAddCli.setLocationRelativeTo(null);
 		ventanaAddCli.setSize(400,300);
