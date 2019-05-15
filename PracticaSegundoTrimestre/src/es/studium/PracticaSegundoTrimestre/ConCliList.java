@@ -54,15 +54,16 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 		modelo.addColumn("Dirección");
 		modelo.addColumn("Teléfono");
 		
-		rs = ejecutarSelect("SELECT * FROM clientes", conectar("TallerJava","root","Studium2018;"));
+		rs = ejecutarSelect("SELECT * FROM clientes", conectar("taller","root","Studium2018;"));
 		try {
 
 			while (rs.next())
 			{
 			   Object [] fila = new Object[4];
 
-			   for (int i=0;i<4;i++)
+			   for (int i=0;i<4;i++) {
 			      fila[i] = rs.getObject(i+1);
+			}
 			   modelo.addRow(fila); 
 			}
 		} catch (SQLException e) {
@@ -74,6 +75,9 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 		
 		this.addWindowListener(this);
 		this.setVisible(true);
+	}
+	public static void main(String[] args) {
+		new ConCliList();
 	}
 
 	@Override

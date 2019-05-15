@@ -140,6 +140,9 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 		ventana.addWindowListener(this);
 		ventana.setVisible(true);
 	}
+	public static void main(String[] args) {
+		new MenuPrincipal("Admin");
+	}
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
