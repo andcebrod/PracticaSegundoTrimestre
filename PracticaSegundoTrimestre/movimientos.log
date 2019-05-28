@@ -1,1 +1,1 @@
-[30/4/2019][15:58] [a][30/4/2019][16:13] [a][SELECT * FROM CLIENTES][15/5/2019][11:3] [Admin][INSERT INTO reparaciones VALUES (null, 'Ventana Rota', '2019-05-15','2019-05-21', '1');]
+[30/4/2019][15:58] [a][30/4/2019][16:13] [a][SELECT * FROM CLIENTES][15/5/2019][11:3] [Admin][INSERT INTO reparaciones VALUES (null, 'Ventana Rota', '2019-05-15','2019-05-21', '1');][28/5/2019][20:42] [a][28/5/2019][20:43] [a][INSERT INTO reparaciones VALUES (null, '', '','', '0');][28/5/2019][20:47] [a][SELECT * FROM REPARACIONES][28/5/2019][20:51] [a]
