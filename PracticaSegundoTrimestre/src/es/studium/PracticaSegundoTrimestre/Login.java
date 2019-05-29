@@ -127,7 +127,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 		if(btnIniciar.equals(ae.getSource())) {
 			String usuario = txtCorreo.getText();
 
-			if(txtCorreo.getText().equals("administrador@grupostudium.es")) 
+			if(txtCorreo.getText().equals("administrador@studium.es")) 
 			{
 				try
 				{

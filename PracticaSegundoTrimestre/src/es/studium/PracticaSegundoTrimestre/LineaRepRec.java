@@ -23,8 +23,6 @@ public class LineaRepRec extends JFrame {
 	JLabel Subtotal = new JLabel("Subtotal");
 	JLabel lblTotal = new JLabel("Total");
 
-	DefaultTableModel modelo = new DefaultTableModel();
-	JTable tablaRecambios= new JTable(modelo);
 
 	JTextArea txtArticulos = new JTextArea(20,20);
 
@@ -64,19 +62,7 @@ public class LineaRepRec extends JFrame {
 		pnl2.add(txtCantidad);
 		pnl2.add(btnAgregar);
 		this.add(pnl2);
-
-		modelo.addColumn("Nº Artículo");
-		modelo.addColumn("Descripción");
-		modelo.addColumn("Cantidad");
-		modelo.addColumn("Precio");
-		this.add(new JScrollPane(tablaRecambios),BorderLayout.CENTER);
 		
-		//RELLENAR TABLA
-		// List<Object> carritoRecambios = new ArrayList<Object>();
-		
-
-
-
 		pnl4.add(lblTotal);
 		pnl4.add(txtTotal);
 		pnl5.add(btnAceptar);

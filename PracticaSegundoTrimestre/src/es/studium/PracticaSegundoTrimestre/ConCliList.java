@@ -80,7 +80,7 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("practicamvc","root" ,"Studium2018;"));
+		desconectar(conectar("TallerJava","root" ,"Studium2018;"));
 		tablaClientes.setEnabled(false);
 
 
@@ -128,7 +128,6 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 				telefono.getFont().setSize(15);
 				tabla.addCell(telefono);
 
-				tabla.addCell("Teléfono");
 				ResultSet Co = ejecutarSelect("SELECT * FROM clientes;", conectar("TallerJava","root" ,"Studium2018;"));
 				try {
 					while (Co.next())
