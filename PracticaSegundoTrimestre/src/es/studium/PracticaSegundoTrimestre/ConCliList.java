@@ -197,8 +197,6 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 		String login = usuario;
 		String password = clave;
 		Connection connection = null;
-		Statement statement = null;
-		ResultSet rs = null;
 		try
 		{
 			Class.forName(driver);

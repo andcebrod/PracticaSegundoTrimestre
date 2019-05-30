@@ -1,13 +1,12 @@
 package es.studium.PracticaSegundoTrimestre;
 
 import java.awt.Choice;
-import java.awt.FlowLayout;
+
 import java.awt.GridLayout;
-import java.awt.List;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
+
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
@@ -102,8 +101,6 @@ public class ModRepList extends JFrame implements WindowListener, ActionListener
 		String login = usuario;
 		String password = clave;
 		Connection connection = null;
-		Statement statement = null;
-		ResultSet rs = null;
 
 		try
 		{

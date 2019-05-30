@@ -5,8 +5,6 @@ import java.awt.CardLayout;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedWriter;
@@ -63,7 +61,6 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 
 	JButton btnAddFac = new JButton("Añadir Facturas");
 	JButton btnModFac = new JButton("Modifcar Facturas");
-	JButton btnElFac = new JButton("Eliminar Facturas");
 	JButton btnConFac = new JButton("Consultar Facturas");
 
 
@@ -123,12 +120,10 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 
 		pnlFacturas.add(btnAddFac);
 		pnlFacturas.add(btnModFac);
-		pnlFacturas.add(btnElFac);
 		pnlFacturas.add(btnConFac);
 
 		btnAddFac.addActionListener(this);
 		btnModFac.addActionListener(this);
-		btnElFac.addActionListener(this);
 		btnConFac.addActionListener(this);
 
 		pnlCard.add(Clientes , pnlClientes);
@@ -267,8 +262,6 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 			new AddFac(user);
 		} else if(btnModFac.equals(ae.getSource())) {
 			new ModFacList(user);
-		} else if(btnElFac.equals(ae.getSource())) {
-			new ElFacList(user);
 		}else if (btnConFac.equals(ae.getSource())) {
 			new ConFacList();
 			Calendar horaFecha = Calendar.getInstance();

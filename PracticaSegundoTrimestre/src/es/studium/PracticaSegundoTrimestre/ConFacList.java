@@ -2,12 +2,9 @@ package es.studium.PracticaSegundoTrimestre;
 
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.List;
+import java.awt.Choice;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
@@ -17,20 +14,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
-public class ConFacList extends JFrame implements WindowListener, ActionListener, TextListener{
+
+public class ConFacList extends JFrame implements WindowListener, ActionListener {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	DefaultTableModel modelo = new DefaultTableModel();
-	JTable tablaFacturas= new JTable(modelo);
-	JButton btnAceptar = new JButton("Aceptar");
+	Choice facturas = new Choice();
+	JLabel lblConsultaFac = new JLabel("Seleccione Factura a consultar:");
+	JButton btnSeleccionar = new JButton("Seleccionar");
 	JPanel pnl2 = new JPanel();
-	ResultSet rs;
-	
+	int idReparacion;
 	
 	public ConFacList() 
 	{
@@ -38,53 +34,54 @@ public class ConFacList extends JFrame implements WindowListener, ActionListener
 		this.setLocationRelativeTo(null);
 		this.setSize(600,200);
 		this.setTitle("Consulta de Facturas");
-		
-		this.add(new JScrollPane(tablaFacturas),BorderLayout.CENTER);
-		pnl2.add(btnAceptar);
+		this.add(lblConsultaFac, BorderLayout.NORTH);
+		this.add(facturas);
+		pnl2.add(btnSeleccionar);
 		this.add(pnl2, BorderLayout.SOUTH);
-		btnAceptar.addActionListener(this);
+		btnSeleccionar.addActionListener(this);
 		
-		modelo.addColumn("Nº Factura");
-		modelo.addColumn("Fecha Factura");
-		modelo.addColumn("Nº Cliente");
-		modelo.addColumn("Nº Reparación");
 		
-		rs = ejecutarSelect("SELECT * FROM facturas", conectar("TallerJava","root","Studium2018;"));
+		ResultSet selectFacturas = ejecutarSelect("SELECT * FROM facturas, clientes where idClienteFK = idCliente;", conectar("TallerJava","root","Studium2018;"));
+		
 		try {
 
-			while (rs.next())
+			while (selectFacturas.next())
 			{
-			   Object [] fila = new Object[4];
-
-			   for (int i=0;i<4;i++)
-			      fila[i] = rs.getObject(i+1);
-			   modelo.addRow(fila); 
+				String fac=Integer.toString(selectFacturas.getInt("idFactura"));
+				fac = fac + "-"+ 
+				selectFacturas.getString("fechaFactura")+
+				", Cliente: "+selectFacturas.getString("nombreCliente")+
+				", Reparación:"+selectFacturas.getInt("idReparacionFK");
+				facturas.add(fac);
 			}
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
 		desconectar(conectar("practicamvc","root" ,"Studium2018;"));
-		tablaFacturas.setEnabled(false);
 		
 		
 		this.addWindowListener(this);
 		this.setVisible(true);
 	}
 
-	@Override
-	public void textValueChanged(TextEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		
-		if(btnAceptar.equals(ae.getSource())) {
+		if(btnSeleccionar.equals(ae.getSource())) {
+
+			String[] array= facturas.getSelectedItem().toString().split("-");
+			int idFactura = Integer.parseInt(array[0]);
+			String[] array2= facturas.getSelectedItem().toString().split(", Reparación:");
+			int idReparacion = Integer.parseInt(array2[1]);
+			new ConLineaRepRec(idReparacion, idFactura);
 			this.setVisible(false);
 		}
 	}
-
+	public static void main(String[] args) {
+		new ConFacList();
+	}
 	@Override
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
@@ -134,8 +131,7 @@ public class ConFacList extends JFrame implements WindowListener, ActionListener
 		String login = usuario;
 		String password = clave;
 		Connection connection = null;
-		Statement statement = null;
-		ResultSet rs = null;
+
 		try
 		{
 			Class.forName(driver);

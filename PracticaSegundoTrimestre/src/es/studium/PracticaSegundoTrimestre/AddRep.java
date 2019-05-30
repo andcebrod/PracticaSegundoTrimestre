@@ -2,11 +2,8 @@ package es.studium.PracticaSegundoTrimestre;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedWriter;
@@ -15,7 +12,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
@@ -191,9 +187,6 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 		String login = usuario;
 		String password = clave;
 		Connection connection = null;
-		Statement statement = null;
-		ResultSet rs = null;
-
 		try
 		{
 			Class.forName(driver);

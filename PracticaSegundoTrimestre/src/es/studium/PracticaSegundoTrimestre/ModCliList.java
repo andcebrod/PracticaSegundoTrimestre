@@ -97,8 +97,7 @@ public class ModCliList implements WindowListener, ActionListener, TextListener{
 		String login = usuario;
 		String password = clave;
 		Connection connection = null;
-		Statement statement = null;
-		ResultSet rs = null;
+
 
 		try
 		{

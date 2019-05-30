@@ -5,8 +5,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedWriter;
@@ -24,6 +22,11 @@ import javax.swing.*;
 
 public class AddFac extends JFrame implements WindowListener, ActionListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	String user;
 
 	JLabel lblFecha = new JLabel ("Fecha Factura :");
@@ -107,6 +110,7 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent ae) {
+
 		if (btnCrear.equals(ae.getSource())) 
 		{
 			String[] arrayClientes = clientes.getSelectedItem().toString().split(".-");
@@ -114,8 +118,20 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 			String[] arrayReparaciones= reparaciones.getSelectedItem().toString().split(".-");
 			int idReparacion = Integer.parseInt(arrayReparaciones[0]);
 			String sentencia = "INSERT INTO facturas VALUES (null,'"+txtFecha.getText()+"',"+idCliente+","+idReparacion+");";
+			
 			ejecutarIDA(sentencia,conectar("TallerJava","root","Studium2018;"));
+			ResultSet rsCodFac = ejecutarSelect("select * from facturas order by 1 desc;", conectar("TallerJava","root","Studium2018;"));
+			try {
+				rsCodFac.next();
+				new LineaRepRec(idReparacion, rsCodFac.getInt("idFactura"));
+				this.setVisible(false);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			}
 			desconectar(conectar("TallerJava","root","Studium2018;"));
+			
+			
+			
 			Calendar horaFecha = Calendar.getInstance();
 			int hora,minutos,dia,mes,anyo;
 			hora = horaFecha.get(Calendar.HOUR_OF_DAY);
@@ -136,6 +152,7 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 			}
 		
 		}
+		
 		else if (btnLimpiar.equals(ae.getSource())) 
 		{
 			txtFecha.selectAll();
@@ -185,6 +202,7 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 		// TODO Auto-generated method stub
 	}
 
+	@SuppressWarnings("unused")
 	public Connection conectar(String baseDatos, String usuario, String clave)
 	{
 		String driver = "com.mysql.jdbc.Driver";
@@ -250,6 +268,7 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 			Statement statement = c.createStatement();
 			statement.executeUpdate(sentencia);
 			JOptionPane.showMessageDialog(null,"Factura creada","Factura creada con éxito", JOptionPane.INFORMATION_MESSAGE);
+			this.setVisible(false);
 
 		}
 		catch(SQLException e)

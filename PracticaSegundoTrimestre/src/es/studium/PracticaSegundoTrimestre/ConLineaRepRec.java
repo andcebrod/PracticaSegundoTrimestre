@@ -1,9 +1,7 @@
 package es.studium.PracticaSegundoTrimestre;
 
-import java.awt.Choice;
+
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
@@ -11,68 +9,75 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.swing.*;
 
-public class ModFacList extends JFrame implements WindowListener, ActionListener {
+
+public class ConLineaRepRec extends JFrame implements WindowListener 
+{
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JLabel lblFacturas = new JLabel("Selecciona factura");
-	Choice facturas = new Choice();
-	JButton btnSeleccionar = new JButton("Seleccionar");
+	JLabel lblTituloFactura = new JLabel("Factura nº ");
+	JLabel lblFactura = new JLabel("");
+	JLabel lblTotal = new JLabel("Total");
+
+	JTextField txtTotal = new JTextField(6);
 
 	JPanel pnl1 = new JPanel();
-	JPanel pnl2 = new JPanel();
 	JPanel pnl3 = new JPanel();
+	JPanel pnl4 = new JPanel();
+	int FactSelec;
+	JTextArea txtRecambiosFac = new JTextArea(6,35);
 
-	String user = "";
+	double Total = 0;
+	String recambios;
+	double subTotal=0;
+	double precio = 0;
+	int idReparacion;
+	double total = 0;
 
-	public ModFacList (String usuario)
+	public ConLineaRepRec(int idRep,int idFac) 
 	{
-		user = usuario;
-		this.setTitle("Buscar factura para modificar");
-		this.setLayout(new GridLayout(3,1));
+		recambios="";
+		idReparacion = idRep;
+		FactSelec = idFac;
+		lblFactura.setText(Integer.toString(FactSelec));
+		getContentPane().setLayout(new GridLayout(3,1));
 		this.setLocationRelativeTo(null);
-		this.setSize(400,300);
+		this.setSize(500, 400);
+		pnl1.add(lblTituloFactura);
+		pnl1.add(lblFactura);
+		this.add(pnl1);
+		txtTotal.setEditable(false);
+		pnl3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Desglose"));
+		//Rellenando el TextArea
 
-		ResultSet selectFacturas = ejecutarSelect("SELECT * FROM facturas, clientes where idClienteFK = idCliente;", conectar("TallerJava","root","Studium2018;"));
+		ResultSet rsRec = ejecutarSelect("SELECT * FROM incluyen,recambios where idRecambio = idRecambioFK and  idReparacionfk ="+idReparacion+";",conectar("TallerJava","root","Studium2018;"));
 		try {
-			while(selectFacturas.next())
-			{
-				String fac=Integer.toString(selectFacturas.getInt("idFactura"));
-				fac = fac + "-"+ selectFacturas.getString("fechaFactura")+", Cliente: "+selectFacturas.getInt("nombreCliente")+", Reparación:"+Integer.toString(selectFacturas.getInt("idReparacionFK"));
-				facturas.add(fac);
+			while (rsRec.next()) {
+				recambios = recambios+" "+rsRec.getString("descripcionRecambio")+", Precio: "+rsRec.getDouble("precioRecambio")+", Cantidad: "+rsRec.getInt("cantidad")+", Subtotal: "+(rsRec.getDouble("precioRecambio")*rsRec.getInt("cantidad"))+"\n";
+				total = total+(rsRec.getDouble("precioRecambio")*rsRec.getInt("cantidad"));
 			}
+			txtRecambiosFac.setText(recambios);
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root","Studium2018;"));
 
-		pnl1.add(lblFacturas);
-		pnl2.add(facturas);
-		pnl3.add(btnSeleccionar);
-		this.add(pnl1);
-		this.add(pnl2);
-		this.add(pnl3);
-		btnSeleccionar.addActionListener(this);
-		this.addWindowListener(this);
+		txtRecambiosFac.setEditable(false);
+		pnl3.add(txtRecambiosFac);
+		getContentPane().add(pnl3);
+		pnl4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Precio Total"));
+		pnl4.add(lblTotal);
+		txtTotal.setText(Double.toString(total));
+		pnl4.add(txtTotal);
+		getContentPane().add(pnl4);
 		this.setVisible(true);
+
 	}
 
-
-	@Override
-	public void actionPerformed(ActionEvent ae) 
-	{
-		if(btnSeleccionar.equals(ae.getSource())) {
-
-			String[] array= facturas.getSelectedItem().toString().split("-");
-			int idFactura = Integer.parseInt(array[0]);
-			new ModFac(idFactura, user);
-			this.setVisible(false);
-		}
-	}
 	@Override
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
@@ -86,8 +91,8 @@ public class ModFacList extends JFrame implements WindowListener, ActionListener
 	}
 
 	@Override
-	public void windowClosing(WindowEvent e) 
-	{
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
 		this.setVisible(false);
 	}
 
@@ -114,7 +119,6 @@ public class ModFacList extends JFrame implements WindowListener, ActionListener
 		// TODO Auto-generated method stub
 
 	}
-
 
 	public Connection conectar(String baseDatos, String usuario, String clave)
 	{
@@ -171,6 +175,5 @@ public class ModFacList extends JFrame implements WindowListener, ActionListener
 		}
 
 	}
-
 
 }

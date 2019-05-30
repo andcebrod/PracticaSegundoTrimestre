@@ -20,7 +20,6 @@ import java.sql.Statement;
 import java.util.Calendar;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -182,8 +181,6 @@ public class ModCli implements WindowListener, ActionListener, TextListener{
 		String login = usuario;
 		String password = clave;
 		Connection connection = null;
-		Statement statement = null;
-		ResultSet rs = null;
 
 		try
 		{

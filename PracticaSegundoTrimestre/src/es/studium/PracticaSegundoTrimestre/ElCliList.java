@@ -163,8 +163,7 @@ public class ElCliList extends JFrame implements WindowListener, ActionListener{
 		String login = usuario;
 		String password = clave;
 		Connection connection = null;
-		Statement statement = null;
-		ResultSet rs = null;
+
 
 		try
 		{

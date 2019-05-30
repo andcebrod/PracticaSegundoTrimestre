@@ -2,9 +2,7 @@ package es.studium.PracticaSegundoTrimestre;
 
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.List;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.TextEvent;
@@ -209,8 +207,7 @@ public class ConRepList extends JFrame implements WindowListener, ActionListener
 		String login = usuario;
 		String password = clave;
 		Connection connection = null;
-		Statement statement = null;
-		ResultSet rs = null;
+
 		try
 		{
 			Class.forName(driver);
