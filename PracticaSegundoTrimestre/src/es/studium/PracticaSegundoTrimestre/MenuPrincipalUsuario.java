@@ -30,7 +30,8 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 
 	JMenuBar barraMenu = new JMenuBar();
 	JMenu menuOtros = new JMenu("Opciones");
-	JMenuItem mniOtrosAyuda = new JMenuItem("Ayuda");
+	JMenu menuAyuda = new JMenu("Ayuda");
+	JMenuItem mniAyuda = new JMenuItem("Ayuda");
 	JMenuItem mniOtrosSalir = new JMenuItem("Cerrar Sesión");
 
 	final static String Clientes = "Clientes";
@@ -40,35 +41,31 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 
 
 	JButton btnAddCli = new JButton("Añadir Clientes");
-	JButton btnModCli = new JButton("Modificar Clientes");
 	JButton btnConCli = new JButton("Consultar Clientes");
 
 	JButton btnAddRec = new JButton("Añadir Recambios");
-	JButton btnModRec = new JButton("Modificar Recambios");
 	JButton btnConRec = new JButton("Consultar Recambios");
 
 	JButton btnAddRep = new JButton("Añadir Reparaciones");
-	JButton btnModRep = new JButton("Modificar Reparaciones");
 	JButton btnConRep = new JButton("Consultar Reparaciones");
 
 	JButton btnAddFac = new JButton("Añadir Facturas");
-	JButton btnModFac = new JButton("Modifcar Facturas");
 	JButton btnConFac = new JButton("Consultar Facturas");
 
 	public MenuPrincipalUsuario(String usuario) {
 		user = usuario;
 		ventana.setLocationRelativeTo(null);
-		ventana.setSize(800,300);
+		ventana.setSize(500,300);
 		ventana.setLayout(new BorderLayout());
 
 		ventana.setJMenuBar(barraMenu);
-		menuOtros.add(mniOtrosAyuda);
-		mniOtrosAyuda.addActionListener(this);
-		// Añadimos un separador
-		menuOtros.addSeparator();
+		menuOtros.add(mniAyuda);
+		mniAyuda.addActionListener(this);
 		menuOtros.add(mniOtrosSalir);
+		menuAyuda.add(mniAyuda);
 		mniOtrosSalir.addActionListener(this);
 		barraMenu.add(menuOtros);
+		barraMenu.add(menuAyuda);
 
 		Lista.add(Clientes);
 		Lista.add(Recambios);
@@ -79,35 +76,27 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		pnlCard.setLayout(new CardLayout() );
 
 		pnlClientes.add(btnAddCli);
-		pnlClientes.add(btnModCli);
 		pnlClientes.add(btnConCli);
 
 		btnAddCli.addActionListener(this);
-		btnModCli.addActionListener(this);
 		btnConCli.addActionListener(this);
 
 		pnlRecambios.add(btnAddRec);
-		pnlRecambios.add(btnModRec);
 		pnlRecambios.add(btnConRec);
 
 		btnAddRec.addActionListener(this);
-		btnModRec.addActionListener(this);
 		btnConRec.addActionListener(this);
 
 		pnlReparaciones.add(btnAddRep);
-		pnlReparaciones.add(btnModRep);
 		pnlReparaciones.add(btnConRep);
 
 		btnAddRep.addActionListener(this);
-		btnModRep.addActionListener(this);
 		btnConRep.addActionListener(this);
 
 		pnlFacturas.add(btnAddFac);
-		pnlFacturas.add(btnModFac);
 		pnlFacturas.add(btnConFac);
 
 		btnAddFac.addActionListener(this);
-		btnModFac.addActionListener(this);
 		btnConFac.addActionListener(this);
 
 		pnlCard.add(Clientes , pnlClientes);
@@ -118,6 +107,9 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		Lista.addActionListener(this);
 		ventana.addWindowListener(this);
 		ventana.setVisible(true);
+	}
+	public static void main(String[] args) {
+		new MenuPrincipalUsuario("prueba");
 	}
 	@Override
 	public void textValueChanged(TextEvent arg0) {}
@@ -154,9 +146,6 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		if(btnAddCli.equals(ae.getSource())) {
 			new AddCli(user);
 		}
-		else if(btnModCli.equals(ae.getSource())) {
-			new ModCliList(user);
-		}
 		else if (btnConCli.equals(ae.getSource())) {
 			new ConCliList();
 			Calendar horaFecha = Calendar.getInstance();
@@ -181,9 +170,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		//BOTONES DE RECAMBIOS
 		if(btnAddRec.equals(ae.getSource())) {
 			new AddRec(user);
-		}  else if(btnModRec.equals(ae.getSource())) {
-			new ModRecList(user);
-		}
+		} 
 		else if (btnConRec.equals(ae.getSource())) {
 			new ConRecList();
 			Calendar horaFecha = Calendar.getInstance();
@@ -208,9 +195,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		//BOTONES DE REPARACIONES
 		if(btnAddRep.equals(ae.getSource())) {
 			new AddRep(user);
-		} else if(btnModRep.equals(ae.getSource())) {
-			new ModRepList(user);
-		} else if (btnConRep.equals(ae.getSource())) {
+		}  else if (btnConRep.equals(ae.getSource())) {
 			new ConRepList();
 			Calendar horaFecha = Calendar.getInstance();
 			int hora,minutos,dia,mes,anyo;
@@ -234,9 +219,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		//BOTONES DE REPARACIONES
 		if(btnAddFac.equals(ae.getSource())) {
 			new AddFac(user);
-		} else if(btnModFac.equals(ae.getSource())) {
-			new ModFacList(user);
-		}else if (btnConFac.equals(ae.getSource())) {
+		} else if (btnConFac.equals(ae.getSource())) {
 			new ConFacList();
 			Calendar horaFecha = Calendar.getInstance();
 			int hora,minutos,dia,mes,anyo;
@@ -261,7 +244,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 			ventana.setVisible(false);
 			new Login();
 		}
-		if(mniOtrosAyuda.equals(ae.getSource())) {
+		if(mniAyuda.equals(ae.getSource())) {
 			new Ayuda();
 		} else if(mniOtrosSalir.equals(ae.getSource())) {
 			ventana.setVisible(false);

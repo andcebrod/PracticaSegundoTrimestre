@@ -3,6 +3,8 @@ package es.studium.PracticaSegundoTrimestre;
 
 import java.awt.BorderLayout;
 import java.awt.Choice;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -13,7 +15,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 
 public class ConFacList extends JFrame implements WindowListener, ActionListener {
@@ -27,14 +33,14 @@ public class ConFacList extends JFrame implements WindowListener, ActionListener
 	JButton btnSeleccionar = new JButton("Seleccionar");
 	JPanel pnl2 = new JPanel();
 	int idReparacion;
-	
+	Font negrita = new Font("Arial", Font.BOLD, 14);
 	public ConFacList() 
 	{
-		this.setLayout(new BorderLayout());
+		this.setLayout(new FlowLayout());
 		this.setLocationRelativeTo(null);
-		this.setSize(600,200);
+		this.setSize(500,150);
 		this.setTitle("Consulta de Facturas");
-		this.add(lblConsultaFac, BorderLayout.NORTH);
+		this.add(lblConsultaFac);
 		this.add(facturas);
 		pnl2.add(btnSeleccionar);
 		this.add(pnl2, BorderLayout.SOUTH);
@@ -49,7 +55,7 @@ public class ConFacList extends JFrame implements WindowListener, ActionListener
 			{
 				String fac=Integer.toString(selectFacturas.getInt("idFactura"));
 				fac = fac + "-"+ 
-				selectFacturas.getString("fechaFactura")+
+				" "+selectFacturas.getString("fechaFactura")+
 				", Cliente: "+selectFacturas.getString("nombreCliente")+
 				", Reparación:"+selectFacturas.getInt("idReparacionFK");
 				facturas.add(fac);
@@ -57,7 +63,7 @@ public class ConFacList extends JFrame implements WindowListener, ActionListener
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("practicamvc","root" ,"Studium2018;"));
+		desconectar(conectar("TallerJava","root" ,"Studium2018;"));
 		
 		
 		this.addWindowListener(this);

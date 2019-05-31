@@ -160,7 +160,6 @@ public class LineaRepRec extends JFrame implements WindowListener, ActionListene
 		{
 			Statement statement = c.createStatement();
 			statement.executeUpdate(sentencia);
-			JOptionPane.showMessageDialog(null,"Factura creada","Factura creada con éxito", JOptionPane.INFORMATION_MESSAGE);
 
 		}
 		catch(SQLException e)
