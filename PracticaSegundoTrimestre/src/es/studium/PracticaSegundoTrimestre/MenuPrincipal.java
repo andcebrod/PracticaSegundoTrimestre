@@ -75,7 +75,7 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 	public MenuPrincipal(String usuario) {
 		user = usuario;
 
-		ventana.setSize(830,350);
+		ventana.setSize(840,350);
 
 		ventana.setJMenuBar(barraMenu);
 		menuAyuda.add(mniOtrosAyuda);
@@ -169,7 +169,7 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 		gbc_pnlImg.gridx = 2;
 		gbc_pnlImg.gridy = 1;
 		ventana.getContentPane().add(pnlImg, gbc_pnlImg);
-		label.setIcon(new ImageIcon("imagenes/soria.jpg"));
+		label.setIcon(new ImageIcon("imagenes/logo.png"));
 
 		pnlImg.add(label);
 		ventana.addWindowListener(this);
