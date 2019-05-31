@@ -49,7 +49,6 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 	final static String Reparaciones = "Reparaciones";
 	final static String Facturas = "Facturas";
 
-
 	JButton btnAddCli = new JButton("Añadir Clientes");
 	JButton btnModCli = new JButton("Modificar Clientes");
 	JButton btnElCli = new JButton("Eliminar Clientes");
@@ -69,8 +68,6 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 	JButton btnConFac = new JButton("Consultar Facturas");
 	private final JPanel pnlImg = new JPanel();
 	private final JLabel label = new JLabel("");
-
-
 
 	public MenuPrincipal(String usuario) {
 		user = usuario;
@@ -231,7 +228,7 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 				FileWriter fw = new FileWriter("movimientos.log", true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter outPut = new PrintWriter(bw);
-				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM CLIENTES"+"]");
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM CLIENTES"+"]"+"\n");
 				outPut.close();
 				bw.close();
 				fw.close();
@@ -261,7 +258,7 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 				FileWriter fw = new FileWriter("movimientos.log", true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter outPut = new PrintWriter(bw);
-				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM RECAMBIOS"+"]");
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM RECAMBIOS"+"]"+"\n");
 				outPut.close();
 				bw.close();
 				fw.close();
@@ -289,7 +286,7 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 				FileWriter fw = new FileWriter("movimientos.log", true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter outPut = new PrintWriter(bw);
-				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM REPARACIONES"+"]");
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM REPARACIONES"+"]"+"\n");
 				outPut.close();
 				bw.close();
 				fw.close();
@@ -313,7 +310,7 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 				FileWriter fw = new FileWriter("movimientos.log", true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter outPut = new PrintWriter(bw);
-				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM FACTURAS"+"]");
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM FACTURAS"+"]"+"\n");
 				outPut.close();
 				bw.close();
 				fw.close();
@@ -337,7 +334,8 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 	@Override
 	public void windowClosed(WindowEvent arg0) {}
 	@Override
-	public void windowClosing(WindowEvent arg0) {
+	public void windowClosing(WindowEvent arg0) 
+	{
 		System.exit(0);
 	}
 	@Override

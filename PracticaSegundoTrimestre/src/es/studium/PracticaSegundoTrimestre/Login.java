@@ -150,7 +150,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 							FileWriter fw = new FileWriter("movimientos.log", true);
 							BufferedWriter bw = new BufferedWriter(fw);
 							PrintWriter outPut = new PrintWriter(bw);
-							outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+usuario+"]");
+							outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+usuario+"]"+"\n");
 							outPut.close();
 							bw.close();
 							fw.close();
@@ -214,7 +214,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 							FileWriter fw = new FileWriter("movimientos.log", true);
 							BufferedWriter bw = new BufferedWriter(fw);
 							PrintWriter outPut = new PrintWriter(bw);
-							outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+usuario+"]");
+							outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+usuario+"]"+"\n");
 							outPut.close();
 							bw.close();
 							fw.close();

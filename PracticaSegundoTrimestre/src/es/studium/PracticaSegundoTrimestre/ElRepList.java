@@ -91,7 +91,7 @@ public class ElRepList extends JFrame implements WindowListener, ActionListener
 					FileWriter fw = new FileWriter("movimientos.log", true);
 					BufferedWriter bw = new BufferedWriter(fw);
 					PrintWriter outPut = new PrintWriter(bw);
-					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia+"]");
+					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia+"]"+"\n");
 					outPut.close();
 					bw.close();
 					fw.close();

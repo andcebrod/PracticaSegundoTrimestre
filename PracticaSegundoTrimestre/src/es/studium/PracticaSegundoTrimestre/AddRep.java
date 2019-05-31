@@ -112,7 +112,7 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 					FileWriter fw = new FileWriter("movimientos.log", true);
 					BufferedWriter bw = new BufferedWriter(fw);
 					PrintWriter outPut = new PrintWriter(bw);
-					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia1+"]");
+					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia1+"]"+"\n");
 					outPut.close();
 					bw.close();
 					fw.close();
@@ -135,7 +135,7 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 					FileWriter fw = new FileWriter("movimientos.log", true);
 					BufferedWriter bw = new BufferedWriter(fw);
 					PrintWriter outPut = new PrintWriter(bw);
-					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia2+"]");
+					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+sentencia2+"]"+"\n");
 					outPut.close();
 					bw.close();
 					fw.close();

@@ -159,7 +159,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 				FileWriter fw = new FileWriter("movimientos.log", true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter outPut = new PrintWriter(bw);
-				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM CLIENTES"+"]");
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM CLIENTES"+"]"+"\n");
 				outPut.close();
 				bw.close();
 				fw.close();
@@ -184,7 +184,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 				FileWriter fw = new FileWriter("movimientos.log", true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter outPut = new PrintWriter(bw);
-				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM RECAMBIOS"+"]");
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM RECAMBIOS"+"]"+"\n");
 				outPut.close();
 				bw.close();
 				fw.close();
@@ -208,7 +208,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 				FileWriter fw = new FileWriter("movimientos.log", true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter outPut = new PrintWriter(bw);
-				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM REPARACIONES"+"]");
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM REPARACIONES"+"]"+"\n");
 				outPut.close();
 				bw.close();
 				fw.close();
