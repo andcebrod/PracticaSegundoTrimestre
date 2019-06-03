@@ -1,12 +1,9 @@
 package es.studium.PracticaSegundoTrimestre;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedWriter;
@@ -15,12 +12,25 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.border.TitledBorder;
 
 public class MenuPrincipalUsuario implements WindowListener, ActionListener{
-	String user;
+
+	String user = new String("");
+
 	JFrame ventana = new JFrame ("Taller de Recambios");
-	List Lista = new List(4, false);
+	List Lista = new List();
 	JPanel pnlLista = new JPanel();
 	JPanel pnlCard = new JPanel();
 	JPanel pnlClientes = new JPanel();
@@ -31,14 +41,13 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 	JMenuBar barraMenu = new JMenuBar();
 	JMenu menuOtros = new JMenu("Opciones");
 	JMenu menuAyuda = new JMenu("Ayuda");
-	JMenuItem mniAyuda = new JMenuItem("Ayuda");
+	JMenuItem mniOtrosAyuda = new JMenuItem("Ayuda");
 	JMenuItem mniOtrosSalir = new JMenuItem("Cerrar Sesión");
 
 	final static String Clientes = "Clientes";
 	final static String Recambios = "Recambios";
 	final static String Reparaciones = "Reparaciones";
 	final static String Facturas = "Facturas";
-
 
 	JButton btnAddCli = new JButton("Añadir Clientes");
 	JButton btnConCli = new JButton("Consultar Clientes");
@@ -51,29 +60,32 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 
 	JButton btnAddFac = new JButton("Añadir Facturas");
 	JButton btnConFac = new JButton("Consultar Facturas");
+	private final JPanel pnlImg = new JPanel();
+	private final JLabel label = new JLabel("");
 
 	public MenuPrincipalUsuario(String usuario) {
 		user = usuario;
-		ventana.setLocationRelativeTo(null);
-		ventana.setSize(500,300);
-		ventana.setLayout(new BorderLayout());
+
+		ventana.setSize(840,350);
 
 		ventana.setJMenuBar(barraMenu);
-		menuOtros.add(mniAyuda);
-		mniAyuda.addActionListener(this);
+		menuAyuda.add(mniOtrosAyuda);
+		mniOtrosAyuda.addActionListener(this);
+		// Añadimos un separador
+		menuOtros.addSeparator();
 		menuOtros.add(mniOtrosSalir);
-		menuAyuda.add(mniAyuda);
 		mniOtrosSalir.addActionListener(this);
 		barraMenu.add(menuOtros);
 		barraMenu.add(menuAyuda);
-
-		Lista.add(Clientes);
-		Lista.add(Recambios);
-		Lista.add(Reparaciones);
-		Lista.add(Facturas);
-		pnlLista.add(Lista);
-		ventana.add("West", pnlLista);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{120, 111, 580, 0};
+		gridBagLayout.rowHeights = new int[]{71, 169, 0, 0, 0};
+		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		ventana.getContentPane().setLayout(gridBagLayout);
+		pnlCard.setBorder(new TitledBorder(null, "Opciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		pnlCard.setLayout(new CardLayout() );
+		pnlClientes.setBorder(null);
 
 		pnlClientes.add(btnAddCli);
 		pnlClientes.add(btnConCli);
@@ -98,18 +110,50 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 
 		btnAddFac.addActionListener(this);
 		btnConFac.addActionListener(this);
+		GridBagConstraints gbc_pnlLista = new GridBagConstraints();
+		gbc_pnlLista.gridheight = 2;
+		gbc_pnlLista.anchor = GridBagConstraints.WEST;
+		gbc_pnlLista.fill = GridBagConstraints.VERTICAL;
+		gbc_pnlLista.insets = new Insets(0, 0, 5, 5);
+		gbc_pnlLista.gridx = 0;
+		gbc_pnlLista.gridy = 0;
+		ventana.getContentPane().add(pnlLista, gbc_pnlLista);
+		GridBagConstraints gbc_Lista = new GridBagConstraints();
+		gbc_Lista.insets = new Insets(0, 0, 5, 5);
+		gbc_Lista.gridx = 1;
+		gbc_Lista.gridy = 0;
+		ventana.getContentPane().add(Lista, gbc_Lista);
+
+		Lista.add(Clientes);
+		Lista.add(Recambios);
+		Lista.add(Reparaciones);
+		Lista.add(Facturas);
+		Lista.addActionListener(this);
 
 		pnlCard.add(Clientes , pnlClientes);
 		pnlCard.add(Recambios , pnlRecambios);
 		pnlCard.add(Reparaciones , pnlReparaciones);
 		pnlCard.add(Facturas , pnlFacturas);
-		ventana.add("East",pnlCard);
-		Lista.addActionListener(this);
+		GridBagConstraints gbc_pnlCard = new GridBagConstraints();
+		gbc_pnlCard.insets = new Insets(0, 0, 5, 0);
+		gbc_pnlCard.anchor = GridBagConstraints.WEST;
+		gbc_pnlCard.fill = GridBagConstraints.VERTICAL;
+		gbc_pnlCard.gridx = 2;
+		gbc_pnlCard.gridy = 0;
+		ventana.getContentPane().add(pnlCard, gbc_pnlCard);
+
+		GridBagConstraints gbc_pnlImg = new GridBagConstraints();
+		gbc_pnlImg.insets = new Insets(0, 0, 5, 0);
+		gbc_pnlImg.fill = GridBagConstraints.BOTH;
+		gbc_pnlImg.gridx = 2;
+		gbc_pnlImg.gridy = 1;
+		ventana.getContentPane().add(pnlImg, gbc_pnlImg);
+		label.setIcon(new ImageIcon("imagenes/logo.png"));
+
+		pnlImg.add(label);
 		ventana.addWindowListener(this);
 		ventana.setVisible(true);
 	}
-	
-
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
@@ -139,6 +183,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 			pnlCard.add(Clientes , pnlClientes);
 			pnlCard.add(Recambios , pnlRecambios);
 		} 
+
 		//BOTONES DE CLIENTES
 		if(btnAddCli.equals(ae.getSource())) {
 			new AddCli(user);
@@ -167,7 +212,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 		//BOTONES DE RECAMBIOS
 		if(btnAddRec.equals(ae.getSource())) {
 			new AddRec(user);
-		} 
+		}  
 		else if (btnConRec.equals(ae.getSource())) {
 			new ConRecList();
 			Calendar horaFecha = Calendar.getInstance();
@@ -192,7 +237,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 		//BOTONES DE REPARACIONES
 		if(btnAddRep.equals(ae.getSource())) {
 			new AddRep(user);
-		}  else if (btnConRep.equals(ae.getSource())) {
+		} else if (btnConRep.equals(ae.getSource())) {
 			new ConRepList();
 			Calendar horaFecha = Calendar.getInstance();
 			int hora,minutos,dia,mes,anyo;
@@ -216,7 +261,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 		//BOTONES DE REPARACIONES
 		if(btnAddFac.equals(ae.getSource())) {
 			new AddFac(user);
-		} else if (btnConFac.equals(ae.getSource())) {
+		}else if (btnConFac.equals(ae.getSource())) {
 			new ConFacList();
 			Calendar horaFecha = Calendar.getInstance();
 			int hora,minutos,dia,mes,anyo;
@@ -229,7 +274,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 				FileWriter fw = new FileWriter("movimientos.log", true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter outPut = new PrintWriter(bw);
-				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM FACTURAS"+"]");
+				outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"["+user+"]"+"["+"SELECT * FROM FACTURAS"+"]"+"\n");
 				outPut.close();
 				bw.close();
 				fw.close();
@@ -237,11 +282,12 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 				System.out.print("Error");
 			}
 		}
+
 		if(mniOtrosSalir.equals(ae.getSource())) {
 			ventana.setVisible(false);
 			new Login();
 		}
-		if(mniAyuda.equals(ae.getSource())) {
+		if(mniOtrosAyuda.equals(ae.getSource())) {
 			new Ayuda();
 		} else if(mniOtrosSalir.equals(ae.getSource())) {
 			ventana.setVisible(false);
@@ -252,7 +298,8 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 	@Override
 	public void windowClosed(WindowEvent arg0) {}
 	@Override
-	public void windowClosing(WindowEvent arg0) {
+	public void windowClosing(WindowEvent arg0) 
+	{
 		System.exit(0);
 	}
 	@Override
