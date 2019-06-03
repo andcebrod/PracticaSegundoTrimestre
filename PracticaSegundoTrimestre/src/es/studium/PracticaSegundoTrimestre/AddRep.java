@@ -97,7 +97,8 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 
 		if (btnCrear.equals(ae.getSource())) 
 		{
-			if(chkSiRep.isSelected()) {
+			if(chkSiRep.isSelected()) 
+			{
 				String sentencia1 = "INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '1');";
 				ejecutarIDA(sentencia1, conectar("TallerJava","root","Studium2018;"));
 				desconectar(conectar("TallerJava","root","Studium2018;"));
@@ -120,7 +121,8 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 					System.out.print("Error");
 				}
 				
-			} else if(chkNoRep.isSelected()) {
+			} else if(chkNoRep.isSelected()) 
+			{
 				String sentencia2 = "INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '0');";
 				ejecutarIDA(sentencia2, conectar("TallerJava","root","Studium2018;"));
 				desconectar(conectar("TallerJava","root","Studium2018;"));
