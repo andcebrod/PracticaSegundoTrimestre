@@ -2,20 +2,31 @@ package es.studium.PracticaSegundoTrimestre;
 
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.*;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 
-public class ConLineaRepRec extends JFrame implements WindowListener 
+public class ConLineaRepRec extends JFrame implements WindowListener, ActionListener 
 {
 
 	/**
@@ -41,6 +52,8 @@ public class ConLineaRepRec extends JFrame implements WindowListener
 	private final JPanel pnl3 = new JPanel();
 	private final JButton btnAceptar = new JButton("Aceptar");
 	private final JButton btnImprimirFactura = new JButton("Imprimir Factura");
+	
+	Document documento = new Document();
 
 	public ConLineaRepRec(int idRep,int idFac) 
 	{
@@ -56,7 +69,7 @@ public class ConLineaRepRec extends JFrame implements WindowListener
 		ResultSet rsRec = ejecutarSelect("SELECT * FROM incluyen,recambios where idRecambio = idRecambioFK and  idReparacionfk ="+idReparacion+";",conectar("TallerJava","root","Studium2018;"));
 		try {
 			while (rsRec.next()) {
-				recambios =recambios+" "+"- "+rsRec.getString("descripcionRecambio")+", Precio: "+rsRec.getDouble("precioRecambio")+", Cantidad: "+rsRec.getInt("cantidad")+", Subtotal: "+(rsRec.getDouble("precioRecambio")*rsRec.getInt("cantidad"))+"\n";
+				recambios =recambios+"- "+rsRec.getString("descripcionRecambio")+", Precio: "+rsRec.getDouble("precioRecambio")+", Cantidad: "+rsRec.getInt("cantidad")+", Subtotal: "+(rsRec.getDouble("precioRecambio")*rsRec.getInt("cantidad"))+"\n";
 				total = total+(rsRec.getDouble("precioRecambio")*rsRec.getInt("cantidad"));
 			}
 		} catch (SQLException e) {
@@ -99,12 +112,49 @@ public class ConLineaRepRec extends JFrame implements WindowListener
 		getContentPane().add(pnl3, gbc_pnl3);
 		
 		pnl3.add(btnAceptar);
-		
+		btnAceptar.addActionListener(this);
 		pnl3.add(btnImprimirFactura);
+		btnImprimirFactura.addActionListener(this);
 		this.setVisible(true);
 
 	}
-
+	@Override
+	public void actionPerformed(ActionEvent ae) 
+	{
+		// TODO Auto-generated method stub
+		if(btnAceptar.equals(ae.getSource())) 
+		{
+			this.setVisible(false);
+			
+		} else if(btnImprimirFactura.equals(ae.getSource())) 
+		{
+			FileOutputStream ficheroPdf;
+			try {
+			ficheroPdf = new FileOutputStream("factura.pdf");
+			PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
+			documento.open();
+			Paragraph titulo = new Paragraph("Factura nº"+FactSelec);
+			titulo.getFont().setStyle(Font.BOLD);
+			titulo.getFont().setSize(15);
+			documento.add(titulo);
+			Paragraph contenido = new Paragraph(txtRecambiosFac.getText());
+			documento.add(contenido);
+			Paragraph total = new Paragraph ("TOTAL: "+txtTotal.getText());
+			total.getFont().setStyle(Font.BOLD);
+			documento.add(total);
+			documento.close();
+			JOptionPane.showMessageDialog(null,"Documento pdf creado correctamente.","Documento creado", JOptionPane.INFORMATION_MESSAGE);
+			
+			
+			}	catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null,e1.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			} catch (DocumentException e2) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null,e2.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
 	@Override
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
@@ -202,5 +252,7 @@ public class ConLineaRepRec extends JFrame implements WindowListener
 		}
 
 	}
+
+	
 
 }

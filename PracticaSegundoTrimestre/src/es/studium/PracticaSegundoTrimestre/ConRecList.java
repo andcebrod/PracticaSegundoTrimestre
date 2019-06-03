@@ -140,10 +140,10 @@ public class ConRecList implements WindowListener, ActionListener, TextListener 
 				}
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (DocumentException e1) {
+				JOptionPane.showMessageDialog(null,e1.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			} catch (DocumentException e2) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null,e2.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 			}
 
 			desconectar(conectar("TallerJava","root" ,"Studium2018;"));

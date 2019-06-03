@@ -17,7 +17,7 @@ import java.util.Calendar;
 
 import javax.swing.*;
 
-public class MenuPrincipalUsuario implements WindowListener, ActionListener, TextListener{
+public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 	String user;
 	JFrame ventana = new JFrame ("Taller de Recambios");
 	List Lista = new List(4, false);
@@ -108,11 +108,8 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener, Tex
 		ventana.addWindowListener(this);
 		ventana.setVisible(true);
 	}
-	public static void main(String[] args) {
-		new MenuPrincipalUsuario("prueba");
-	}
-	@Override
-	public void textValueChanged(TextEvent arg0) {}
+	
+
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 
