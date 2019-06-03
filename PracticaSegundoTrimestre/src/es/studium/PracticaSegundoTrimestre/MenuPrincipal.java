@@ -73,7 +73,7 @@ public class MenuPrincipal implements WindowListener, ActionListener{
 		user = usuario;
 
 		ventana.setSize(840,350);
-
+		ventana.setLocationRelativeTo(null);
 		ventana.setJMenuBar(barraMenu);
 		menuAyuda.add(mniOtrosAyuda);
 		mniOtrosAyuda.addActionListener(this);

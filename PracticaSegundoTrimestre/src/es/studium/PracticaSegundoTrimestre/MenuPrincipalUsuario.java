@@ -66,8 +66,8 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 	public MenuPrincipalUsuario(String usuario) {
 		user = usuario;
 
-		ventana.setSize(840,350);
-
+		ventana.setSize(730,350);
+		ventana.setLocationRelativeTo(null);
 		ventana.setJMenuBar(barraMenu);
 		menuAyuda.add(mniOtrosAyuda);
 		mniOtrosAyuda.addActionListener(this);

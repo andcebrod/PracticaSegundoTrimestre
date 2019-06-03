@@ -20,7 +20,7 @@ import java.sql.Statement;
 import java.util.Calendar;
 import javax.swing.*;
 
-public class Login implements WindowListener, ActionListener, TextListener {
+public class Login implements WindowListener, ActionListener {
 
 	String driver = "com.mysql.jdbc.Driver";
 	String url ="jdbc:mysql://localhost:3306/TallerJava?autoReconnect=true&useSSL=false";
@@ -118,8 +118,7 @@ public class Login implements WindowListener, ActionListener, TextListener {
 	{
 		new Login();
 	}
-	@Override
-	public void textValueChanged(TextEvent te) {}
+
 
 	@Override
 	public void actionPerformed(ActionEvent ae) 
