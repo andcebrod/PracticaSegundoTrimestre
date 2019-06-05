@@ -64,9 +64,9 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 				txtAveriaRep.selectAll();
 				txtAveriaRep.setText(rs.getString("Averia"));
 				txtFechaEntradaRep.selectAll();
-				txtFechaEntradaRep.setText(rs.getString("fechaEntrada"));
+				txtFechaEntradaRep.setText(rs.getString("DATE_FORMAT(fechaEntrada, '%d/%m%a'"));
 				txtFechaSalidaRep.selectAll();
-				txtFechaSalidaRep.setText(rs.getString("fechaSalida"));
+				txtFechaSalidaRep.setText(rs.getString("DATE_FORMAT(fechaSalida, '%d/%m%a'"));
 				chkSiRep.setSelected(true);
 				chkNoRep.setSelected(false);
 			} else if(rs.getInt("reparado")==0) {
@@ -74,9 +74,9 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 				txtAveriaRep.selectAll();
 				txtAveriaRep.setText(rs.getString("Averia"));
 				txtFechaEntradaRep.selectAll();
-				txtFechaEntradaRep.setText(rs.getString("fechaEntrada"));
+				txtFechaEntradaRep.setText(rs.getString("DATE_FORMAT(fechaEntrada, '%d/%m%a'"));
 				txtFechaSalidaRep.selectAll();
-				txtFechaSalidaRep.setText(rs.getString("fechaSalida"));
+				txtFechaSalidaRep.setText(rs.getString("DATE_FORMAT(fechaSalida, '%d/%m%a'"));
 				chkSiRep.setSelected(false);
 				chkNoRep.setSelected(true);
 			}
@@ -138,8 +138,15 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 			} else {
 				if(chkSiRep.isSelected()) 
 				{
-					System.out.println(txtFechaEntradaRep.getText());
-					String sentencia1 = "UPDATE reparaciones SET Averia ='"+txtAveriaRep.getText()+"', fechaEntrada='"+txtFechaEntradaRep.getText()+"', fechaSalida='"+txtFechaSalidaRep.getText()+"', Reparado = 1 WHERE idReparacion ="+idRep+";";
+					String FechaEntrada = txtFechaEntradaRep.getText();
+					String[] arrayFechaEntrada = FechaEntrada.split("/");
+					FechaEntrada = arrayFechaEntrada[2]+"-"+arrayFechaEntrada[1]+"-"+arrayFechaEntrada[0];
+					
+					String FechaSalida = txtFechaSalidaRep.getText();
+					String[] arrayFechaSalida = FechaSalida.split("/");
+					FechaSalida = arrayFechaSalida[2]+"-"+arrayFechaSalida[1]+"-"+arrayFechaSalida[0];
+					
+					String sentencia1 = "UPDATE reparaciones SET Averia ='"+txtAveriaRep.getText()+"', fechaEntrada='"+FechaEntrada+"', fechaSalida='"+FechaSalida+"', Reparado = 1 WHERE idReparacion ="+idRep+";";
 					ejecutarIDA(sentencia1,conectar("TallerJava","usuarioTaller","Studium2018;"));
 					desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 					Calendar horaFecha = Calendar.getInstance();
@@ -162,7 +169,15 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 					}
 				} else 
 				{
-					String sentencia2 = "UPDATE reparaciones SET Averia ='"+txtAveriaRep.getText()+"', fechaEntrada='"+txtFechaEntradaRep.getText()+"', fechaSalida='"+txtFechaSalidaRep.getText()+"', Reparado = 0 WHERE idReparacion ="+idRep+";";
+					String FechaEntrada = txtFechaEntradaRep.getText();
+					String[] arrayFechaEntrada = FechaEntrada.split("/");
+					FechaEntrada = arrayFechaEntrada[2]+"-"+arrayFechaEntrada[1]+"-"+arrayFechaEntrada[0];
+					
+					String FechaSalida = txtFechaSalidaRep.getText();
+					String[] arrayFechaSalida = FechaSalida.split("/");
+					FechaSalida = arrayFechaSalida[2]+"-"+arrayFechaSalida[1]+"-"+arrayFechaSalida[0];
+					
+					String sentencia2 = "UPDATE reparaciones SET Averia ='"+txtAveriaRep.getText()+"', fechaEntrada='"+FechaEntrada+"', fechaSalida='"+FechaSalida+"', Reparado = 0 WHERE idReparacion ="+idRep+";";
 					ejecutarIDA(sentencia2,conectar("TallerJava","usuarioTaller","Studium2018;"));
 					desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 					Calendar horaFecha = Calendar.getInstance();

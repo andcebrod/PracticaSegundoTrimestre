@@ -42,8 +42,6 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 
 	JButton btnCrear = new JButton("Crear Reparación");
 	JButton btnLimpiar = new JButton("Limpiar");
-	
-	Calendar horaFecha = Calendar.getInstance();
 
 	JPanel pnlPanel = new JPanel();
 	JPanel pnlPanel2 = new JPanel();
@@ -51,7 +49,9 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 	JPanel pnlPanel4 = new JPanel();
 	JPanel pnlPanel5 = new JPanel();
 	
-	int dia,mes,anyo;
+	Calendar horaFecha = Calendar.getInstance();
+	int hora,minutos,dia,mes,anyo;
+	
 
 	public AddRep(String usuario) 
 	{
@@ -60,6 +60,12 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 		this.setLayout(new GridLayout(5,2));
 		this.setLocationRelativeTo(null);
 		this.setSize(400,300);
+		
+		hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+		minutos = horaFecha.get(Calendar.MINUTE);
+		dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+		mes = horaFecha.get(Calendar.MONTH)+1;
+		anyo = horaFecha.get(Calendar.YEAR);
 
 		pnlPanel.setLayout(new FlowLayout());
 		pnlPanel2.setLayout(new FlowLayout());
@@ -71,16 +77,13 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 		pnlPanel.add(txtAveriaRep);
 		this.add(pnlPanel);
 		
-		dia = horaFecha.get(Calendar.DAY_OF_MONTH);
-		mes = horaFecha.get(Calendar.MONTH)+1;
-		anyo = horaFecha.get(Calendar.YEAR);
-
 		pnlPanel2.add(lblFechaEntradaRep);
+		txtFechaEntradaRep.setText(dia+"/"+mes+"/"+anyo);
 		pnlPanel2.add(txtFechaEntradaRep);
-		txtFechaEntradaRep.setText(anyo+"-"+mes+"-"+dia);
 		this.add(pnlPanel2);
 
 		pnlPanel3.add(lblFechaSalidaRep);
+		txtFechaSalidaRep.setText(dia+"/"+mes+"/"+anyo);
 		pnlPanel3.add(txtFechaSalidaRep);
 		this.add(pnlPanel3);
 
@@ -108,16 +111,18 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 		{
 			if(chkSiRep.isSelected()) 
 			{
-				String sentencia1 = "INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '1');";
+				String FechaEntrada = txtFechaEntradaRep.getText();
+				String[] arrayFechaEntrada = FechaEntrada.split("/");
+				FechaEntrada = arrayFechaEntrada[2]+"-"+arrayFechaEntrada[1]+"-"+arrayFechaEntrada[0];
+				
+				String FechaSalida = txtFechaSalidaRep.getText();
+				String[] arrayFechaSalida = FechaSalida.split("/");
+				FechaSalida = arrayFechaSalida[2]+"-"+arrayFechaSalida[1]+"-"+arrayFechaSalida[0];
+				
+				String sentencia1 = "INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+FechaEntrada+"','"+FechaSalida+"', '1');";
 				ejecutarIDA(sentencia1, conectar("TallerJava","usuarioTaller","Studium2018;"));
 				desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
-				Calendar horaFecha = Calendar.getInstance();
-				int hora,minutos,dia,mes,anyo;
-				hora = horaFecha.get(Calendar.HOUR_OF_DAY);
-				minutos = horaFecha.get(Calendar.MINUTE);
-				dia = horaFecha.get(Calendar.DAY_OF_MONTH);
-				mes = horaFecha.get(Calendar.MONTH)+1;
-				anyo = horaFecha.get(Calendar.YEAR);
+				
 				try {
 					FileWriter fw = new FileWriter("movimientos.log", true);
 					BufferedWriter bw = new BufferedWriter(fw);
@@ -132,16 +137,19 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 				
 			} else if(chkNoRep.isSelected()) 
 			{
-				String sentencia2 = "INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '0');";
+				String FechaEntrada = txtFechaEntradaRep.getText();
+				String[] arrayFechaEntrada = FechaEntrada.split("/");
+				FechaEntrada = arrayFechaEntrada[2]+"-"+arrayFechaEntrada[1]+"-"+arrayFechaEntrada[0];
+				
+				String FechaSalida = txtFechaSalidaRep.getText();
+				String[] arrayFechaSalida = FechaSalida.split("/");
+				FechaSalida = arrayFechaSalida[2]+"-"+arrayFechaSalida[1]+"-"+arrayFechaSalida[0];
+				
+				String sentencia2 = "INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+FechaEntrada+"','"+FechaSalida+"', '0');";
 				ejecutarIDA(sentencia2, conectar("TallerJava","usuarioTaller","Studium2018;"));
 				desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
-				Calendar horaFecha = Calendar.getInstance();
-				int hora,minutos,dia,mes,anyo;
-				hora = horaFecha.get(Calendar.HOUR_OF_DAY);
-				minutos = horaFecha.get(Calendar.MINUTE);
-				dia = horaFecha.get(Calendar.DAY_OF_MONTH);
-				mes = horaFecha.get(Calendar.MONTH)+1;
-				anyo = horaFecha.get(Calendar.YEAR);
+				
+		
 				try {
 					FileWriter fw = new FileWriter("movimientos.log", true);
 					BufferedWriter bw = new BufferedWriter(fw);
@@ -162,9 +170,7 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 			txtFechaEntradaRep.setText("");
 			txtFechaSalidaRep.selectAll();
 			txtFechaSalidaRep.setText("");
-
 		}
-
 	}
 
 	@Override

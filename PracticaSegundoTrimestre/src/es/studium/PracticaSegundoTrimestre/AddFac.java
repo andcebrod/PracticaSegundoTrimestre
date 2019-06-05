@@ -45,6 +45,9 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 	JPanel pnlPanel2 = new JPanel();
 	JPanel pnlPanel3 = new JPanel();
 	JPanel pnlPanel4 = new JPanel();
+	
+	Calendar horaFecha = Calendar.getInstance();
+	int hora,minutos,dia,mes,anyo;
 
 	public AddFac(String usuario) 
 	{
@@ -54,6 +57,12 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 		this.setLocationRelativeTo(null);
 		this.setSize(400,300);
 
+		hora = horaFecha.get(Calendar.HOUR_OF_DAY);
+		minutos = horaFecha.get(Calendar.MINUTE);
+		dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+		mes = horaFecha.get(Calendar.MONTH)+1;
+		anyo = horaFecha.get(Calendar.YEAR);
+		
 		ResultSet selectClientes = ejecutarSelect("SELECT * FROM clientes",conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 			while(selectClientes.next())
@@ -87,6 +96,7 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 		pnlPanel4.setLayout(new FlowLayout());
 
 		pnlPanel.add(lblFecha);
+		txtFecha.setText(dia+"/"+mes+"/"+anyo);
 		pnlPanel.add(txtFecha);
 		this.add(pnlPanel);
 
@@ -117,7 +127,12 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 			int idCliente = Integer.parseInt(arrayClientes[0]);
 			String[] arrayReparaciones= reparaciones.getSelectedItem().toString().split(".-");
 			int idReparacion = Integer.parseInt(arrayReparaciones[0]);
-			String sentencia = "INSERT INTO facturas VALUES (null,'"+txtFecha.getText()+"',"+idCliente+","+idReparacion+");";
+			
+			String Fecha = txtFecha.getText();
+			String[] arrayFecha = Fecha.split("/");
+			Fecha = arrayFecha[2]+"-"+arrayFecha[1]+"-"+arrayFecha[0];
+			
+			String sentencia = "INSERT INTO facturas VALUES (null,'"+Fecha+"',"+idCliente+","+idReparacion+");";
 			
 			ejecutarIDA(sentencia,conectar("TallerJava","usuarioTaller","Studium2018;"));
 			ResultSet rsCodFac = ejecutarSelect("select * from facturas order by 1 desc;", conectar("TallerJava","usuarioTaller","Studium2018;"));

@@ -55,7 +55,7 @@ public class ConFacList extends JFrame implements WindowListener, ActionListener
 			{
 				String fac=Integer.toString(selectFacturas.getInt("idFactura"));
 				fac = fac + "-"+ 
-				" "+selectFacturas.getString("fechaFactura")+
+				" "+selectFacturas.getString("DATE_FORMAT(fechaFactura, '%d/%m%a'")+
 				", Cliente: "+selectFacturas.getString("nombreCliente")+
 				", Reparación:"+selectFacturas.getInt("idReparacionFK");
 				facturas.add(fac);
