@@ -20,7 +20,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.border.TitledBorder;
@@ -66,7 +65,7 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 	public MenuPrincipalUsuario(String usuario) {
 		user = usuario;
 
-		ventana.setSize(730,350);
+		ventana.setSize(500,350);
 		ventana.setLocationRelativeTo(null);
 		ventana.setJMenuBar(barraMenu);
 		menuAyuda.add(mniOtrosAyuda);
@@ -78,13 +77,9 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 		barraMenu.add(menuOtros);
 		barraMenu.add(menuAyuda);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{120, 111, 580, 0};
-		gridBagLayout.rowHeights = new int[]{71, 169, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
-		ventana.getContentPane().setLayout(gridBagLayout);
+		ventana.setLayout(gridBagLayout);
 		pnlCard.setBorder(new TitledBorder(null, "Opciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		pnlCard.setLayout(new CardLayout() );
+		pnlCard.setLayout(new CardLayout());
 		pnlClientes.setBorder(null);
 
 		pnlClientes.add(btnAddCli);
@@ -112,18 +107,13 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 		btnConFac.addActionListener(this);
 		GridBagConstraints gbc_pnlLista = new GridBagConstraints();
 		gbc_pnlLista.gridheight = 2;
-		gbc_pnlLista.anchor = GridBagConstraints.WEST;
-		gbc_pnlLista.fill = GridBagConstraints.VERTICAL;
-		gbc_pnlLista.insets = new Insets(0, 0, 5, 5);
 		gbc_pnlLista.gridx = 0;
 		gbc_pnlLista.gridy = 0;
-		ventana.getContentPane().add(pnlLista, gbc_pnlLista);
+		ventana.add(pnlLista, gbc_pnlLista);
 		GridBagConstraints gbc_Lista = new GridBagConstraints();
-		gbc_Lista.insets = new Insets(0, 0, 5, 5);
 		gbc_Lista.gridx = 1;
 		gbc_Lista.gridy = 0;
-		ventana.getContentPane().add(Lista, gbc_Lista);
-
+		ventana.add(Lista, gbc_Lista);
 		Lista.add(Clientes);
 		Lista.add(Recambios);
 		Lista.add(Reparaciones);
@@ -135,19 +125,14 @@ public class MenuPrincipalUsuario implements WindowListener, ActionListener{
 		pnlCard.add(Reparaciones , pnlReparaciones);
 		pnlCard.add(Facturas , pnlFacturas);
 		GridBagConstraints gbc_pnlCard = new GridBagConstraints();
-		gbc_pnlCard.insets = new Insets(0, 0, 5, 0);
-		gbc_pnlCard.anchor = GridBagConstraints.WEST;
-		gbc_pnlCard.fill = GridBagConstraints.VERTICAL;
 		gbc_pnlCard.gridx = 2;
 		gbc_pnlCard.gridy = 0;
-		ventana.getContentPane().add(pnlCard, gbc_pnlCard);
+		ventana.add(pnlCard, gbc_pnlCard);
 
 		GridBagConstraints gbc_pnlImg = new GridBagConstraints();
-		gbc_pnlImg.insets = new Insets(0, 0, 5, 0);
-		gbc_pnlImg.fill = GridBagConstraints.BOTH;
 		gbc_pnlImg.gridx = 2;
 		gbc_pnlImg.gridy = 1;
-		ventana.getContentPane().add(pnlImg, gbc_pnlImg);
+		ventana.add(pnlImg, gbc_pnlImg);
 		label.setIcon(new ImageIcon("imagenes/logo.png"));
 
 		pnlImg.add(label);

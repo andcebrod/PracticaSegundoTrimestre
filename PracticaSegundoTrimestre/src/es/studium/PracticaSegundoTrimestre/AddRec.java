@@ -4,8 +4,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedWriter;
@@ -26,11 +24,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class AddRec implements WindowListener, ActionListener, TextListener{
+public class AddRec implements WindowListener, ActionListener{
 
 	String driver = "com.mysql.jdbc.Driver";
 	String url ="jdbc:mysql://localhost:3306/TallerJava?autoReconnect=true&useSSL=false";
-	String login = "root";
+	String login = "usuarioTaller";
 	String password = "Studium2018;";
 	Connection connection = null;
 	Statement statement = null;
@@ -90,9 +88,6 @@ public class AddRec implements WindowListener, ActionListener, TextListener{
 		ventanaAddRec.addWindowListener(this);
 		ventanaAddRec.setVisible(true);
 	}
-
-	@Override
-	public void textValueChanged(TextEvent e) {}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) 

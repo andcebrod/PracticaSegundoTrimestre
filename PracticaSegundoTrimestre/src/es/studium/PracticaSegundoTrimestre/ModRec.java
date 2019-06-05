@@ -51,7 +51,7 @@ public class ModRec implements  WindowListener, ActionListener{
 	{
 		user = usuario;
 		idRec = id;
-		ResultSet rs = ejecutarSelect("SELECT * FROM recambios where idRecambio="+id+";",conectar("TallerJava","root","Studium2018;"));
+		ResultSet rs = ejecutarSelect("SELECT * FROM recambios where idRecambio="+id+";",conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 			rs.next();
 			txtDescripcionRec.selectAll();
@@ -63,7 +63,7 @@ public class ModRec implements  WindowListener, ActionListener{
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root","Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 		
 		
 		
@@ -99,10 +99,6 @@ public class ModRec implements  WindowListener, ActionListener{
 
 	}
 
-	public static void main(String[] args) {
-		
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
@@ -113,8 +109,8 @@ public class ModRec implements  WindowListener, ActionListener{
 
 			} else {
 				String sentencia = "UPDATE recambios SET descripcionRecambio = '"+txtDescripcionRec.getText()+"', unidadesRecambio = '"+txtUnidadesRec.getText()+"', precioRecambio ="+txtPrecioRec.getText()+" WHERE idRecambio ="+idRec+";";
-				ejecutarIDA(sentencia,conectar("TallerJava","root","Studium2018;"));
-				desconectar(conectar("TallerJava","root","Studium2018;"));
+				ejecutarIDA(sentencia,conectar("TallerJava","usuarioTaller","Studium2018;"));
+				desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 				Calendar horaFecha = Calendar.getInstance();
 				int hora,minutos,dia,mes,anyo;
 				hora = horaFecha.get(Calendar.HOUR_OF_DAY);

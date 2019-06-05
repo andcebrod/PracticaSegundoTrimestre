@@ -3,8 +3,6 @@ package es.studium.PracticaSegundoTrimestre;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
@@ -31,7 +29,7 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 
 
-public class ConCliList extends JFrame implements WindowListener, ActionListener, TextListener
+public class ConCliList extends JFrame implements WindowListener, ActionListener
 {
 	/**
 	 * 
@@ -65,7 +63,7 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 		modelo.addColumn("Dirección");
 		modelo.addColumn("Teléfono");
 
-		rs = ejecutarSelect("SELECT * FROM clientes", conectar("TallerJava","root","Studium2018;"));
+		rs = ejecutarSelect("SELECT * FROM clientes", conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 
 			while (rs.next())
@@ -80,19 +78,13 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root" ,"Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 		tablaClientes.setEnabled(false);
 
 
 		this.addWindowListener(this);
 		this.setVisible(true);
 	}
-	public static void main(String[] args) {
-		new ConCliList();
-	}
-
-	@Override
-	public void textValueChanged(TextEvent arg0) {}
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
@@ -128,7 +120,7 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 				telefono.getFont().setSize(15);
 				tabla.addCell(telefono);
 
-				ResultSet Co = ejecutarSelect("SELECT * FROM clientes;", conectar("TallerJava","root" ,"Studium2018;"));
+				ResultSet Co = ejecutarSelect("SELECT * FROM clientes;", conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 				try {
 					while (Co.next())
 					{
@@ -152,10 +144,10 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 				}
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (DocumentException e1) {
+				JOptionPane.showMessageDialog(null,e1.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			} catch (DocumentException e2) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null,e2.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 			}
 
 

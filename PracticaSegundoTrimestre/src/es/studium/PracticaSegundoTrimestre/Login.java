@@ -22,7 +22,7 @@ public class Login implements WindowListener, ActionListener {
 
 	String driver = "com.mysql.jdbc.Driver";
 	String url ="jdbc:mysql://localhost:3306/TallerJava?autoReconnect=true&useSSL=false";
-	String login = "root";
+	String login = "usuarioTaller";
 	String password = "Studium2018;";
 	Connection connection = null;
 	Statement statement = null;
@@ -117,7 +117,6 @@ public class Login implements WindowListener, ActionListener {
 		new Login();
 	}
 
-
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
@@ -164,12 +163,12 @@ public class Login implements WindowListener, ActionListener {
 				}
 				catch (ClassNotFoundException cnfe)
 				{
-					JOptionPane.showMessageDialog(null, "Error",cnfe.getMessage(), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,cnfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 
 				}
 				catch (SQLException sqle)
 				{
-					JOptionPane.showMessageDialog(null, "Error",sqle.getMessage(), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, sqle.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 				}
 				finally
 				{
@@ -182,7 +181,7 @@ public class Login implements WindowListener, ActionListener {
 					}
 					catch (SQLException e)
 					{
-						JOptionPane.showMessageDialog(null, "Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -192,7 +191,6 @@ public class Login implements WindowListener, ActionListener {
 				try
 				{
 					Class.forName(driver);
-					@SuppressWarnings("deprecation")
 					String sentencia = "SELECT * FROM usuarios where correoUsuario ='"+txtCorreo.getText()+"' AND claveUsuario = MD5('"+txtPass.getText()+"');";
 					connection = DriverManager.getConnection(url, login,password);
 					statement =connection.createStatement();
@@ -248,36 +246,8 @@ public class Login implements WindowListener, ActionListener {
 						JOptionPane.showMessageDialog(null, "Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
 					}
 				}
-
-
-
 			}
-			/* 
 
-				Calendar horaFecha = Calendar.getInstance();
-				int hora,minutos,dia,mes,anyo;
-				hora = horaFecha.get(Calendar.HOUR_OF_DAY);
-				minutos = horaFecha.get(Calendar.MINUTE);
-				dia = horaFecha.get(Calendar.DAY_OF_MONTH);
-				mes = horaFecha.get(Calendar.MONTH)+1;
-				anyo = horaFecha.get(Calendar.YEAR);
-				ventanaLogin.setVisible(false);
-				try {
-					FileWriter fw = new FileWriter("movimientos.log", true);
-					BufferedWriter bw = new BufferedWriter(fw);
-					PrintWriter outPut = new PrintWriter(bw);
-					outPut.print("["+dia+"/"+mes+"/"+anyo+"]["+hora+":"+minutos+"] "+"[usuario@studium.es]");
-					outPut.close();
-					bw.close();
-					fw.close();
-				} catch(IOException ioe) {
-					System.out.print("Error");
-				}
-				new MenuPrincipalUsuario();
-			} else {
-				JOptionPane.showMessageDialog(null, "Compruebe que el correo o la contraseña sea correcta.");
-			}
-			 */
 		} else if (btnLimpiar.equals(ae.getSource())) {
 			txtCorreo.selectAll();
 			txtCorreo.setText("");
@@ -303,7 +273,7 @@ public class Login implements WindowListener, ActionListener {
 		if(ventanaLogin.isActive()) {
 			ventanaLogin.setVisible(false);
 		}else {
-			//System.exit(0);
+			System.exit(0);
 		}
 		if(dlgOlvidada.isActive()) {
 			dlgOlvidada.setVisible(false);

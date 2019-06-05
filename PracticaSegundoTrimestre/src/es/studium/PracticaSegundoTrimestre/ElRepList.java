@@ -42,7 +42,7 @@ public class ElRepList extends JFrame implements WindowListener, ActionListener
 		this.setLocationRelativeTo(null);
 		this.setSize(500,200);
 		ListaRep.add("Seleccionar reparación a eliminar");
-		con = ejecutarSelect("SELECT * FROM reparaciones", conectar("TallerJava", "root", "Studium2018;"));
+		con = ejecutarSelect("SELECT * FROM reparaciones", conectar("TallerJava", "usuarioTaller", "Studium2018;"));
 		try {
 			while(con.next())
 			{
@@ -53,7 +53,7 @@ public class ElRepList extends JFrame implements WindowListener, ActionListener
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root" ,"Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 
 		pnl1.add(ListaRep);
 		pnl2.add(btnBorrar);
@@ -78,7 +78,7 @@ public class ElRepList extends JFrame implements WindowListener, ActionListener
 					JOptionPane.showMessageDialog(null,"Introduzca reparación válida","Error de reparación", JOptionPane.ERROR_MESSAGE);
 				}
 				String sentencia = "DELETE FROM reparaciones where idReparacion ="+idRepBorrar+";";
-				ejecutarIDA(sentencia, conectar("TallerJava", "root", "Studium2018;"));
+				ejecutarIDA(sentencia, conectar("TallerJava", "usuarioTaller", "Studium2018;"));
 				JOptionPane.showMessageDialog(null,"La reparación "+idRepBorrar+" ha sido eliminada","Reparación eliminada", JOptionPane.INFORMATION_MESSAGE);
 				Calendar horaFecha = Calendar.getInstance();
 				int hora,minutos,dia,mes,anyo;

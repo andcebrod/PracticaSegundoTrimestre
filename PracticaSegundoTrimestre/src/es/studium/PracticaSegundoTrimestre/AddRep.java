@@ -42,12 +42,16 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 
 	JButton btnCrear = new JButton("Crear Reparación");
 	JButton btnLimpiar = new JButton("Limpiar");
+	
+	Calendar horaFecha = Calendar.getInstance();
 
 	JPanel pnlPanel = new JPanel();
 	JPanel pnlPanel2 = new JPanel();
 	JPanel pnlPanel3 = new JPanel();
 	JPanel pnlPanel4 = new JPanel();
 	JPanel pnlPanel5 = new JPanel();
+	
+	int dia,mes,anyo;
 
 	public AddRep(String usuario) 
 	{
@@ -66,9 +70,14 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 		pnlPanel.add(lblAveriaRep);
 		pnlPanel.add(txtAveriaRep);
 		this.add(pnlPanel);
+		
+		dia = horaFecha.get(Calendar.DAY_OF_MONTH);
+		mes = horaFecha.get(Calendar.MONTH)+1;
+		anyo = horaFecha.get(Calendar.YEAR);
 
 		pnlPanel2.add(lblFechaEntradaRep);
 		pnlPanel2.add(txtFechaEntradaRep);
+		txtFechaEntradaRep.setText(anyo+"-"+mes+"-"+dia);
 		this.add(pnlPanel2);
 
 		pnlPanel3.add(lblFechaSalidaRep);
@@ -100,8 +109,8 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 			if(chkSiRep.isSelected()) 
 			{
 				String sentencia1 = "INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '1');";
-				ejecutarIDA(sentencia1, conectar("TallerJava","root","Studium2018;"));
-				desconectar(conectar("TallerJava","root","Studium2018;"));
+				ejecutarIDA(sentencia1, conectar("TallerJava","usuarioTaller","Studium2018;"));
+				desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 				Calendar horaFecha = Calendar.getInstance();
 				int hora,minutos,dia,mes,anyo;
 				hora = horaFecha.get(Calendar.HOUR_OF_DAY);
@@ -124,8 +133,8 @@ public class AddRep extends JFrame implements WindowListener, ActionListener{
 			} else if(chkNoRep.isSelected()) 
 			{
 				String sentencia2 = "INSERT INTO reparaciones VALUES (null, '"+txtAveriaRep.getText()+"', '"+txtFechaEntradaRep.getText()+"','"+txtFechaSalidaRep.getText()+"', '0');";
-				ejecutarIDA(sentencia2, conectar("TallerJava","root","Studium2018;"));
-				desconectar(conectar("TallerJava","root","Studium2018;"));
+				ejecutarIDA(sentencia2, conectar("TallerJava","usuarioTaller","Studium2018;"));
+				desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 				Calendar horaFecha = Calendar.getInstance();
 				int hora,minutos,dia,mes,anyo;
 				hora = horaFecha.get(Calendar.HOUR_OF_DAY);

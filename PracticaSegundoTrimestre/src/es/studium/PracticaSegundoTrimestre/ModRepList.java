@@ -41,7 +41,7 @@ public class ModRepList extends JFrame implements WindowListener, ActionListener
 		this.setLocationRelativeTo(null);
 		this.setSize(400,300);
 
-		ResultSet selectReparaciones = ejecutarSelect("SELECT * FROM reparaciones",conectar("TallerJava","root","Studium2018;"));
+		ResultSet selectReparaciones = ejecutarSelect("SELECT * FROM reparaciones",conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 			while(selectReparaciones.next())
 			{
@@ -52,7 +52,7 @@ public class ModRepList extends JFrame implements WindowListener, ActionListener
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root","Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 
 		pnl1.add(lblReparaciones);
 		pnl2.add(reparaciones);

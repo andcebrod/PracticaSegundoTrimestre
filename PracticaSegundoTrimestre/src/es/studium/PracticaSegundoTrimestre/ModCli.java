@@ -4,8 +4,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedWriter;
@@ -26,7 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class ModCli implements WindowListener, ActionListener, TextListener{
+public class ModCli implements WindowListener, ActionListener{
 	JFrame ventanaModCli = new JFrame ("Modificar cliente:");
 	JLabel lblNombreCli = new JLabel ("Nombre:");
 	JLabel lblDireccionCli = new JLabel ("Dirección:");
@@ -50,7 +48,7 @@ public class ModCli implements WindowListener, ActionListener, TextListener{
 	{
 		user = usuario;
 		idCli = id;
-		ResultSet rs = ejecutarSelect("SELECT * FROM clientes where idCliente ="+id+";",conectar("TallerJava","root","Studium2018;"));
+		ResultSet rs = ejecutarSelect("SELECT * FROM clientes where idCliente ="+id+";",conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 			rs.next();
 			txtNombreCli.selectAll();
@@ -62,7 +60,7 @@ public class ModCli implements WindowListener, ActionListener, TextListener{
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,"Error",e.getMessage(), JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root","Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 
 		ventanaModCli.setLayout(new GridLayout(4,2));
 		ventanaModCli.setLocationRelativeTo(null);
@@ -95,11 +93,6 @@ public class ModCli implements WindowListener, ActionListener, TextListener{
 		ventanaModCli.setVisible(true);
 
 	}
-	public static void main(String[] args) {
-
-	}
-	@Override
-	public void textValueChanged(TextEvent e) {}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) 
@@ -112,8 +105,8 @@ public class ModCli implements WindowListener, ActionListener, TextListener{
 
 			} else {
 				String sentencia = "UPDATE clientes SET nombreCliente = '"+txtNombreCli.getText()+"', direccionCliente = '"+txtDireccionCli.getText()+"', telefonoCliente ="+txtTelefonoCli.getText()+" WHERE idCliente ="+idCli+";";
-				ejecutarIDA(sentencia,conectar("TallerJava","root","Studium2018;"));
-				desconectar(conectar("TallerJava","root","Studium2018;"));
+				ejecutarIDA(sentencia,conectar("TallerJava","usuarioTaller","Studium2018;"));
+				desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 				Calendar horaFecha = Calendar.getInstance();
 				int hora,minutos,dia,mes,anyo;
 				hora = horaFecha.get(Calendar.HOUR_OF_DAY);

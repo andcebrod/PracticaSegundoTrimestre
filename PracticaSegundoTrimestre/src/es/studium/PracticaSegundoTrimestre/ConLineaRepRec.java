@@ -1,7 +1,5 @@
 package es.studium.PracticaSegundoTrimestre;
 
-
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -66,7 +64,7 @@ public class ConLineaRepRec extends JFrame implements WindowListener, ActionList
 		this.setTitle(title);
 		//Rellenando el TextArea
 
-		ResultSet rsRec = ejecutarSelect("SELECT * FROM incluyen,recambios where idRecambio = idRecambioFK and  idReparacionfk ="+idReparacion+";",conectar("TallerJava","root","Studium2018;"));
+		ResultSet rsRec = ejecutarSelect("SELECT * FROM incluyen,recambios where idRecambio = idRecambioFK and  idReparacionfk ="+idReparacion+";",conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 			while (rsRec.next()) {
 				recambios =recambios+"- "+rsRec.getString("descripcionRecambio")+", Precio: "+rsRec.getDouble("precioRecambio")+", Cantidad: "+rsRec.getInt("cantidad")+", Subtotal: "+(rsRec.getDouble("precioRecambio")*rsRec.getInt("cantidad"))+"\n";

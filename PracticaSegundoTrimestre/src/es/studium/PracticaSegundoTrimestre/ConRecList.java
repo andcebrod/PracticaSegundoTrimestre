@@ -3,8 +3,6 @@ package es.studium.PracticaSegundoTrimestre;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
@@ -28,7 +26,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class ConRecList implements WindowListener, ActionListener, TextListener {
+public class ConRecList implements WindowListener, ActionListener {
 	
 	JFrame ventanaConRecList = new JFrame ("Consulta de Recambios");
 	DefaultTableModel modelo = new DefaultTableModel();
@@ -53,7 +51,7 @@ public class ConRecList implements WindowListener, ActionListener, TextListener 
 		modelo.addColumn("Precio");
 		
 		
-		rs = ejecutarSelect("SELECT * FROM recambios", conectar("TallerJava","root","Studium2018;"));
+		rs = ejecutarSelect("SELECT * FROM recambios", conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 
 			while (rs.next())
@@ -67,7 +65,7 @@ public class ConRecList implements WindowListener, ActionListener, TextListener 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root" ,"Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 		tablaRecambios.setEnabled(false);
 		pnl1.add(btnAceptar);
 		pnl1.add(btnPDF);
@@ -78,8 +76,6 @@ public class ConRecList implements WindowListener, ActionListener, TextListener 
 		ventanaConRecList.setVisible(true);
 	}
 	
-	@Override
-	public void textValueChanged(TextEvent arg0) {}
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
@@ -116,7 +112,7 @@ public class ConRecList implements WindowListener, ActionListener, TextListener 
 				tabla.addCell(precioRecambio);
 
 				
-				ResultSet Co = ejecutarSelect("SELECT * FROM recambios;", conectar("TallerJava","root" ,"Studium2018;"));
+				ResultSet Co = ejecutarSelect("SELECT * FROM recambios;", conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 				try {
 					while (Co.next())
 					{
@@ -146,7 +142,7 @@ public class ConRecList implements WindowListener, ActionListener, TextListener 
 				JOptionPane.showMessageDialog(null,e2.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 			}
 
-			desconectar(conectar("TallerJava","root" ,"Studium2018;"));
+			desconectar(conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 		}
 	}
 	public static void main(String[] args) {

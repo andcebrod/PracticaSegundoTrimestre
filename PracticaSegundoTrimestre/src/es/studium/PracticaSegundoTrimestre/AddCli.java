@@ -31,7 +31,7 @@ public class AddCli  implements WindowListener, ActionListener, TextListener
 	
 	String driver = "com.mysql.jdbc.Driver";
 	String url ="jdbc:mysql://localhost:3306/TallerJava?autoReconnect=true&useSSL=false";
-	String login = "root";
+	String login = "usuarioTaller";
 	String password = "Studium2018;";
 	Connection connection = null;
 	Statement statement = null;

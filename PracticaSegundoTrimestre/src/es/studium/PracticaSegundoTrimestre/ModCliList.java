@@ -4,8 +4,6 @@ import java.awt.Choice;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
@@ -17,7 +15,7 @@ import java.sql.Statement;
 import javax.swing.*;
 
 
-public class ModCliList implements WindowListener, ActionListener, TextListener{
+public class ModCliList implements WindowListener, ActionListener{
 	JFrame ventanaModCliList = new JFrame ("Buscar cliente para modificar");
 	JLabel lblClientes = new JLabel("Selecciona cliente");
 	Choice clientes = new Choice();
@@ -36,7 +34,7 @@ public class ModCliList implements WindowListener, ActionListener, TextListener{
 		
 		user = usuario;
 
-		ResultSet selectClientes = ejecutarSelect("SELECT * FROM clientes",conectar("TallerJava","root","Studium2018;"));
+		ResultSet selectClientes = ejecutarSelect("SELECT * FROM clientes",conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 			while(selectClientes.next())
 			{
@@ -47,7 +45,7 @@ public class ModCliList implements WindowListener, ActionListener, TextListener{
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root","Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 
 		pnl1.add(lblClientes);
 		pnl2.add(clientes);
@@ -59,8 +57,6 @@ public class ModCliList implements WindowListener, ActionListener, TextListener{
 		ventanaModCliList.addWindowListener(this);
 		ventanaModCliList.setVisible(true);
 	}
-	@Override
-	public void textValueChanged(TextEvent arg0) {}
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{

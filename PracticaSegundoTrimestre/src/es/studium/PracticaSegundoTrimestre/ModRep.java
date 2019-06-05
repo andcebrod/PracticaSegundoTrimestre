@@ -56,7 +56,7 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 		user = usuario;
 		idRep = id;
 
-		ResultSet rs = ejecutarSelect("SELECT * FROM reparaciones where idReparacion="+id+";",conectar("TallerJava","root","Studium2018;"));
+		ResultSet rs = ejecutarSelect("SELECT * FROM reparaciones where idReparacion="+id+";",conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 			rs.next();
 			if(rs.getInt("reparado")==1) {
@@ -85,7 +85,7 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root","Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 
 
 		this.setTitle("Modificar Reparación");
@@ -140,8 +140,8 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 				{
 					System.out.println(txtFechaEntradaRep.getText());
 					String sentencia1 = "UPDATE reparaciones SET Averia ='"+txtAveriaRep.getText()+"', fechaEntrada='"+txtFechaEntradaRep.getText()+"', fechaSalida='"+txtFechaSalidaRep.getText()+"', Reparado = 1 WHERE idReparacion ="+idRep+";";
-					ejecutarIDA(sentencia1,conectar("TallerJava","root","Studium2018;"));
-					desconectar(conectar("TallerJava","root","Studium2018;"));
+					ejecutarIDA(sentencia1,conectar("TallerJava","usuarioTaller","Studium2018;"));
+					desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 					Calendar horaFecha = Calendar.getInstance();
 					int hora,minutos,dia,mes,anyo;
 					hora = horaFecha.get(Calendar.HOUR_OF_DAY);
@@ -163,8 +163,8 @@ public class ModRep extends JFrame implements WindowListener, ActionListener
 				} else 
 				{
 					String sentencia2 = "UPDATE reparaciones SET Averia ='"+txtAveriaRep.getText()+"', fechaEntrada='"+txtFechaEntradaRep.getText()+"', fechaSalida='"+txtFechaSalidaRep.getText()+"', Reparado = 0 WHERE idReparacion ="+idRep+";";
-					ejecutarIDA(sentencia2,conectar("TallerJava","root","Studium2018;"));
-					desconectar(conectar("TallerJava","root","Studium2018;"));
+					ejecutarIDA(sentencia2,conectar("TallerJava","usuarioTaller","Studium2018;"));
+					desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 					Calendar horaFecha = Calendar.getInstance();
 					int hora,minutos,dia,mes,anyo;
 					hora = horaFecha.get(Calendar.HOUR_OF_DAY);

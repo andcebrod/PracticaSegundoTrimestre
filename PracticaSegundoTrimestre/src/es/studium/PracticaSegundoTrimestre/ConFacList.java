@@ -47,7 +47,7 @@ public class ConFacList extends JFrame implements WindowListener, ActionListener
 		btnSeleccionar.addActionListener(this);
 		
 		
-		ResultSet selectFacturas = ejecutarSelect("SELECT * FROM facturas, clientes where idClienteFK = idCliente;", conectar("TallerJava","root","Studium2018;"));
+		ResultSet selectFacturas = ejecutarSelect("SELECT * FROM facturas, clientes where idClienteFK = idCliente;", conectar("TallerJava","usuarioTaller","Studium2018;"));
 		
 		try {
 
@@ -63,14 +63,12 @@ public class ConFacList extends JFrame implements WindowListener, ActionListener
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root" ,"Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 		
 		
 		this.addWindowListener(this);
 		this.setVisible(true);
 	}
-
-
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -85,9 +83,7 @@ public class ConFacList extends JFrame implements WindowListener, ActionListener
 			this.setVisible(false);
 		}
 	}
-	public static void main(String[] args) {
-		new ConFacList();
-	}
+
 	@Override
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub

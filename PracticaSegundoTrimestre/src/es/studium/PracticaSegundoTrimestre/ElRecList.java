@@ -41,7 +41,7 @@ public class ElRecList extends JFrame implements WindowListener, ActionListener{
 		this.setLocationRelativeTo(null);
 		this.setSize(400,200);
 		ListaRec.add("Seleccionar recambio a eliminar");
-		con = ejecutarSelect("SELECT * FROM recambios", conectar("TallerJava", "root", "Studium2018;"));
+		con = ejecutarSelect("SELECT * FROM recambios", conectar("TallerJava", "usuarioTaller", "Studium2018;"));
 		try {
 			while(con.next())
 			{
@@ -52,7 +52,7 @@ public class ElRecList extends JFrame implements WindowListener, ActionListener{
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root" ,"Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 
 		pnl1.add(ListaRec);
 		pnl2.add(btnBorrar);
@@ -78,7 +78,7 @@ public class ElRecList extends JFrame implements WindowListener, ActionListener{
 					JOptionPane.showMessageDialog(null,"Introduzca recambio válido","Error de recambio", JOptionPane.ERROR_MESSAGE);
 				}
 				String sentencia = "DELETE FROM recambios where idRecambio ="+idRecBorrar+";";
-				ejecutarIDA(sentencia, conectar("TallerJava", "root", "Studium2018;"));
+				ejecutarIDA(sentencia, conectar("TallerJava", "usuarioTaller", "Studium2018;"));
 				JOptionPane.showMessageDialog(null,"El recambio "+idRecBorrar+" ha sido eliminado","Recambio eliminado", JOptionPane.INFORMATION_MESSAGE);
 				Calendar horaFecha = Calendar.getInstance();
 				int hora,minutos,dia,mes,anyo;

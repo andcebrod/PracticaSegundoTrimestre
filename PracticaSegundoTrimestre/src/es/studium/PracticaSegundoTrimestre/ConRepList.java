@@ -2,11 +2,8 @@ package es.studium.PracticaSegundoTrimestre;
 
 
 import java.awt.BorderLayout;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
@@ -16,10 +13,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -27,7 +22,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class ConRepList extends JFrame implements WindowListener, ActionListener, TextListener{
+public class ConRepList extends JFrame implements WindowListener, ActionListener {
 	/**
 	 * 
 	 */
@@ -62,7 +57,7 @@ public class ConRepList extends JFrame implements WindowListener, ActionListener
 		modelo.addColumn("Fecha de Salida");
 		modelo.addColumn("Reparado");
 
-		rs = ejecutarSelect("SELECT * FROM reparaciones", conectar("TallerJava","root","Studium2018;"));
+		rs = ejecutarSelect("SELECT * FROM reparaciones", conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 
 			while (rs.next())
@@ -91,18 +86,13 @@ public class ConRepList extends JFrame implements WindowListener, ActionListener
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root" ,"Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 		tablaReparaciones.setEnabled(false);
 
 
 		this.addWindowListener(this);
 		this.setVisible(true);
 	}
-	public static void main(String[] args) {
-		new ConRepList();
-	}
-	@Override
-	public void textValueChanged(TextEvent arg0) {}
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
@@ -141,7 +131,7 @@ public class ConRepList extends JFrame implements WindowListener, ActionListener
 				reparado.getFont().setSize(15);
 				tabla.addCell(reparado);
 				
-				ResultSet Co = ejecutarSelect("SELECT * FROM reparaciones;", conectar("TallerJava","root" ,"Studium2018;"));
+				ResultSet Co = ejecutarSelect("SELECT * FROM reparaciones;", conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 				try {
 					while (Co.next())
 					{
@@ -171,14 +161,12 @@ public class ConRepList extends JFrame implements WindowListener, ActionListener
 					JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (DocumentException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null,e1.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+			} catch (DocumentException e2) {
+				JOptionPane.showMessageDialog(null,e2.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 			}
 
-			desconectar(conectar("TallerJava","root" ,"Studium2018;"));
+			desconectar(conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 		}
 	}
 	@Override

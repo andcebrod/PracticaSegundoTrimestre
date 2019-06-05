@@ -54,7 +54,7 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 		this.setLocationRelativeTo(null);
 		this.setSize(400,300);
 
-		ResultSet selectClientes = ejecutarSelect("SELECT * FROM clientes",conectar("TallerJava","root","Studium2018;"));
+		ResultSet selectClientes = ejecutarSelect("SELECT * FROM clientes",conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 			while(selectClientes.next())
 			{
@@ -65,9 +65,9 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root","Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 
-		ResultSet selectReparaciones = ejecutarSelect("SELECT * FROM reparaciones",conectar("TallerJava","root","Studium2018;"));
+		ResultSet selectReparaciones = ejecutarSelect("SELECT * FROM reparaciones",conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 			while(selectReparaciones.next())
 			{
@@ -78,7 +78,7 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root","Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 
 
 		pnlPanel.setLayout(new FlowLayout());
@@ -119,8 +119,8 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 			int idReparacion = Integer.parseInt(arrayReparaciones[0]);
 			String sentencia = "INSERT INTO facturas VALUES (null,'"+txtFecha.getText()+"',"+idCliente+","+idReparacion+");";
 			
-			ejecutarIDA(sentencia,conectar("TallerJava","root","Studium2018;"));
-			ResultSet rsCodFac = ejecutarSelect("select * from facturas order by 1 desc;", conectar("TallerJava","root","Studium2018;"));
+			ejecutarIDA(sentencia,conectar("TallerJava","usuarioTaller","Studium2018;"));
+			ResultSet rsCodFac = ejecutarSelect("select * from facturas order by 1 desc;", conectar("TallerJava","usuarioTaller","Studium2018;"));
 			try {
 				rsCodFac.next();
 				new LineaRepRec(idReparacion, rsCodFac.getInt("idFactura"));
@@ -128,7 +128,7 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 			}
-			desconectar(conectar("TallerJava","root","Studium2018;"));
+			desconectar(conectar("TallerJava","usuarioTaller","Studium2018;"));
 			
 			
 			
@@ -202,7 +202,6 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 		// TODO Auto-generated method stub
 	}
 
-	@SuppressWarnings("unused")
 	public Connection conectar(String baseDatos, String usuario, String clave)
 	{
 		String driver = "com.mysql.jdbc.Driver";
@@ -210,9 +209,6 @@ public class AddFac extends JFrame implements WindowListener, ActionListener{
 		String login = usuario;
 		String password = clave;
 		Connection connection = null;
-		Statement statement = null;
-		ResultSet rs = null;
-
 		try
 		{
 			Class.forName(driver);

@@ -65,7 +65,7 @@ public class LineaRepRec extends JFrame implements WindowListener, ActionListene
 
 		//Selec de recambios para choice
 
-		ResultSet rsRec = ejecutarSelect("SELECT * FROM recambios;", conectar("TallerJava","root","Studium2018;")); 
+		ResultSet rsRec = ejecutarSelect("SELECT * FROM recambios;", conectar("TallerJava","usuarioTaller","Studium2018;")); 
 		try {
 			while(rsRec.next())
 			{
@@ -76,7 +76,7 @@ public class LineaRepRec extends JFrame implements WindowListener, ActionListene
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		desconectar(conectar("TallerJava","root" ,"Studium2018;"));
+		desconectar(conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 
 		pnl2.add(recambios);
 		pnl2.add(lblCantidad);
@@ -98,6 +98,91 @@ public class LineaRepRec extends JFrame implements WindowListener, ActionListene
 		this.add(pnl5);
 		this.setVisible(true);
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent ae) 
+	{
+
+		//Botón Agregar
+		if(btnAgregar.equals(ae.getSource())) 
+		{
+			try 
+			{
+				int Cantidad = Integer.parseInt(txtCantidad.getText());
+				String[] arrayCod= recambios.getSelectedItem().toString().split("-");
+				ResultSet recSelect = ejecutarSelect("SELECT precioRecambio from recambios where idRecambio ="+arrayCod[0]+";",conectar("TallerJava", "usuarioTaller", "Studium2018;"));
+				try {
+					recSelect.next();
+					precio = recSelect.getDouble("precioRecambio");
+					subTotal = precio*Cantidad;
+					total = total + recSelect.getDouble("precioRecambio")*Cantidad;
+					recambioSeleccionado = recambioSeleccionado+" "+recambios.getSelectedItem().toString()+", Precio: "+Double.toString(precio)+", Cantidad:"+Cantidad+", Subtotal:"+Double.toString(subTotal)+"\n";
+					txtRecambiosFac.setText(recambioSeleccionado);
+					txtTotal.setText(Double.toString(total));
+					desconectar(conectar("TallerJava", "usuarioTaller", "Studium2018;"));
+					ejecutarIDA("INSERT INTO incluyen values (null,"+idReparacion+","+arrayCod[0]+","+Cantidad+");", conectar("TallerJava", "usuarioTaller", "Studium2018;"));
+
+				} catch (SQLException e){
+					JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+				}
+				desconectar(conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
+			} catch(NumberFormatException nf) {
+				JOptionPane.showMessageDialog(null,"Introduzca cantidad o artículo válidos","Error", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		//Botón Aceptar
+		if(btnAceptar.equals(ae.getSource())) 
+		{
+			JOptionPane.showMessageDialog(null,"Factura creada correctamente con un total de "+txtTotal.getText(),"Factura creada", JOptionPane.INFORMATION_MESSAGE);
+		}
+		//Botón Cancelar
+		else if(btnCancelar.equals(ae.getSource())) 
+		{
+			int seleccion = JOptionPane.showOptionDialog( null,"¿Desea salir de la línea de factura?","Salir",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "Salir", "Cancelar"},"Cancelar");
+			if (seleccion == 0){
+				this.setVisible(false);
+			}
+		}
+	} 
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		int seleccion = JOptionPane.showOptionDialog( null,"¿Desea salir de la línea de factura?","Salir",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "Salir", "Cancelar"},"Cancelar");
+		if (seleccion == 0){
+			this.setVisible(false);
+		}
+	}
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+	
 	public Connection conectar(String baseDatos, String usuario, String clave)
 	{
 		String driver = "com.mysql.jdbc.Driver";
@@ -166,89 +251,6 @@ public class LineaRepRec extends JFrame implements WindowListener, ActionListene
 		{
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-
-	}
-	@Override
-	public void actionPerformed(ActionEvent ae) 
-	{
-
-		//Botón Agregar
-		if(btnAgregar.equals(ae.getSource())) 
-		{
-			try 
-			{
-				int Cantidad = Integer.parseInt(txtCantidad.getText());
-				String[] arrayCod= recambios.getSelectedItem().toString().split("-");
-				ResultSet recSelect = ejecutarSelect("SELECT precioRecambio from recambios where idRecambio ="+arrayCod[0]+";",conectar("TallerJava", "root", "Studium2018;"));
-				try {
-					recSelect.next();
-					precio = recSelect.getDouble("precioRecambio");
-					subTotal = precio*Cantidad;
-					total = total + recSelect.getDouble("precioRecambio")*Cantidad;
-					recambioSeleccionado = recambioSeleccionado+" "+recambios.getSelectedItem().toString()+", Precio: "+Double.toString(precio)+", Cantidad:"+Cantidad+", Subtotal:"+Double.toString(subTotal)+"\n";
-					txtRecambiosFac.setText(recambioSeleccionado);
-					txtTotal.setText(Double.toString(total));
-					desconectar(conectar("TallerJava", "root", "Studium2018;"));
-					ejecutarIDA("INSERT INTO incluyen values (null,"+idReparacion+","+arrayCod[0]+","+Cantidad+");", conectar("TallerJava", "root", "Studium2018;"));
-
-				} catch (SQLException e){
-					JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
-				}
-				desconectar(conectar("TallerJava","root" ,"Studium2018;"));
-			} catch(NumberFormatException nf) {
-				JOptionPane.showMessageDialog(null,"Introduzca cantidad o artículo válidos","Error", JOptionPane.ERROR_MESSAGE);
-			}
-		} 
-		//Botón Aceptar
-		if(btnAceptar.equals(ae.getSource())) 
-		{
-			JOptionPane.showMessageDialog(null,"Factura creada correctamente con un total de "+txtTotal.getText(),"Factura creada", JOptionPane.INFORMATION_MESSAGE);
-		}
-		//Botón Cancelar
-		else if(btnCancelar.equals(ae.getSource())) 
-		{
-			int seleccion = JOptionPane.showOptionDialog( null,"¿Desea salir de la línea de factura?","Salir",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "Salir", "Cancelar"},"Cancelar");
-			if (seleccion == 0){
-				this.setVisible(false);
-			}
-		}
-	} 
-	@Override
-	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		int seleccion = JOptionPane.showOptionDialog( null,"¿Desea salir de la línea de factura?","Salir",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "Salir", "Cancelar"},"Cancelar");
-		if (seleccion == 0){
-			this.setVisible(false);
-		}
-	}
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
