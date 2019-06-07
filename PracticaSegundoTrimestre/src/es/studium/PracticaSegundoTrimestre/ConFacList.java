@@ -47,7 +47,7 @@ public class ConFacList extends JFrame implements WindowListener, ActionListener
 		btnSeleccionar.addActionListener(this);
 		
 		
-		ResultSet selectFacturas = ejecutarSelect("SELECT * FROM facturas, clientes where idClienteFK = idCliente;", conectar("TallerJava","usuarioTaller","Studium2018;"));
+		ResultSet selectFacturas = ejecutarSelect("SELECT idFactura, DATE_FORMAT(FechaFactura, '%d/%m/%Y'), nombreCliente, idReparacionFK  FROM facturas, clientes where idClienteFK = idCliente;", conectar("TallerJava","usuarioTaller","Studium2018;"));
 		
 		try {
 
@@ -55,7 +55,7 @@ public class ConFacList extends JFrame implements WindowListener, ActionListener
 			{
 				String fac=Integer.toString(selectFacturas.getInt("idFactura"));
 				fac = fac + "-"+ 
-				" "+selectFacturas.getString("DATE_FORMAT(fechaFactura, '%d/%m%a'")+
+				" "+selectFacturas.getString("DATE_FORMAT(FechaFactura, '%d/%m/%Y')")+
 				", Cliente: "+selectFacturas.getString("nombreCliente")+
 				", Reparación:"+selectFacturas.getInt("idReparacionFK");
 				facturas.add(fac);
