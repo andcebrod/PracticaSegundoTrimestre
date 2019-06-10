@@ -22,7 +22,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.GridBagLayout;
 import java.awt.FileDialog;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
+
 
 
 public class ConLineaRepRec extends JFrame implements WindowListener, ActionListener 

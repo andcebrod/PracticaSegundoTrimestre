@@ -255,6 +255,3 @@ public class LineaRepRec extends JFrame implements WindowListener, ActionListene
 	}
 
 } 
-
-
-
