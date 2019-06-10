@@ -20,6 +20,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.awt.GridBagLayout;
+import java.awt.FileDialog;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
@@ -50,7 +51,7 @@ public class ConLineaRepRec extends JFrame implements WindowListener, ActionList
 	private final JPanel pnl3 = new JPanel();
 	private final JButton btnAceptar = new JButton("Aceptar");
 	private final JButton btnImprimirFactura = new JButton("Imprimir Factura");
-	
+
 	Document documento = new Document();
 
 	public ConLineaRepRec(int idRep,int idFac) 
@@ -74,41 +75,30 @@ public class ConLineaRepRec extends JFrame implements WindowListener, ActionList
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{484, 0};
-		gridBagLayout.rowHeights = new int[]{180, 67, 44, 0};
-		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		getContentPane().setLayout(gridBagLayout);
+		this.setLayout(new GridBagLayout());
 		pnl1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Desglose"));
 		txtRecambiosFac.setText(recambios);
-		
-				txtRecambiosFac.setEditable(false);
-				pnl1.add(txtRecambiosFac);
-				GridBagConstraints gbc_pnl1 = new GridBagConstraints();
-				gbc_pnl1.fill = GridBagConstraints.BOTH;
-				gbc_pnl1.insets = new Insets(0, 0, 5, 0);
-				gbc_pnl1.gridx = 0;
-				gbc_pnl1.gridy = 0;
-				getContentPane().add(pnl1, gbc_pnl1);
+		txtRecambiosFac.setEditable(false);
+		pnl1.add(txtRecambiosFac);
+		GridBagConstraints gbc_pnl1 = new GridBagConstraints();
+		gbc_pnl1.gridx = 0;
+		gbc_pnl1.gridy = 0;
+		this.add(pnl1, gbc_pnl1);
 		txtTotal.setEditable(false);
 		pnl2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Precio Total"));
 		pnl2.add(lblTotal);
 		txtTotal.setText(Double.toString(total));
 		pnl2.add(txtTotal);
 		GridBagConstraints gbc_pnl2 = new GridBagConstraints();
-		gbc_pnl2.insets = new Insets(0, 0, 5, 0);
-		gbc_pnl2.fill = GridBagConstraints.BOTH;
 		gbc_pnl2.gridx = 0;
 		gbc_pnl2.gridy = 1;
-		getContentPane().add(pnl2, gbc_pnl2);
-		
+		this.add(pnl2, gbc_pnl2);
+
 		GridBagConstraints gbc_pnl3 = new GridBagConstraints();
-		gbc_pnl3.fill = GridBagConstraints.BOTH;
 		gbc_pnl3.gridx = 0;
 		gbc_pnl3.gridy = 2;
-		getContentPane().add(pnl3, gbc_pnl3);
-		
+		this.add(pnl3, gbc_pnl3);
+
 		pnl3.add(btnAceptar);
 		btnAceptar.addActionListener(this);
 		pnl3.add(btnImprimirFactura);
@@ -123,27 +113,31 @@ public class ConLineaRepRec extends JFrame implements WindowListener, ActionList
 		if(btnAceptar.equals(ae.getSource())) 
 		{
 			this.setVisible(false);
-			
+
 		} else if(btnImprimirFactura.equals(ae.getSource())) 
 		{
 			FileOutputStream ficheroPdf;
 			try {
-			ficheroPdf = new FileOutputStream("factura.pdf");
-			PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
-			documento.open();
-			Paragraph titulo = new Paragraph("Factura nº"+FactSelec);
-			titulo.getFont().setStyle(Font.BOLD);
-			titulo.getFont().setSize(15);
-			documento.add(titulo);
-			Paragraph contenido = new Paragraph(txtRecambiosFac.getText());
-			documento.add(contenido);
-			Paragraph total = new Paragraph ("TOTAL: "+txtTotal.getText());
-			total.getFont().setStyle(Font.BOLD);
-			documento.add(total);
-			documento.close();
-			JOptionPane.showMessageDialog(null,"Documento pdf creado correctamente.","Documento creado", JOptionPane.INFORMATION_MESSAGE);
-			
-			
+				FileDialog fd = new FileDialog(this, "Seleccionar archivo", FileDialog.SAVE);
+				fd.setFile("*.pdf");
+				fd.setVisible(true);
+				String filename = fd.getDirectory()+fd.getFile();
+				ficheroPdf = new FileOutputStream(filename);
+				PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
+				documento.open();
+				Paragraph titulo = new Paragraph("Factura nº"+FactSelec);
+				titulo.getFont().setStyle(Font.BOLD);
+				titulo.getFont().setSize(15);
+				documento.add(titulo);
+				Paragraph contenido = new Paragraph(txtRecambiosFac.getText());
+				documento.add(contenido);
+				Paragraph total = new Paragraph ("TOTAL: "+txtTotal.getText());
+				total.getFont().setStyle(Font.BOLD);
+				documento.add(total);
+				documento.close();
+				JOptionPane.showMessageDialog(null,"Documento pdf creado correctamente.","Documento creado", JOptionPane.INFORMATION_MESSAGE);
+
+
 			}	catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null,e1.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
@@ -251,6 +245,6 @@ public class ConLineaRepRec extends JFrame implements WindowListener, ActionList
 
 	}
 
-	
+
 
 }

@@ -1,6 +1,7 @@
 package es.studium.PracticaSegundoTrimestre;
 
 import java.awt.BorderLayout;
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -89,13 +90,19 @@ public class ConCliList extends JFrame implements WindowListener, ActionListener
 	public void actionPerformed(ActionEvent ae) 
 	{
 
-		if(btnAceptar.equals(ae.getSource())) {
+		if(btnAceptar.equals(ae.getSource())) 
+		{
 			this.setVisible(false);
-		} else if (btnPDF.equals(ae.getSource())) 
+		} 
+		else if (btnPDF.equals(ae.getSource())) 
 		{	
 			FileOutputStream ficheroPdf;
 			try {
-				ficheroPdf = new FileOutputStream("clientes.pdf");
+				FileDialog fd = new FileDialog(this, "Seleccionar archivo", FileDialog.SAVE);
+				fd.setFile("*.pdf");
+				fd.setVisible(true);
+				String filename = fd.getDirectory()+fd.getFile();
+				ficheroPdf = new FileOutputStream(filename);
 				PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
 				documento.open();
 				PdfPTable tabla = new PdfPTable(4);

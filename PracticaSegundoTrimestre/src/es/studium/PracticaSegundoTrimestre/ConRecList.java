@@ -1,6 +1,7 @@
 package es.studium.PracticaSegundoTrimestre;
 
 import java.awt.BorderLayout;
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -26,9 +27,12 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class ConRecList implements WindowListener, ActionListener {
+public class ConRecList extends JFrame implements WindowListener, ActionListener {
 	
-	JFrame ventanaConRecList = new JFrame ("Consulta de Recambios");
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	DefaultTableModel modelo = new DefaultTableModel();
 	JTable tablaRecambios= new JTable(modelo);
 	JButton btnAceptar = new JButton("Aceptar");
@@ -40,10 +44,10 @@ public class ConRecList implements WindowListener, ActionListener {
 	
 	public ConRecList() 
 	{
-		ventanaConRecList.setLayout(new BorderLayout());
-		ventanaConRecList.setLocationRelativeTo(null);
-		ventanaConRecList.setSize(600,200);
-		ventanaConRecList.add(new JScrollPane(tablaRecambios),BorderLayout.CENTER);
+		this.setLayout(new BorderLayout());
+		this.setLocationRelativeTo(null);
+		this.setSize(600,200);
+		this.add(new JScrollPane(tablaRecambios),BorderLayout.CENTER);
 		
 		modelo.addColumn("Nº Recambio");
 		modelo.addColumn("Descripción");
@@ -71,22 +75,28 @@ public class ConRecList implements WindowListener, ActionListener {
 		pnl1.add(btnPDF);
 		btnAceptar.addActionListener(this);
 		btnPDF.addActionListener(this);
-		ventanaConRecList.add(pnl1, BorderLayout.SOUTH);
-		ventanaConRecList.addWindowListener(this);
-		ventanaConRecList.setVisible(true);
+		this.add(pnl1, BorderLayout.SOUTH);
+		this.addWindowListener(this);
+		this.setVisible(true);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) 
 	{
 		
-		if(btnAceptar.equals(ae.getSource())) {
-			ventanaConRecList.setVisible(false);
-		} else if (btnPDF.equals(ae.getSource())) 
+		if(btnAceptar.equals(ae.getSource())) 
+		{
+			this.setVisible(false);
+		} 
+		else if (btnPDF.equals(ae.getSource())) 
 		{
 			FileOutputStream ficheroPdf;
 			try {
-				ficheroPdf = new FileOutputStream("recambios.pdf");
+				FileDialog fd = new FileDialog(this, "Seleccionar archivo", FileDialog.SAVE);
+				fd.setFile("*.pdf");
+				fd.setVisible(true);
+				String filename = fd.getDirectory()+fd.getFile();
+				ficheroPdf = new FileOutputStream(filename);
 				PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
 				documento.open();
 				PdfPTable tabla = new PdfPTable(4);
@@ -145,9 +155,7 @@ public class ConRecList implements WindowListener, ActionListener {
 			desconectar(conectar("TallerJava","usuarioTaller" ,"Studium2018;"));
 		}
 	}
-	public static void main(String[] args) {
-		new ConRecList();
-	}
+
 	@Override
 	public void windowActivated(WindowEvent arg0) {}
 	@Override
@@ -155,7 +163,7 @@ public class ConRecList implements WindowListener, ActionListener {
 	@Override
 	public void windowClosing(WindowEvent arg0) 
 	{
-		ventanaConRecList.setVisible(false);
+		this.setVisible(false);
 		
 	}
 		

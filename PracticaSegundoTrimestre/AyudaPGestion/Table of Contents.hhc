@@ -9,55 +9,51 @@
 </OBJECT>
 <UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Principal">
-		<param name="Local" value="Principal.html">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Login">
+		<param name="Name" value="Ayuda Login">
 		<param name="Local" value="login.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Usuario B&aacute;sico">
+		<param name="Name" value="Ayuda para usuario B&aacute;sico">
 		<param name="Local" value="usuarioBasico.html">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Facturas">
+			<param name="Name" value="Men&uacute; facturas">
 			<param name="Local" value="Facturas.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Reparaciones usuario b&aacute;sico">
+			<param name="Name" value="Men&uacute; Reparaciones para Usuario Basico">
 			<param name="Local" value="ReparacionesUsuario.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Recambios usuario b&aacute;sico">
+			<param name="Name" value="Men&uacute; Recambios para Usuario Basico">
 			<param name="Local" value="RecambiosUsuario.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Clientes usuario b&aacute;sico">
+			<param name="Name" value="Men&uacute; Clientes para Usuario Basico">
 			<param name="Local" value="ClientesUsuario.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Administrador">
+		<param name="Name" value="Ayuda para Administradores">
 		<param name="Local" value="administradores.html">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Facturas">
+			<param name="Name" value="Men&uacute; facturas">
 			<param name="Local" value="Facturas.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Reparaciones Administrador">
+			<param name="Name" value="Men&uacute; reparaciones para Administrador">
 			<param name="Local" value="ReparacionesAdmin.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Clientes administrador">
-			<param name="Local" value="ClientesAdmin.html">
+			<param name="Name" value="Men&uacute; recambios para Administrador">
+			<param name="Local" value="RecambiosAdmin.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Recambios administrador">
-			<param name="Local" value="RecambiosAdmin.html">
+			<param name="Name" value="Men&uacute; clientes para Administrador">
+			<param name="Local" value="ClientesAdmin.html">
 			</OBJECT>
 	</UL>
 </UL>

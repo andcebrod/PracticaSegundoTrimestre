@@ -2,6 +2,7 @@ package es.studium.PracticaSegundoTrimestre;
 
 
 import java.awt.BorderLayout;
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -101,7 +102,11 @@ public class ConRepList extends JFrame implements WindowListener, ActionListener
 		} else if (btnPDF.equals(ae.getSource())) {
 			FileOutputStream ficheroPdf;
 			try {
-				ficheroPdf = new FileOutputStream("reparaciones.pdf");
+				FileDialog fd = new FileDialog(this, "Seleccionar archivo", FileDialog.SAVE);
+				fd.setFile("*.pdf");
+				fd.setVisible(true);
+				String filename = fd.getDirectory()+fd.getFile();
+				ficheroPdf = new FileOutputStream(filename);
 				PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
 				documento.open();
 				PdfPTable tabla = new PdfPTable(5);
