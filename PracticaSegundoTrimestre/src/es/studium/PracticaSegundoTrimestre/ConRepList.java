@@ -58,7 +58,7 @@ public class ConRepList extends JFrame implements WindowListener, ActionListener
 		modelo.addColumn("Fecha de Salida");
 		modelo.addColumn("Reparado");
 
-		rs = ejecutarSelect("SELECT * FROM reparaciones", conectar("TallerJava","usuarioTaller","Studium2018;"));
+		rs = ejecutarSelect("select idReparacion, averia, date_format(fechaEntrada, '%d/%m/%y'), date_format(fechaSalida, '%d/%m/%y'), Reparado from reparaciones;", conectar("TallerJava","usuarioTaller","Studium2018;"));
 		try {
 
 			while (rs.next())
@@ -66,8 +66,22 @@ public class ConRepList extends JFrame implements WindowListener, ActionListener
 				Object [] fila = new Object[5];
 
 				for (int i=0;i<5;i++) 
-				
-					if(i==4) 
+					if(i==0) {
+						fila[i]= rs.getString("idReparacion");
+						
+					}else if (i==1)
+					{
+						fila[i] = rs.getString("averia");
+						
+					}else if (i==2)
+					{
+						fila[i] = rs.getString("date_format(fechaEntrada, '%d/%m/%y')");
+						
+					}else if (i==3)
+					{
+						fila[i] = rs.getString("date_format(fechaSalida, '%d/%m/%y')");
+						
+					} else if(i==4) 
 					{
 						reparado = Integer.parseInt(rs.getString("reparado"));
 						if(reparado==1) {
@@ -76,11 +90,7 @@ public class ConRepList extends JFrame implements WindowListener, ActionListener
 							fila[i] = "No reparado";
 						}
 					} 
-					else 
-					{
-						fila[i] = rs.getObject(i+1);
-						
-					}
+					
 					modelo.addRow(fila); 
 				
 			}
